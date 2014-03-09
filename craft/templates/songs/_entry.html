@@ -16,9 +16,52 @@
 {% extends "_layout" %}
 
 {% block content %}
-	<article>
-		<h1>{{ entry.title }}</h1>
-		<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-		{{ entry.body }}
-	</article>
+<article>
+	<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+	<div class="row">
+		<div class="col-sm-8">
+			{{ entry.soundcloudId }}
+		</div>
+		<div class="col-sm-4">
+			{% if entry.mp3Download | length %}
+			    {% for asset in entry.mp3Download %}
+			        <a href="{{ asset.url }}">Download MP3</a>
+			    {% endfor %}
+			{% endif %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-8">
+			<h3>Lyrics</h3>
+			<p>{{ entry.lyrics }}</p>
+			<h3>Co-Writers</h3>
+			<p>{{ entry.coWriters }}</p>
+			<h3>Date</h3>
+			<p>{{ entry.songDate | date('F Y') }}</p>
+		</div>
+		<div class="col-sm-4">
+			<h3>Tags</h3>
+			{% set entries = craft.entries.section('songs').limit(null) %}
+			<ul>
+			    {% for tag in craft.tags.relatedTo(entries) %}
+			        <li><a href="/tags/{{ tag.name }}">{{ tag.name }}</a></li>
+			    {% endfor %}
+			</ul>
+			
+			{% if entry.tags | length %}
+			    <h3>This entry is tagged with:</h3>
+
+			    <ul>
+			        {% for tag in entry.tags %}
+			            <li><a href="{{ siteUrl }}tags/{{ tag.name | url_encode }}">{{ tag.name }}</a></li>
+			        {% endfor %}
+			    </ul>
+			{% endif %}
+			
+			<p></p>
+			<h3>Notes</h3>
+			<p>{{ entry.songNotes }}</p>
+		</div>
+	</div>
+</article>
 {% endblock %}

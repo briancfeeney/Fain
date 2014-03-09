@@ -15,18 +15,16 @@
 
 {% block content %}
 
-	<section id="songList">
-		<h1>Songs</h1>
+	<h1>Songs</h1>
 
-		{% for entry in craft.entries.section('songs').find() %}
-			<article>
-				<div class="row">
-					<div class="col-sm-8">
-						<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
-					</div>
+	{% for entry in craft.entries.section('songs').find() %}
+		<article>
+			<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+			<div class="row">
+				<div class="col-sm-4">
+					<a href="#">Download MP3</a>
 				</div>
-			</article>
-		{% endfor %}
-	</section>
-	
+			</div>
+		</article>
+	{% endfor %}
 {% endblock %}
