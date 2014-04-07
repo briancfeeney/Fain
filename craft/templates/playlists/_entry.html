@@ -1,45 +1,41 @@
 {#
- # News entry template
+ # Playlist entry template
  # -------------------
- #
- # This template gets loaded whenever a News entry’s URL is
- # requested. That’s because the News section’s Template setting is
- # set to “news/_entry”, the path to this template.
- #
- # When this template is loaded, it will already have an ‘entry’
- # variable, set to the requested News entry.
- #
- # See this page for more details on how Craft routes requests:
- # http://buildwithcraft.com/docs/routing
  #}
 
 {% extends "_layout" %}
 
 {% block content %}
-{% for entry in craft.entries.section('songs').find() %}
+{% for entry in craft.entries.section('playlists').find() %}
+
 	<article>
 		<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+		
 		<div class="row">
 			<div class="col-sm-8">
-				{{ entry.soundcloudId }}
+				{% if entry.playlistSongs | length %}
+					{% for songs in entry.playlistSongs %}
+					
+						<h3>{{ songs.title }}</h3>
+						
+						{% if songs.coWriters | length %}
+						<h3>Co-Writers: <small>{{ songs.coWriters }}</small></h3>
+						{% endif %}
+						
+						{{ songs.soundcloudId }}
+						
+						<h4>Lyrics</h4>
+						<p>{{ songs.lyrics }}</p>
+						
+					{% endfor %}
+				{% endif %}
+				
 			</div>
 			<div class="col-sm-4">
-				<a href="#">Download MP3</a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-8">
-				<h3>Lyrics</h3>
-				<p>{{ entry.lyrics }}</p>
-				<h3>Co-Writers</h3>
-				<p>{{ entry.coWriters }}</p>
-				<h3>Date</h3>
-				<p>{{ entry.songDate | date('F Y') }}</p>
-			</div>
-			<div class="col-sm-4">
-
+				<p>{{ entry.body }}</p>
 			</div>
 		</div>
 	</article>
+	
 {% endfor %}
 {% endblock %}

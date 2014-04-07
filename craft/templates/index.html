@@ -20,7 +20,12 @@
 {% extends "_layout" %}
 
 {% block content %}
+
+<header id="header">
 	<h1>{{ entry.heading }}</h1>
+</header>
+
+	{{ entry.homepage_intro }}
 
 	{{ entry.body }}
 
