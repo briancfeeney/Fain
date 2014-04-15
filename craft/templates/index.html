@@ -25,14 +25,25 @@
 	<h1>{{ entry.heading }}</h1>
 </header>
 
-	{{ entry.homepage_intro }}
+	<section id="homepage-top">
+		{{ entry.homepage_intro }}
+	</section>
+	
+	<section id="currentStuff">
+	</section>
+	
+	<section id="about">
+		{{ entry.body }}
+	</section>
 
-	{{ entry.body }}
-
-	<h2>Recent News</h2>
-	<ul>
-		{% for entry in craft.entries.section('songs').limit(5).find() %}
-			<li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
-		{% endfor %}
-	</ul>
+	
+	<section id="releaseList">
+			{% for album in entry.releaseList %}
+				{{ album.albumRelease }}
+			{% endfor %}
+	</section>
+	
+	<section id="mailingList">
+	</section>
+	
 {% endblock %}

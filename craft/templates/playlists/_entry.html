@@ -24,8 +24,10 @@
 						
 						{{ songs.soundcloudId }}
 						
-						<h4>Lyrics</h4>
-						<p>{{ songs.lyrics }}</p>
+						{% if songs.lyrics | length %}
+							<h4 class="lyricsLabel arrowDown">Lyrics</h4>
+							<div class="lyrics">{{ songs.lyrics }}</div>
+						{% endif %}
 						
 					{% endfor %}
 				{% endif %}
@@ -36,6 +38,12 @@
 			</div>
 		</div>
 	</article>
+	
+	<script>
+		$('.lyricsLabel').click( function() {
+			$('.lyrics').toggleClass('open');
+		});
+	</script>
 	
 {% endfor %}
 {% endblock %}

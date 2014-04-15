@@ -1,0 +1,47 @@
+{#
+ # Search index template
+ # -------------------
+ #}
+
+{% extends "_layout" %}
+{% set title = "Search Results" %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col-sm-9">
+		
+		<section id="search">
+
+			{% set searchTerm = craft.request.getParam('search') %}
+			{% set songs = craft.entries.search(searchTerm).section('songs').find() %}
+			
+			<h1>You Searched for “{{ searchTerm }}” <small>({{ songs | length }} results)</small></h1>
+
+			{% if songs %}
+
+			    <section id="songList">
+					<h3>Songs</h3>
+			        {% for entry in songs %}
+						<article>
+							<div class="row">
+								<div class="col-sm-8">
+									<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
+								</div>
+							</div>
+						</article>
+			        {% endfor %}
+				</section>
+			
+			
+			{% else %}
+			    <p>Your search for “{{ searchTerm }}” didn’t return any results.</p>
+			{% endif %}
+		
+		</section>
+	</div>
+
+</div>
+	
+{% endblock %}

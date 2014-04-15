@@ -16,6 +16,11 @@
 {% extends "_layout" %}
 
 {% block content %}
+
+	{% if not currentUser %}
+		{% redirect '/' %}
+	{% endif %}
+
 	<article>
 		<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
 		<div class="row">
@@ -31,30 +36,57 @@
 			</div>
 		</div>
 		<div class="row">
+			
+			{% if entry.coWriters | length %}
 			<div class="col-sm-6">
 				<h3>Lyrics</h3>
 				<p>{{ entry.lyrics }}</p>
 			</div>
+			{% endif %}
+			
 			<div class="col-sm-6">
-				<h3>Tags</h3>
-				{% set entries = craft.entries.section('songs').limit(null) %}
-				<ul class="list-inline">
-				    {% for tag in craft.tags.relatedTo(entries) %}
-				        <li><a href="/tags/{{ tag.name }}" class="btn">{{ tag.name }}</a></li>
-				    {% endfor %}
-				</ul>
+				
+				{% if craft.tags.relatedTo(entry.id) | length %}
+					<h3>Tags</h3>
+					<ul class="list-inline">
+					    {% for tag in craft.tags.relatedTo(entry.id) %}
+					        <li><a href="/tags/{{ tag.name }}" class="btn">{{ tag.name }}</a></li>
+					    {% endfor %}
+					</ul>
+				{% endif %}
+				
 				<div class="row">
+					
+					{% if entry.coWriters | length %}
+						<div class="col-sm-6">
+							<h3>Co-Writers</h3>
+							<p>{{ entry.coWriters }}</p>
+						</div>
+					{% endif %}
+
 					<div class="col-sm-6">
-						<h3>Co-Writers</h3>
-						<p>{{ entry.coWriters }}</p>
-					</div>
-					<div class-"col-sm-6">
 						<h3>Date</h3>
 						<p>{{ entry.songDate | date('F Y') }}</p>
 					</div>
+					
 				</div>
-				<h3>Notes</h3>
-				<p>{{ entry.songNotes }}</p>
+				
+				{% if entry.songNotes | length %}
+				<section>
+					<h3>Notes</h3>
+					<p>{{ entry.songNotes }}</p>
+				</section>
+				{% endif %}
+				
+				{% if entry.releaseList | length %}
+				<section id="releaseList">
+					<h3>Appears on These Releases</h3>
+					{% for album in entry.releaseList %}
+						{{ album.albumRelease }}
+					{% endfor %}
+				</section>
+				{% endif %}
+				
 			</div>
 		</div>
 	</article>
