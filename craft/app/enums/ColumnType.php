@@ -28,9 +28,11 @@ namespace Craft;
  * date: date type, will be converted into "date"</li>
  * binary: binary data type, will be converted into "blob"</li>
  *
-*/
+ * @abstract
+ * @package craft.app.enums
+ */
 
-class ColumnType
+abstract class ColumnType extends BaseEnum
 {
 	const PK           = 'pk';
 	const Char         = 'char';

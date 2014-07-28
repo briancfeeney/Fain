@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class IOHelper
  *
+ * @package craft.app.helpers
  */
 class IOHelper
 {
@@ -40,7 +42,7 @@ class IOHelper
 		{
 			$folder = static::getFolderName($path, true, $suppressErrors);
 			$files = static::getFolderContents($folder, false, null, false, $suppressErrors);
-			$lcaseFileName = mb_strtolower($path);
+			$lcaseFileName = StringHelper::toLowerCase($path);
 
 			if (is_array($files) && count($files) > 0)
 			{
@@ -50,7 +52,7 @@ class IOHelper
 
 					if ($suppressErrors ? @is_file($file) : is_file($file))
 					{
-						if (mb_strtolower($file) === $lcaseFileName)
+						if (StringHelper::toLowerCase($file) === $lcaseFileName)
 						{
 							return $file;
 						}
@@ -84,7 +86,7 @@ class IOHelper
 
 			if ($caseInsensitive)
 			{
-				return mb_strtolower(static::getFolderName($path, true, $suppressErrors)) === mb_strtolower($path);
+				return StringHelper::toLowerCase(static::getFolderName($path, true, $suppressErrors)) === StringHelper::toLowerCase($path);
 			}
 		}
 
@@ -193,7 +195,8 @@ class IOHelper
 			$path = $path.'/';
 		}
 
-		return $path;
+		// Normalize again, because realpath probably screwed things up again.
+		return static::normalizePathSeparators($path);
 	}
 
 	/**
@@ -317,7 +320,7 @@ class IOHelper
 	public static function getExtension($path, $default = null, $suppressErrors = false)
 	{
 		$path = static::normalizePathSeparators($path);
-		$extension = mb_strtolower($suppressErrors ? @pathinfo($path, PATHINFO_EXTENSION) : pathinfo($path, PATHINFO_EXTENSION));
+		$extension = StringHelper::toLowerCase($suppressErrors ? @pathinfo($path, PATHINFO_EXTENSION) : pathinfo($path, PATHINFO_EXTENSION));
 
 		if ($extension)
 		{
@@ -338,7 +341,14 @@ class IOHelper
 	 */
 	public static function getMimeType($path)
 	{
-		return \CFileHelper::getMimeType($path);
+		if (@file_exists($path))
+		{
+			return \CFileHelper::getMimeType($path);
+		}
+		else
+		{
+			return \CFileHelper::getMimeTypeByExtension($path);
+		}
 	}
 
 	/**
@@ -423,7 +433,15 @@ class IOHelper
 	 */
 	public static function normalizePathSeparators($path)
 	{
-		$path = str_replace('\\', '/', $path);
+		// Don't normalize if it looks like the path starts on a network share.
+		if (isset($path[0]) && isset($path[1]))
+		{
+			if ($path[0] !== '\\' && $path[1] !== '\\')
+			{
+				$path = str_replace('\\', '/', $path);
+			}
+		}
+
 		$path = str_replace('//', '/', $path);
 
 		// Check if the path is just a slash.  If the server has openbase_dir restrictions in place calling is_dir on it will complain.
@@ -730,84 +748,114 @@ class IOHelper
 
 		if (static::isWritable($path, $suppressErrors))
 		{
-			// We haven't cached file lock information yet and this is not a noFileLock request.
-			if (($useFileLock = craft()->fileCache->get('useWriteFileLock')) === false && !$noFileLock)
+			// Let's try to use our auto-magic detection.
+			if (craft()->config->get('useWriteFileLock') === 'auto')
 			{
-				// For file systems that don't support file locking... LOOKING AT YOU NFS!!!
-				set_error_handler(array(new IOHelper(), 'handleError'));
-
-				try
+				// We haven't cached file lock information yet and this is not a noFileLock request.
+				if (($useFileLock = craft()->cache->get('useWriteFileLock')) === false && !$noFileLock)
 				{
-					Craft::log('Trying to write to file at '.$path.' using LOCK_EX.', LogLevel::Info, true);
-					if (static::_writeToFile($path, $contents, true, $append, $suppressErrors))
+					// For file systems that don't support file locking... LOOKING AT YOU NFS!!!
+					set_error_handler(array(new IOHelper(), 'handleError'));
+
+					try
 					{
-						// Restore quickly.
+						Craft::log('Trying to write to file at '.$path.' using LOCK_EX.', LogLevel::Info, true);
+						if (static::_writeToFile($path, $contents, true, $append, $suppressErrors))
+						{
+							// Restore quickly.
+							restore_error_handler();
+
+							// Cache the file lock info to use LOCK_EX for 2 months.
+							Craft::log('Successfully wrote to file at '.$path.' using LOCK_EX. Saving in cache.', LogLevel::Info, true);
+							craft()->cache->set('useWriteFileLock', 'yes', 5184000);
+							return true;
+						}
+						else
+						{
+							// Try again without the lock flag.
+							Craft::log('Trying to write to file at '.$path.' without LOCK_EX.', LogLevel::Info, true);
+							if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
+							{
+								// Cache the file lock info to not use LOCK_EX for 2 months.
+								Craft::log('Successfully wrote to file at '.$path.' without LOCK_EX. Saving in cache.', LogLevel::Info, true);
+								craft()->cache->set('useWriteFileLock', 'no', 5184000);
+								return true;
+							}
+						}
+					}
+					catch (ErrorException $e)
+					{
+						// Restore here before we attempt to write again.
 						restore_error_handler();
 
-						// Cache the file lock info to use LOCK_EX for 2 months.
-						Craft::log('Successfully wrote to file at '.$path.' using LOCK_EX. Saving in cache.', LogLevel::Info, true);
-						craft()->fileCache->set('useWriteFileLock', 'yes', 5184000);
-						return true;
-					}
-					else
-					{
 						// Try again without the lock flag.
 						Craft::log('Trying to write to file at '.$path.' without LOCK_EX.', LogLevel::Info, true);
 						if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
 						{
 							// Cache the file lock info to not use LOCK_EX for 2 months.
 							Craft::log('Successfully wrote to file at '.$path.' without LOCK_EX. Saving in cache.', LogLevel::Info, true);
-							craft()->fileCache->set('useWriteFileLock', 'no', 5184000);
+							craft()->cache->set('useWriteFileLock', 'no', 5184000);
 							return true;
 						}
 					}
-				}
-				catch (ErrorException $e)
-				{
-					// Restore here before we attempt to write again.
+
+					// Make sure we're really restored
 					restore_error_handler();
-
-					// Try again without the lock flag.
-					Craft::log('Trying to write to file at '.$path.' without LOCK_EX.', LogLevel::Info, true);
-					if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
-					{
-						// Cache the file lock info to not use LOCK_EX for 2 months.
-						Craft::log('Successfully wrote to file at '.$path.' without LOCK_EX. Saving in cache.', LogLevel::Info, true);
-						craft()->fileCache->set('useWriteFileLock', 'no', 5184000);
-						return true;
-					}
-				}
-
-				// Make sure we're really restored
-				restore_error_handler();
-			}
-			else
-			{
-				// If cache says use LOCK_X and this is not a noFileLock request.
-				if ($useFileLock == 'yes' && !$noFileLock)
-				{
-					Craft::log('Cache says use LOCK_EX. Writing to '.$path.'.', LogLevel::Info);
-					// Write with LOCK_EX
-					if (static::_writeToFile($path, $contents, true, $append, $suppressErrors))
-					{
-						return true;
-					}
 				}
 				else
 				{
-					Craft::log('Cache says not to use LOCK_EX. Writing to '.$path.'.', LogLevel::Info);
-					// Write without LOCK_EX
-					if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
+					// If cache says use LOCK_X and this is not a noFileLock request.
+					if ($useFileLock == 'yes' && !$noFileLock)
 					{
-						return true;
+						Craft::log('Cache says use LOCK_EX. Writing to '.$path.'.', LogLevel::Info);
+						// Write with LOCK_EX
+						if (static::_writeToFile($path, $contents, true, $append, $suppressErrors))
+						{
+							return true;
+						}
 					}
 					else
 					{
-						Craft::log('Tried to write to file at '.$path.' and could not.', LogLevel::Error);
-						return false;
+						Craft::log('Cache says not to use LOCK_EX. Writing to '.$path.'.', LogLevel::Info);
+						// Write without LOCK_EX
+						if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
+						{
+							return true;
+						}
+						else
+						{
+							Craft::log('Tried to write to file at '.$path.' and could not.', LogLevel::Error);
+							return false;
+						}
 					}
-				}
 
+				}
+			}
+			// We were explicitly told not to use LOCK_EX
+			else if (craft()->config->get('useWriteFileLock') === false)
+			{
+				if (static::_writeToFile($path, $contents, false, $append, $suppressErrors))
+				{
+					return true;
+				}
+				else
+				{
+					Craft::log('Tried to write to file at '.$path.' with no LOCK_EX and could not.', LogLevel::Error);
+					return false;
+				}
+			}
+			// Not 'auto', not false, so default to using LOCK_EX
+			else
+			{
+				if (static::_writeToFile($path, $contents, true, $append, $suppressErrors))
+				{
+					return true;
+				}
+				else
+				{
+					Craft::log('Tried to write to file at '.$path.' with LOCK_EX and could not.', LogLevel::Error);
+					return false;
+				}
 			}
 		}
 		else
@@ -1170,21 +1218,28 @@ class IOHelper
 		{
 			$folderContents = static::getFolderContents($path, true, null, true, $suppressErrors);
 
-			foreach ($folderContents as $item)
+			if ($folderContents)
 			{
-				$item = static::normalizePathSeparators($item);
+				foreach ($folderContents as $item)
+				{
+					$item = static::normalizePathSeparators($item);
 
-				if (static::fileExists($item, $suppressErrors))
-				{
-					static::deleteFile($item, $suppressErrors);
+					if (static::fileExists($item, $suppressErrors))
+					{
+						static::deleteFile($item, $suppressErrors);
+					}
+					elseif (static::folderExists($item, $suppressErrors))
+					{
+						static::deleteFolder($item, $suppressErrors);
+					}
 				}
-				elseif (static::folderExists($item, $suppressErrors))
-				{
-					static::deleteFolder($item, $suppressErrors);
-				}
+
+				return true;
 			}
-
-			return true;
+			else
+			{
+				Craft::log('Tried to read the folder contents of '.$path.', but could not.', LogLevel::Error);
+			}
 		}
 		else
 		{
@@ -1306,7 +1361,15 @@ class IOHelper
 	 */
 	public static function getAllowedFileExtensions()
 	{
-		return  ArrayHelper::stringToArray(craft()->config->get('allowedFileExtensions'));
+		$allowedFileExtensions = ArrayHelper::stringToArray(craft()->config->get('allowedFileExtensions'));
+
+		if (($extraExtensions = craft()->config->get('extraAllowedFileExtensions')) !== '')
+		{
+			$extraExtensions = ArrayHelper::stringToArray($extraExtensions);
+			$allowedFileExtensions = array_merge($allowedFileExtensions, $extraExtensions);
+		}
+
+		return  $allowedFileExtensions;
 	}
 
 	/**
@@ -1330,24 +1393,23 @@ class IOHelper
 	public static function getFileKinds()
 	{
 		return array(
-			'access'      => array('adp','accdb','mdb','accde','accdt','accdr'),
-			'audio'       => array('3gp','aac','act','aif','aiff','aifc','alac','amr','au','dct','dss','dvf','flac','gsm','iklax','ivs','m4a','m4p','mmf','mp3','mpc','msv','oga','ogg','opus','ra','tta','vox','wav','wma','wv'),
-			'excel'       => array('xls', 'xlsx','xlsm','xltx','xltm'),
-			'flash'       => array('fla','flv','swf','swt','swc'),
-			'html'        => array('html','htm'),
-			'illustrator' => array('ai'),
-			'image'       => array('jfif','jp2','jpx','jpg','jpeg','jpe','tiff','tif','png','gif','bmp','webp','ppm','pgm','pnm','pfm','pam','svg'),
-			'javascript'  => array('js'),
-			'json'        => array('json'),
-			'pdf'         => array('pdf'),
-			'photoshop'   => array('psd','psb'),
-			'php'         => array('php'),
-			'powerpoint'  => array('ppt','pptx','pps','pptm','potx'),
-			'text'        => array('txt','text'),
-			'video'       => array('avchd','asf','asx','avi','flv','fla','mov','m4v','mng','mpeg','mpg','m1s','mp2v','m2v','m2s','mp4','mkv','qt','flv','mp4','ogg','ogv','rm','wmv'),
-			'word'        => array('doc','docx','dot','docm','dotm'),
-			'xml'         => array('xml'),
-
+			'access'      => array('label' => Craft::t('Access'),      'extensions' => array('adp','accdb','mdb','accde','accdt','accdr')),
+			'audio'       => array('label' => Craft::t('Audio'),       'extensions' => array('3gp','aac','act','aif','aiff','aifc','alac','amr','au','dct','dss','dvf','flac','gsm','iklax','ivs','m4a','m4p','mmf','mp3','mpc','msv','oga','ogg','opus','ra','tta','vox','wav','wma','wv')),
+			'excel'       => array('label' => Craft::t('Excel'),       'extensions' => array('xls', 'xlsx','xlsm','xltx','xltm')),
+			'flash'       => array('label' => Craft::t('Flash'),       'extensions' => array('fla','flv','swf','swt','swc')),
+			'html'        => array('label' => Craft::t('HTML'),        'extensions' => array('html','htm')),
+			'illustrator' => array('label' => Craft::t('Illustrator'), 'extensions' => array('ai')),
+			'image'       => array('label' => Craft::t('Image'),       'extensions' => array('jfif','jp2','jpx','jpg','jpeg','jpe','tiff','tif','png','gif','bmp','webp','ppm','pgm','pnm','pfm','pam','svg')),
+			'javascript'  => array('label' => Craft::t('Javascript'),  'extensions' => array('js')),
+			'json'        => array('label' => Craft::t('JSON'),        'extensions' => array('json')),
+			'pdf'         => array('label' => Craft::t('PDF'),         'extensions' => array('pdf')),
+			'photoshop'   => array('label' => Craft::t('Photoshop'),   'extensions' => array('psd','psb')),
+			'php'         => array('label' => Craft::t('PHP'),         'extensions' => array('php')),
+			'powerpoint'  => array('label' => Craft::t('PowerPoint'),  'extensions' => array('ppt','pptx','pps','pptm','potx')),
+			'text'        => array('label' => Craft::t('Text'),        'extensions' => array('txt','text')),
+			'video'       => array('label' => Craft::t('Video'),       'extensions' => array('avchd','asf','asx','avi','flv','fla','mov','m4v','mng','mpeg','mpg','m1s','mp2v','m2v','m2s','mp4','mkv','qt','flv','mp4','ogg','ogv','rm','wmv','webm')),
+			'word'        => array('label' => Craft::t('Word'),        'extensions' => array('doc','docx','dot','docm','dotm')),
+			'xml'         => array('label' => Craft::t('XML'),         'extensions' => array('xml')),
 		);
 	}
 
@@ -1360,12 +1422,12 @@ class IOHelper
 	 */
 	public static function getFileKind($extension)
 	{
-		$extension = mb_strtolower($extension);
+		$extension = StringHelper::toLowerCase($extension);
 		$fileKinds = static::getFileKinds();
 
-		foreach ($fileKinds as $kind => $extensions)
+		foreach ($fileKinds as $kind => $info)
 		{
-			if (in_array($extension, $extensions))
+			if (in_array($extension, $info['extensions']))
 			{
 				return $kind;
 			}
@@ -1378,7 +1440,7 @@ class IOHelper
 	 * Makes sure a folder exists. If it does not - creates one with write permissions
 	 *
 	 * @static
-	 * @param       $folderPath     The path to the folder.
+	 * @param  string $folderPath The path to the folder.
 	 * @param  bool $suppressErrors Whether to suppress any PHP Notices/Warnings/Errors (usually permissions related).
 	 * @return void
 	 */
@@ -1394,13 +1456,28 @@ class IOHelper
 	 * Clean a filename.
 	 *
 	 * @static
-	 * @param $fileName
+	 * @param      $fileName
+	 * @param bool $onlyAlphaNumeric
 	 * @return mixed
 	 */
-	public static function cleanFilename($fileName)
+	public static function cleanFilename($fileName, $onlyAlphaNumeric = false)
 	{
-		$fileName = StringHelper::asciiString(ltrim($fileName, '.'));
-		return preg_replace('/[^@a-z0-9\-_\.]/i', '_', str_replace(chr(0), '', $fileName));
+		$disallowedChars = array('â€”', 'â€“', '&#8216;', '&#8217;', '&#8220;', '&#8221;', '&#8211;', '&#8212;', '+', '%', '^', '~', '?', '[', ']', '/', '\\', '=', '<', '>', ':', ';', ',', '\'', '"', '&', '$', '#', '*', '(', ')', '|', '~', '`', '!', '{', '}');
+
+		// Replace any control characters in the name with a space.
+		$fileName = preg_replace( "#\x{00a0}#siu", ' ', $fileName );
+
+		// Strip any characters not allowed.
+		$fileName = str_replace($disallowedChars, '', strip_tags($fileName));
+
+		$fileName = preg_replace('/[\s-]+/', '-', $fileName);
+
+		// Nuke any trailing or leading .-_
+		$fileName = trim($fileName, '.-_');
+
+		$fileName = ($onlyAlphaNumeric) ? preg_replace('/[^a-zA-Z0-9]/', '', $fileName) : $fileName;
+
+		return $fileName;
 	}
 
 	/**
@@ -1458,6 +1535,61 @@ class IOHelper
 	public static function getWritableFilePermissions()
 	{
 		return craft()->config->get('writableFilePermissions');
+	}
+
+	/**
+	 * Returns the last $number of modified files from a given folder ordered by the last modified date descending.
+	 *
+	 * @param      $folder The folder to get the files from.
+	 * @param null $number The number of files to return.  If null is given, all files will be returned.
+	 * @param bool $suppressErrors
+	 * @return array
+	 */
+	public static function getLastModifiedFiles($folder, $number = null, $suppressErrors = false)
+	{
+		$fileResults = array();
+
+		$files = static::getFiles($folder, $suppressErrors);
+
+		foreach ($files as $file)
+		{
+			$lastModifiedTime = IOHelper::getLastTimeModified($file, $suppressErrors);
+			$fileResults[$lastModifiedTime->getTimestamp()] = $file;
+		}
+
+		krsort($fileResults);
+
+		if ($number !== null)
+		{
+			$fileResults = array_slice($fileResults, 0, $number, true);
+		}
+
+		return $fileResults;
+	}
+
+	/**
+	 * Returns a parent folder's path for a given path.
+	 *
+	 * @param string $fullPath The path to get the parent folder path for.
+	 *
+	 * @return string
+	 */
+	public static function getParentFolderPath($fullPath)
+	{
+		$fullPath = static::normalizePathSeparators($fullPath);
+
+		// Drop the trailing slash and split it by slash
+		$parts = explode("/", rtrim($fullPath, "/"));
+
+		// Drop the last part and return the part leading up to it
+		array_pop($parts);
+
+		if (empty($parts))
+		{
+			return '';
+		}
+
+		return join("/", $parts) . '/';
 	}
 
 	/**

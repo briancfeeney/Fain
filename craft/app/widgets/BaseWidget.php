@@ -12,7 +12,11 @@ namespace Craft;
  */
 
 /**
- * Widget base class
+ * Widget base class.
+ *
+ * @abstract
+ * @implements IWidget
+ * @package craft.app.widgets
  */
 abstract class BaseWidget extends BaseSavableComponentType implements IWidget
 {
@@ -27,6 +31,12 @@ abstract class BaseWidget extends BaseSavableComponentType implements IWidget
 	 * @var bool Whether users should be able to select more than one of this widget type.
 	 */
 	protected $multi = true;
+
+	/**
+	 * @access protected
+	 * @var bool How many columns the widget should span, if there's enough room.
+	 */
+	protected $colspan = 1;
 
 	/**
 	 * Returns whether this component should be selectable when choosing a component of this type.
@@ -46,7 +56,7 @@ abstract class BaseWidget extends BaseSavableComponentType implements IWidget
 	}
 
 	/**
-	 * Gets the widget's title.
+	 * Returns the widget's title.
 	 *
 	 * @return string
 	 */
@@ -54,6 +64,16 @@ abstract class BaseWidget extends BaseSavableComponentType implements IWidget
 	{
 		// Default to the widget name
 		return $this->getName();
+	}
+
+	/**
+	 * Returns the widget's colspan.
+	 *
+	 * @return int
+	 */
+	public function getColspan()
+	{
+		return $this->colspan;
 	}
 
 	/**

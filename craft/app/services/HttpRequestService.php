@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class HttpRequestService
  *
+ * @package craft.app.services
  */
 class HttpRequestService extends \CHttpRequest
 {
@@ -122,6 +124,15 @@ class HttpRequestService extends \CHttpRequest
 		{
 			return $this->_segments[$num-1];
 		}
+		else if ($num < 0)
+		{
+			$totalSegs = count($this->_segments);
+
+			if (isset($this->_segments[$totalSegs + $num]))
+			{
+				return $this->_segments[$totalSegs + $num];
+			}
+		}
 	}
 
 	/**
@@ -132,6 +143,16 @@ class HttpRequestService extends \CHttpRequest
 	public function getPageNum()
 	{
 		return $this->_pageNum;
+	}
+
+	/**
+	 * Returns the request's token, if there is one.
+	 *
+	 * @return string|null
+	 */
+	public function getToken()
+	{
+		return $this->getQuery(craft()->config->get('tokenParam'));
 	}
 
 	/**
@@ -185,6 +206,21 @@ class HttpRequestService extends \CHttpRequest
 	{
 		$this->_checkRequestType();
 		return $this->_actionSegments;
+	}
+
+	/**
+	 * Returns whether this is a Live Preview request.
+	 *
+	 * @return bool
+	 */
+	public function isLivePreview()
+	{
+		return ($this->isSiteRequest() &&
+			($actionSegments = $this->getActionSegments()) &&
+			count($actionSegments) == 2 &&
+			$actionSegments[0] == 'entries' &&
+			$actionSegments[1] == 'previewEntry'
+		);
 	}
 
 	/**
@@ -380,6 +416,22 @@ class HttpRequestService extends \CHttpRequest
 		return $this->_browserLanguages;
 	}
 
+	/**
+	 * Returns the host name, without http(s)://
+	 *
+	 * @return string
+	 */
+	public function getHostName()
+	{
+		if (isset($_SERVER['HTTP_HOST']))
+		{
+			return $_SERVER['HTTP_HOST'];
+		}
+		else
+		{
+			return $_SERVER['SERVER_NAME'];
+		}
+	}
 
 	/**
 	 * Sends a file to the user.
@@ -405,7 +457,9 @@ class HttpRequestService extends \CHttpRequest
 		}
 
 		// Default to disposition to 'download'
-		if (!isset($options['forceDownload']) || $options['forceDownload'])
+		$forceDownload = !isset($options['forceDownload']) || $options['forceDownload'];
+
+		if ($forceDownload)
 		{
 			HeaderHelper::setDownload($fileName);
 		}
@@ -490,7 +544,19 @@ class HttpRequestService extends \CHttpRequest
 		}
 		else
 		{
-			HeaderHelper::setNoCache();
+			if (!$forceDownload)
+			{
+				HeaderHelper::setNoCache();
+			}
+			else
+			{
+				// Fixes a bug in IE 6, 7 and 8 when trying to force download a file over SSL:
+				// https://stackoverflow.com/questions/1218925/php-script-to-download-file-not-working-in-ie
+				HeaderHelper::setHeader(array(
+					'Pragma' => '',
+					'Cache-Control' => ''
+				));
+			}
 		}
 
 		if (!ob_get_length())
@@ -626,28 +692,77 @@ class HttpRequestService extends \CHttpRequest
 	}
 
 	/**
-	 * @return mixed
+	 * Retrieves the best guess of the client's actual IP address taking into account numerous HTTP proxy headers due to variations
+	 * in how different ISPs handle IP addresses in headers between hops.
+	 *
+	 * Considering any of these server vars besides REMOTE_ADDR can be spoofed, this method should not be used when you need a trusted
+	 * source of information for you IP address... use $_SERVER['REMOTE_ADDR'] instead.
 	 */
 	public function getIpAddress()
 	{
 		if ($this->_ipAddress === null)
 		{
-			if (isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['HTTP_CLIENT_IP']))
+			$ipMatch = false;
+
+			// check for shared internet/ISP IP
+			if (!empty($_SERVER['HTTP_CLIENT_IP']) && $this->_validateIp($_SERVER['HTTP_CLIENT_IP']))
 			{
-				$this->_ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+				$ipMatch = $_SERVER['HTTP_CLIENT_IP'];
 			}
-			else if (isset($_SERVER['REMOTE_ADDR']))
+			else
 			{
-				$this->_ipAddress = $_SERVER['REMOTE_ADDR'];
+				// check for IPs passing through proxies
+				if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+				{
+					// check if multiple ips exist in var
+					$ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+
+					foreach ($ipList as $ip)
+					{
+						if ($this->_validateIp($ip))
+						{
+							$ipMatch = $ip;
+						}
+					}
+				}
 			}
-			else if (isset($_SERVER['HTTP_CLIENT_IP']))
+
+			if (!$ipMatch)
 			{
-				$this->_ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+				if (!empty($_SERVER['HTTP_X_FORWARDED']) && $this->_validateIp($_SERVER['HTTP_X_FORWARDED']))
+				{
+					$ipMatch = $_SERVER['HTTP_X_FORWARDED'];
+				}
+				else
+				{
+					if (!empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && $this->_validateIp($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
+					{
+						$ipMatch = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+					}
+					else
+					{
+						if (!empty($_SERVER['HTTP_FORWARDED_FOR']) && $this->_validateIp($_SERVER['HTTP_FORWARDED_FOR']))
+						{
+							$ipMatch = $_SERVER['HTTP_FORWARDED_FOR'];
+						}
+						else
+						{
+							if (!empty($_SERVER['HTTP_FORWARDED']) && $this->_validateIp($_SERVER['HTTP_FORWARDED']))
+							{
+								$ipMatch = $_SERVER['HTTP_FORWARDED'];
+							}
+						}
+					}
+				}
+
+				// The only one we're guaranteed to be accurate.
+				if (!$ipMatch)
+				{
+					$ipMatch = $_SERVER['REMOTE_ADDR'];
+				}
 			}
-			else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-			{
-				$this->_ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			}
+
+			$this->_ipAddress = $ipMatch;
 		}
 
 		return $this->_ipAddress;
@@ -722,6 +837,38 @@ class HttpRequestService extends \CHttpRequest
 	}
 
 	/**
+	 * Ends the current HTTP request, without ending script execution.
+	 *
+	 * @param string|null $content
+	 * @see http://stackoverflow.com/a/141026
+	 */
+	public function close($content = '')
+	{
+		// Prevent the script from ending when the browser closes the connection
+		ignore_user_abort(true);
+
+		// Discard any current OB content
+		if (ob_get_length() !== false)
+		{
+			ob_end_clean();
+		}
+
+		// Send the content
+		ob_start();
+		echo $content;
+		$size = ob_get_length();
+
+		// Tell the browser to close the connection
+		header('Connection: close');
+		header('Content-Length: '.$size);
+
+		// Output the content, flush it to the browser, and close out the session
+		ob_end_flush();
+		flush();
+		session_write_close();
+	}
+
+	/**
 	 * Returns the query string path.
 	 *
 	 * @access private
@@ -756,43 +903,47 @@ class HttpRequestService extends \CHttpRequest
 
 		$firstSegment = $this->getSegment(1);
 
-		// If the first path segment is the resource trigger word, it's a resource request.
-		if ($firstSegment === $resourceTrigger)
+		// If there's a token in the query string, then that should take precedence over everything else
+		if (!$this->getQuery(craft()->config->get('tokenParam')))
 		{
-			$this->_isResourceRequest = true;
-		}
-
-		// If the first path segment is the action trigger word, or the logout trigger word (special case), it's an action request
-		else if ($firstSegment === $actionTrigger || (in_array($this->_path, array($frontEndLoginPath, $cpLoginPath, $frontEndSetPasswordPath, $cpSetPasswordPath, $frontEndLogoutPath, $cpLogoutPath)) && !$this->getParam('action')))
-		{
-			$this->_isActionRequest = true;
-
-			if (in_array($this->_path, array($cpLoginPath, $frontEndLoginPath)))
+			// If the first path segment is the resource trigger word, it's a resource request.
+			if ($firstSegment === $resourceTrigger)
 			{
-				$this->_actionSegments = array('users', 'login');
+				$this->_isResourceRequest = true;
 			}
-			else if (in_array($this->_path, array($frontEndSetPasswordPath, $cpSetPasswordPath)))
-			{
-				$this->_actionSegments = array('users', 'setpassword');
-			}
-			else if (in_array($this->_path, array($frontEndLogoutPath, $cpLogoutPath)))
-			{
-				$this->_actionSegments = array('users', 'logout');
-			}
-			else
-			{
-				$this->_actionSegments = array_slice($this->_segments, 1);
-			}
-		}
 
-		// If there's a non-empty 'action' param (either in the query string or post data), it's an action request
-		else if (($action = $this->getParam('action')) !== null)
-		{
-			$this->_isActionRequest = true;
+			// If the first path segment is the action trigger word, or the logout trigger word (special case), it's an action request
+			else if ($firstSegment === $actionTrigger || (in_array($this->_path, array($frontEndLoginPath, $cpLoginPath, $frontEndSetPasswordPath, $cpSetPasswordPath, $frontEndLogoutPath, $cpLogoutPath)) && !$this->getParam('action')))
+			{
+				$this->_isActionRequest = true;
 
-			// Sanitize
-			$action = $this->decodePathInfo($action);
-			$this->_actionSegments = array_filter(explode('/', $action));
+				if (in_array($this->_path, array($cpLoginPath, $frontEndLoginPath)))
+				{
+					$this->_actionSegments = array('users', 'login');
+				}
+				else if (in_array($this->_path, array($frontEndSetPasswordPath, $cpSetPasswordPath)))
+				{
+					$this->_actionSegments = array('users', 'setpassword');
+				}
+				else if (in_array($this->_path, array($frontEndLogoutPath, $cpLogoutPath)))
+				{
+					$this->_actionSegments = array('users', 'logout');
+				}
+				else
+				{
+					$this->_actionSegments = array_slice($this->_segments, 1);
+				}
+			}
+
+			// If there's a non-empty 'action' param (either in the query string or post data), it's an action request
+			else if (($action = $this->getParam('action')) !== null)
+			{
+				$this->_isActionRequest = true;
+
+				// Sanitize
+				$action = $this->decodePathInfo($action);
+				$this->_actionSegments = array_filter(explode('/', $action));
+			}
 		}
 
 		$this->_checkedRequestType = true;
@@ -871,5 +1022,19 @@ class HttpRequestService extends \CHttpRequest
 		}
 
 		return $things;
+	}
+
+	/**
+	 * @param $ip
+	 * @return bool
+	 */
+	private function _validateIp($ip)
+	{
+		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

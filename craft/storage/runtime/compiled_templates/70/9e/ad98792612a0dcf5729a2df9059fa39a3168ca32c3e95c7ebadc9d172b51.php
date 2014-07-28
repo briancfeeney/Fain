@@ -1,7 +1,7 @@
 <?php
 
 /* _elements/tableview/container */
-class __TwigTemplate_709ead98792612a0dcf5729a2df9059fa39a3168ca32c3e95c7ebadc9d172b51 extends Twig_Template
+class __TwigTemplate_709ead98792612a0dcf5729a2df9059fa39a3168ca32c3e95c7ebadc9d172b51 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -17,7 +17,7 @@ class __TwigTemplate_709ead98792612a0dcf5729a2df9059fa39a3168ca32c3e95c7ebadc9d1
     {
         // line 1
         echo "<div class=\"tableview\">
-\t<table class=\"data\">
+\t<table class=\"data fullwidth\">
 \t\t<thead>
 \t\t\t";
         // line 4

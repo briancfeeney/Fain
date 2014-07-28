@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Rebrand);
+craft()->requireEdition(Craft::Client);
 
 /**
- * Email message model class
+ * Email message model class.
+ *
+ * @package craft.app.models
  */
 class RebrandEmailModel extends BaseModel
 {

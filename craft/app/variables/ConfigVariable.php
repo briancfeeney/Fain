@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Config functions
+ * Class ConfigVariable
+ *
+ * @package craft.app.validators
  */
 class ConfigVariable
 {
@@ -24,7 +26,7 @@ class ConfigVariable
 	 */
 	function __isset($name)
 	{
-		return isset(craft()->config->generalConfig[$name]);
+		return craft()->config->exists($name, ConfigFile::General);
 	}
 
 	/**
@@ -35,7 +37,19 @@ class ConfigVariable
 	 */
 	function __get($name)
 	{
-		return craft()->config->get($name);
+		return craft()->config->get($name, ConfigFile::General);
+	}
+
+	/**
+	 * Returns a config item from the specified config file.
+	 *
+	 * @param        $name
+	 * @param string $file
+	 * @return mixed
+	 */
+	public function get($name, $file = 'general')
+	{
+		return craft()->config->get($name, $file);
 	}
 
 	/**
@@ -63,15 +77,8 @@ class ConfigVariable
 	 *
 	 * @return string
 	 */
-	public function resourceTrigger()
+	public function getResourceTrigger()
 	{
-		if (craft()->request->isCpRequest())
-		{
-			return 'resources';
-		}
-		else
-		{
-			return craft()->config->get('resourceTrigger');
-		}
+		return craft()->config->getResourceTrigger();
 	}
 }

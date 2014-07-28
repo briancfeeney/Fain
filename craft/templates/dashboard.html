@@ -32,12 +32,12 @@
 
 			<section id="songList">
 				<h3>Songs</h3>
-
-				{% for entry in craft.entries.section('songs').find() %}
+				
+				{% for entry in craft.entries.section('songs').order('songDate').songDate() %}
 					<article>
 						<div class="row">
 							<div class="col-sm-8">
-								<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
+								<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>(Fain/Somebody) {{ entry.songDate | date('F Y') }}</small></h4>
 							</div>
 						</div>
 					</article>

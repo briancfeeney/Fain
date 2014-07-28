@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Widget template variable
+ * Widget template variable.
+ *
+ * @package craft.app.validators
  */
 class WidgetTypeVariable extends BaseComponentTypeVariable
 {
@@ -24,6 +26,16 @@ class WidgetTypeVariable extends BaseComponentTypeVariable
 	public function getTitle()
 	{
 		return $this->component->getTitle();
+	}
+
+	/**
+	 * Returns the widget's colspan.
+	 *
+	 * @return int
+	 */
+	public function getColspan()
+	{
+		return $this->component->getColspan();
 	}
 
 	/**

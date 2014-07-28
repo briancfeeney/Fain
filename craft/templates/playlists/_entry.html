@@ -6,7 +6,6 @@
 {% extends "_layout" %}
 
 {% block content %}
-{% for entry in craft.entries.section('playlists').find() %}
 
 	<article>
 		<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
@@ -22,7 +21,7 @@
 						<h3>Co-Writers: <small>{{ songs.coWriters }}</small></h3>
 						{% endif %}
 						
-						{{ songs.soundcloudId }}
+						<iframe width="100%" height="20" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ songs.soundcloudId }}%3Fsecret_token%3Ds-K6ifz&amp;color=000000&amp;inverse=false&amp;auto_play=false"></iframe>
 						
 						{% if songs.lyrics | length %}
 							<h4 class="lyricsLabel arrowDown">Lyrics</h4>
@@ -45,5 +44,4 @@
 		});
 	</script>
 	
-{% endfor %}
 {% endblock %}

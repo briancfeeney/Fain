@@ -12,11 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class AssetTransformModel
  *
+ * @package craft.app.models
  */
 class AssetTransformModel extends BaseModel
 {
-
 	/**
 	 * Use the folder name as the string representation.
 	 *
@@ -41,6 +42,7 @@ class AssetTransformModel extends BaseModel
 			'dimensionChangeTime' => AttributeType::DateTime,
 			'mode'                => array(AttributeType::String, 'default' => 'crop'),
 			'position'            => array(AttributeType::String, 'default' => 'center-center'),
+			'quality'             => array(AttributeType::Number),
 		);
 	}
 

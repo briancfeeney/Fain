@@ -1,7 +1,7 @@
 <?php
 
 /* settings/fields/{{object.groupId}} */
-class __TwigTemplate_b5b0cc283a5fa391ee38544ec8c397838cc9ac273e5c7fee82a179c4657dc4b5 extends Twig_Template
+class __TwigTemplate_b5b0cc283a5fa391ee38544ec8c397838cc9ac273e5c7fee82a179c4657dc4b5 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {

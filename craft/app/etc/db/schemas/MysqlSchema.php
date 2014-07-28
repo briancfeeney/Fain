@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class MysqlSchema
  *
+ * @package craft.app.etc.db.schemas
  */
 class MysqlSchema extends \CMysqlSchema
 {
@@ -170,7 +172,7 @@ class MysqlSchema extends \CMysqlSchema
 	public function createTable($table, $columns, $options = null, $engine = 'InnoDb')
 	{
 		$cols = array();
-		$options = 'ENGINE='.$engine.' DEFAULT CHARSET='.craft()->config->getDbItem('charset').' COLLATE='.craft()->config->getDbItem('collation').($options ? ' '.$options : '');
+		$options = 'ENGINE='.$engine.' DEFAULT CHARSET='.craft()->config->get('charset', ConfigFile::Db).' COLLATE='.craft()->config->get('collation', ConfigFile::Db).($options ? ' '.$options : '');
 
 		foreach ($columns as $name => $type)
 		{
@@ -218,6 +220,22 @@ class MysqlSchema extends \CMysqlSchema
 
 		$sql .= ')';
 		return $sql;
+	}
+
+	/**
+	 * Returns the SQL for finding/replacing text.
+	 *
+	 * @param string $table
+	 * @param string $column
+	 * @param string $find
+	 * @param string $replace
+	 * @return array
+	 */
+	public function replace($table, $column, $find, $replace)
+	{
+		$sql = 'UPDATE '.$this->quoteTableName($table).' SET '.$this->quoteColumnName($column).' = REPLACE('.$this->quoteColumnName($column).',  :find, :replace)';
+		$params = array(':find' => $find, ':replace' => $replace);
+		return array('query' => $sql, 'params' => $params);
 	}
 
 	/**

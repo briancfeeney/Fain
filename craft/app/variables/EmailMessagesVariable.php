@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Rebrand);
+craft()->requireEdition(Craft::Client);
 
 /**
- * Email functions
+ * Email functions.
+ *
+ * @package craft.app.validators
  */
 class EmailMessagesVariable
 {

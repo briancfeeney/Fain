@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Users);
+craft()->requireEdition(Craft::Pro);
 
 /**
+ * Class UserGroupRecord
  *
+ * @package craft.app.records
  */
 class UserGroupRecord extends BaseRecord
 {

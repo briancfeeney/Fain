@@ -13,6 +13,8 @@ namespace Craft;
 
 /**
  * Represents a nav node.
+ *
+ * @package craft.app.etc.templating.twigextensions
  */
 class Nav_Node extends \Twig_Node_For
 {
@@ -33,24 +35,32 @@ class Nav_Node extends \Twig_Node_For
 	 */
 	public function compile(\Twig_Compiler $compiler)
 	{
+		// Remember what 'nav' was set to before
+		$compiler
+			->write("if (isset(\$context['nav'])) {\n")
+			->indent()
+				->write("\$_nav = \$context['nav'];\n")
+			->outdent()
+			->write("}\n");
+
 		parent::compile($compiler);
 
 		$compiler
 			// Were there any items?
-			->write("if (isset(\$_thisItemDepth)) {\n")
+			->write("if (isset(\$_thisItemLevel)) {\n")
 			->indent()
 				// Remember the current context
 				->write("\$_tmpContext = \$context;\n")
 				// Close out the unclosed items
-				->write("if (\$_thisItemDepth > \$_firstItemDepth) {\n")
+				->write("if (\$_thisItemLevel > \$_firstItemLevel) {\n")
 				->indent()
-					->write("for (\$_i = \$_thisItemDepth; \$_i > \$_firstItemDepth; \$_i--) {\n")
+					->write("for (\$_i = \$_thisItemLevel; \$_i > \$_firstItemLevel; \$_i--) {\n")
 					->indent()
-						// Did we output an item at that depth?
-						->write("if (isset(\$_contextsByDepth[\$_i])) {\n")
+						// Did we output an item at that level?
+						->write("if (isset(\$_contextsByLevel[\$_i])) {\n")
 						->indent()
-							// Temporarily set the context to the element at this depth
-							->write("\$context = \$_contextsByDepth[\$_i];\n")
+							// Temporarily set the context to the element at this level
+							->write("\$context = \$_contextsByLevel[\$_i];\n")
 							->subcompile($this->navItemNode->getNode('lower_body'), false)
 							->subcompile($this->navItemNode->getNode('outdent'), false)
 						->outdent()
@@ -60,12 +70,19 @@ class Nav_Node extends \Twig_Node_For
 				->outdent()
 				->write("}\n")
 				// Close out the last item
-				->write("\$context = \$_contextsByDepth[\$_firstItemDepth];\n")
+				->write("\$context = \$_contextsByLevel[\$_firstItemLevel];\n")
 				->subcompile($this->navItemNode->getNode('lower_body'), false)
 				// Set the context back
 				->write("\$context = \$_tmpContext;\n")
 				// Unset out variables
-				->write("unset(\$_thisItemDepth, \$_firstItemDepth, \$_i, \$_contextsByDepth, \$_tmpContext);\n")
+				->write("unset(\$_thisItemLevel, \$_firstItemLevel, \$_i, \$_contextsByLevel, \$_tmpContext);\n")
+			->outdent()
+			->write("}\n")
+			// Bring back the 'nav' variable
+			->write("if (isset(\$_nav)) {\n")
+			->indent()
+				->write("\$context['nav'] = \$_nav;\n")
+				->write("unset(\$_nav);\n")
 			->outdent()
 			->write("}\n")
 		;

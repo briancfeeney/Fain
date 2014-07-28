@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class AssetFolderRecord
  *
+ * @package craft.app.records
  */
 class AssetFolderRecord extends BaseRecord
 {
@@ -32,7 +34,7 @@ class AssetFolderRecord extends BaseRecord
 	{
 		return array(
 			'name'     => array(AttributeType::String, 'required' => true),
-			'fullPath' => array(AttributeType::String),
+			'path'     => array(AttributeType::String),
 		);
 	}
 
@@ -43,7 +45,7 @@ class AssetFolderRecord extends BaseRecord
 	{
 		return array(
 			'parent' => array(static::BELONGS_TO, 'AssetFolderRecord', 'onDelete' => static::CASCADE),
-			'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => true, 'onDelete' => static::CASCADE),
+			'source' => array(static::BELONGS_TO, 'AssetSourceRecord', 'required' => false, 'onDelete' => static::CASCADE),
 		);
 	}
 

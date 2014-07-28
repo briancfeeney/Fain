@@ -22,12 +22,18 @@
 
 <body>
 	<div class="container">
+		
+		{% if currentUser %}
 		<nav>
 			<ul class="list-inline">
-				<li><a href="{{ siteUrl }}">{{ siteName }}</a></li>
+				<li><a href="{{ siteUrl }}">Home</a></li>
 				<li><a href="{{ url('dashboard') }}" {% if craft.request.firstSegment == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
+				<li><a href="{{ siteUrl }}admin">Admin</a></li>
 			</ul>
 		</nav>
+		{% else %}
+			
+		{% endif %}
 
 		<main id="content" role="main">
 			{% block content %}

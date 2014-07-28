@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Localization functions
+ * Localization functions.
+ *
+ * @package craft.app.validators
  */
 class LocalizationVariable
 {
@@ -34,6 +36,16 @@ class LocalizationVariable
 	public function getAppLocales()
 	{
 		return craft()->i18n->getAppLocales();
+	}
+
+	/**
+	 * Returns the current locale.
+	 *
+	 * @return LocaleModel
+	 */
+	public function getCurrentLocale()
+	{
+		return craft()->i18n->getLocaleById(craft()->language);
 	}
 
 	/**

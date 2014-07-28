@@ -12,10 +12,13 @@ namespace Craft;
  */
 
 /**
+ * Class PtAccountCredentialStatus
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class PtAccountCredentialStatus
+abstract class PtAccountCredentialStatus extends BaseEnum
 {
-	const Valid = 'ValidCreds';
-	const Invalid = 'InvalidCreds';
+	const Valid   = 'valid';
+	const Invalid = 'invalid';
 }

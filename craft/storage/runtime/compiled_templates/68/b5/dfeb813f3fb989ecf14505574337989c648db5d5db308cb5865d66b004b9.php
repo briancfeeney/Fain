@@ -1,7 +1,7 @@
 <?php
 
 /* songs/{{object.slug}} */
-class __TwigTemplate_68b5dfeb813f3fb989ecf14505574337989c648db5d5db308cb5865d66b004b9 extends Twig_Template
+class __TwigTemplate_68b5dfeb813f3fb989ecf14505574337989c648db5d5db308cb5865d66b004b9 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {

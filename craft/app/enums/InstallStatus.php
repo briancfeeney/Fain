@@ -12,9 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class InstallStatus
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class InstallStatus
+abstract class InstallStatus extends BaseEnum
 {
 	const Success = 'success';
 	const Failed  = 'failed';

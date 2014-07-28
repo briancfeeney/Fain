@@ -12,11 +12,15 @@ namespace Craft;
  */
 
 /**
+ * Class ElementType
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class ElementType
+abstract class ElementType extends BaseEnum
 {
 	const Asset       = 'Asset';
+	const Category    = 'Category';
 	const Entry       = 'Entry';
 	const GlobalSet   = 'GlobalSet';
 	const MatrixBlock = 'MatrixBlock';

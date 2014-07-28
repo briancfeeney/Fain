@@ -1,7 +1,7 @@
 <?php
 
 /* _includes/forms/elementSelect */
-class __TwigTemplate_63a3e2979946cb20a3eb5962ad6a78ef7ee9ce7d025fea41903e0c6afcd2affc extends Twig_Template
+class __TwigTemplate_63a3e2979946cb20a3eb5962ad6a78ef7ee9ce7d025fea41903e0c6afcd2affc extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -32,7 +32,7 @@ class __TwigTemplate_63a3e2979946cb20a3eb5962ad6a78ef7ee9ce7d025fea41903e0c6afcd
         // line 8
         $context["criteria"] = (((array_key_exists("criteria", $context) && (isset($context["criteria"]) ? $context["criteria"] : null))) ? ((isset($context["criteria"]) ? $context["criteria"] : null)) : (null));
         // line 9
-        $context["disabledElementIds"] = (((array_key_exists("disabledElementIds", $context) && (isset($context["disabledElementIds"]) ? $context["disabledElementIds"] : null))) ? ((isset($context["disabledElementIds"]) ? $context["disabledElementIds"] : null)) : (null));
+        $context["sourceElementId"] = (((array_key_exists("sourceElementId", $context) && (isset($context["sourceElementId"]) ? $context["sourceElementId"] : null))) ? ((isset($context["sourceElementId"]) ? $context["sourceElementId"] : null)) : (null));
         // line 10
         $context["storageKey"] = (((array_key_exists("storageKey", $context) && (isset($context["storageKey"]) ? $context["storageKey"] : null))) ? ((isset($context["storageKey"]) ? $context["storageKey"] : null)) : (null));
         // line 12
@@ -113,7 +113,7 @@ class __TwigTemplate_63a3e2979946cb20a3eb5962ad6a78ef7ee9ce7d025fea41903e0c6afcd
         echo ",
 \t\t";
         // line 29
-        echo twig_jsonencode_filter((isset($context["disabledElementIds"]) ? $context["disabledElementIds"] : null));
+        echo twig_escape_filter($this->env, (((isset($context["sourceElementId"]) ? $context["sourceElementId"] : null)) ? ((isset($context["sourceElementId"]) ? $context["sourceElementId"] : null)) : ("null")), "html", null, true);
         echo ",
 \t\t";
         // line 30
@@ -145,6 +145,6 @@ class __TwigTemplate_63a3e2979946cb20a3eb5962ad6a78ef7ee9ce7d025fea41903e0c6afcd
 
     public function getDebugInfo()
     {
-        return array (  133 => 35,  130 => 34,  124 => 31,  120 => 30,  116 => 29,  112 => 28,  108 => 27,  104 => 26,  100 => 25,  96 => 24,  91 => 23,  89 => 22,  83 => 19,  79 => 17,  65 => 16,  62 => 15,  45 => 14,  39 => 12,  37 => 10,  35 => 9,  33 => 8,  31 => 7,  29 => 6,  27 => 5,  21 => 2,  19 => 1,);
+        return array (  133 => 35,  130 => 34,  124 => 31,  120 => 30,  116 => 29,  104 => 26,  100 => 25,  83 => 19,  79 => 17,  62 => 15,  45 => 14,  39 => 12,  135 => 35,  132 => 34,  126 => 31,  122 => 30,  118 => 29,  114 => 28,  110 => 27,  106 => 26,  98 => 24,  89 => 22,  81 => 18,  77 => 16,  63 => 15,  60 => 14,  43 => 13,  37 => 10,  35 => 9,  33 => 8,  21 => 2,  157 => 45,  154 => 44,  152 => 43,  147 => 42,  145 => 41,  141 => 39,  138 => 38,  134 => 36,  125 => 33,  121 => 32,  112 => 28,  108 => 27,  102 => 25,  99 => 27,  96 => 24,  94 => 23,  91 => 23,  87 => 21,  78 => 19,  74 => 18,  65 => 16,  61 => 16,  55 => 14,  53 => 13,  41 => 10,  34 => 6,  31 => 7,  29 => 6,  27 => 5,  24 => 2,  19 => 1,);
     }
 }

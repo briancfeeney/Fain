@@ -12,11 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class AssetIndexingService
  *
+ * @package craft.app.services
  */
 class AssetIndexingService extends BaseApplicationComponent
 {
-
 	/**
 	 * Returns a unique indexing session id.
 	 *
@@ -72,7 +73,7 @@ class AssetIndexingService extends BaseApplicationComponent
 			$folder->sourceId = $model->id;
 			$folder->parentId = null;
 			$folder->name = $model->name;
-			$folder->fullPath = "";
+			$folder->path = "";
 			$folder->save();
 		}
 
@@ -153,7 +154,7 @@ class AssetIndexingService extends BaseApplicationComponent
 		$processedFiles = array_flip($processedFiles);
 
 		$fileEntries = craft()->db->createCommand()
-			->select('fi.sourceId, fi.id AS fileId, fi.filename, fo.fullPath, s.name AS sourceName')
+			->select('fi.sourceId, fi.id AS fileId, fi.filename, fo.path, s.name AS sourceName')
 			->from('assetfiles AS fi')
 			->join('assetfolders AS fo', 'fi.folderId = fo.id')
 			->join('assetsources AS s', 's.id = fi.sourceId')
@@ -164,7 +165,7 @@ class AssetIndexingService extends BaseApplicationComponent
 		{
 			if (!isset($processedFiles[$fileEntry['fileId']]))
 			{
-				$output[$fileEntry['fileId']] = $fileEntry['sourceName'].'/'.$fileEntry['fullPath'].$fileEntry['filename'];
+				$output[$fileEntry['fileId']] = $fileEntry['sourceName'].'/'.$fileEntry['path'].$fileEntry['filename'];
 			}
 		}
 

@@ -1,7 +1,7 @@
 <?php
 
 /* _components/fieldtypes/Matrix/settings */
-class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d156127962195f extends Twig_Template
+class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d156127962195f extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -36,7 +36,7 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
 \t\t\t\t";
         // line 11
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["blockTypes"]) ? $context["blockTypes"] : null));
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getBlockTypes", array(), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["blockType"]) {
             // line 12
             echo "\t\t\t\t\t<div class=\"matrixconfigitem mci-blocktype";
@@ -119,7 +119,7 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
 \t\t\t\t";
         // line 33
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["blockTypes"]) ? $context["blockTypes"] : null));
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getBlockTypes", array(), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["blockType"]) {
             // line 34
             echo "\t\t\t\t\t<div data-id=\"";
@@ -188,7 +188,7 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
 \t\t\t\t";
         // line 56
         $context['_parent'] = (array) $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["blockTypes"]) ? $context["blockTypes"] : null));
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getBlockTypes", array(), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["blockType"]) {
             // line 57
             echo "\t\t\t\t\t<div data-id=\"";
@@ -226,7 +226,7 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
 
 \t\t\t\t\t\t\t\t";
                 // line 89
-                if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "Localize"), "method")) {
+                if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "isLocalized", array(), "method")) {
                     // line 90
                     echo "\t\t\t\t\t\t\t\t\t";
                     echo $context["forms"]->getcheckboxField(array("label" => \Craft\Craft::t("This field is translatable"), "name" => (((("blockTypes[" . $this->getAttribute((isset($context["blockType"]) ? $context["blockType"] : null), "id")) . "][fields][") . (isset($context["fieldId"]) ? $context["fieldId"] : null)) . "][translatable]"), "checked" => $this->getAttribute((isset($context["field"]) ? $context["field"] : null), "translatable")));
@@ -330,6 +330,12 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
         // line 141
         echo "
 </div>
+
+";
+        // line 144
+        echo $context["forms"]->gettextField(array("label" => \Craft\Craft::t("Max Blocks"), "instructions" => \Craft\Craft::t("The maximum number of blocks the field is allowed to have."), "id" => "maxBlocks", "name" => "maxBlocks", "value" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "maxBlocks"), "size" => 3, "errors" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getErrors", array(0 => "maxBlocks"), "method")));
+        // line 152
+        echo "
 ";
     }
 
@@ -345,6 +351,6 @@ class __TwigTemplate_e3d1887c5d7941c86f7b5584cc592584b80d56e327188e80c2d15612796
 
     public function getDebugInfo()
     {
-        return array (  331 => 141,  329 => 137,  325 => 135,  319 => 131,  312 => 129,  303 => 126,  296 => 121,  277 => 119,  270 => 118,  264 => 114,  262 => 106,  259 => 105,  253 => 103,  251 => 102,  248 => 101,  245 => 100,  238 => 96,  234 => 94,  231 => 90,  229 => 89,  225 => 87,  223 => 83,  219 => 81,  213 => 70,  211 => 61,  206 => 60,  203 => 59,  199 => 58,  194 => 57,  190 => 56,  184 => 53,  156 => 40,  134 => 36,  130 => 35,  125 => 34,  121 => 33,  104 => 23,  93 => 20,  78 => 17,  74 => 16,  57 => 13,  48 => 18,  41 => 15,  52 => 40,  50 => 33,  37 => 24,  31 => 14,  27 => 5,  166 => 44,  150 => 47,  147 => 46,  144 => 45,  142 => 44,  119 => 36,  112 => 34,  89 => 22,  71 => 20,  68 => 19,  62 => 17,  43 => 10,  59 => 38,  56 => 30,  44 => 32,  36 => 21,  29 => 5,  53 => 23,  39 => 29,  33 => 11,  25 => 4,  23 => 4,  21 => 2,  19 => 1,  258 => 163,  256 => 104,  249 => 156,  243 => 99,  236 => 150,  232 => 149,  226 => 147,  220 => 145,  217 => 72,  207 => 149,  201 => 147,  195 => 145,  192 => 144,  185 => 143,  176 => 142,  173 => 46,  169 => 140,  165 => 138,  163 => 51,  158 => 49,  154 => 48,  151 => 38,  149 => 119,  145 => 117,  143 => 37,  139 => 106,  137 => 42,  133 => 40,  131 => 84,  127 => 82,  124 => 37,  118 => 73,  115 => 30,  110 => 71,  108 => 70,  105 => 32,  99 => 67,  97 => 30,  92 => 29,  90 => 62,  87 => 19,  85 => 57,  82 => 54,  79 => 52,  77 => 51,  75 => 50,  73 => 48,  70 => 44,  67 => 42,  65 => 14,  63 => 35,  60 => 32,  58 => 26,  54 => 29,  51 => 19,  49 => 14,  47 => 26,  45 => 14,  42 => 12,  40 => 16,  38 => 11,  34 => 8,  32 => 8,  30 => 6,  28 => 7,  26 => 10,  24 => 3,);
+        return array (  338 => 152,  336 => 144,  331 => 141,  329 => 137,  325 => 135,  319 => 131,  312 => 129,  303 => 126,  296 => 121,  277 => 119,  270 => 118,  264 => 114,  262 => 106,  259 => 105,  253 => 103,  251 => 102,  248 => 101,  245 => 100,  238 => 96,  234 => 94,  231 => 90,  229 => 89,  225 => 87,  223 => 83,  219 => 81,  213 => 70,  211 => 61,  206 => 60,  203 => 59,  199 => 58,  194 => 57,  184 => 53,  130 => 35,  125 => 34,  104 => 23,  41 => 15,  50 => 33,  37 => 24,  31 => 14,  33 => 11,  193 => 60,  190 => 56,  181 => 56,  177 => 55,  174 => 54,  171 => 53,  166 => 44,  160 => 49,  134 => 36,  116 => 36,  95 => 24,  76 => 22,  57 => 13,  61 => 18,  59 => 11,  39 => 29,  36 => 21,  156 => 40,  147 => 44,  142 => 42,  126 => 3,  121 => 33,  119 => 97,  103 => 91,  100 => 33,  86 => 81,  66 => 19,  53 => 23,  46 => 43,  44 => 32,  29 => 5,  123 => 34,  120 => 33,  114 => 95,  96 => 84,  93 => 20,  84 => 73,  81 => 24,  78 => 17,  74 => 16,  71 => 65,  68 => 19,  64 => 40,  56 => 54,  52 => 40,  48 => 18,  27 => 5,  25 => 4,  23 => 4,  21 => 2,  19 => 1,  258 => 163,  256 => 104,  249 => 156,  243 => 99,  236 => 150,  232 => 149,  226 => 147,  220 => 145,  217 => 72,  207 => 149,  201 => 147,  195 => 145,  192 => 144,  185 => 57,  176 => 142,  173 => 46,  169 => 52,  165 => 138,  163 => 129,  158 => 48,  154 => 46,  151 => 38,  149 => 13,  145 => 117,  143 => 37,  139 => 4,  137 => 41,  133 => 94,  131 => 84,  127 => 38,  124 => 74,  118 => 73,  115 => 30,  110 => 93,  108 => 70,  105 => 34,  99 => 30,  97 => 25,  92 => 63,  90 => 83,  87 => 19,  85 => 57,  82 => 54,  79 => 23,  77 => 66,  75 => 50,  73 => 21,  70 => 20,  67 => 42,  65 => 14,  63 => 12,  60 => 32,  58 => 26,  54 => 29,  51 => 19,  49 => 9,  47 => 8,  45 => 8,  42 => 12,  40 => 5,  38 => 11,  34 => 39,  32 => 8,  30 => 6,  28 => 7,  26 => 10,  24 => 3,);
     }
 }

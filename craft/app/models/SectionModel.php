@@ -14,7 +14,7 @@ namespace Craft;
 /**
  * Section model class
  *
- * Used for transporting section data throughout the system.
+ * @package craft.app.models
  */
 class SectionModel extends BaseModel
 {
@@ -38,13 +38,15 @@ class SectionModel extends BaseModel
 	protected function defineAttributes()
 	{
 		return array(
-			'id'       => AttributeType::Number,
-			'name'     => AttributeType::String,
-			'handle'   => AttributeType::String,
-			'type'     => array(AttributeType::Enum, 'values' => array(SectionType::Single, SectionType::Channel, SectionType::Structure)),
-			'hasUrls'  => array(AttributeType::Bool, 'default' => true),
-			'template' => AttributeType::String,
-			'maxDepth' => AttributeType::Number,
+			'id'                        => AttributeType::Number,
+			'structureId'               => AttributeType::Number,
+			'name'                      => AttributeType::String,
+			'handle'                    => AttributeType::String,
+			'type'                      => array(AttributeType::Enum, 'values' => array(SectionType::Single, SectionType::Channel, SectionType::Structure)),
+			'hasUrls'                   => array(AttributeType::Bool, 'default' => true),
+			'template'                  => AttributeType::String,
+			'maxLevels'                 => AttributeType::Number,
+			'enableVersioning'          => array(AttributeType::Bool, 'default' => true),
 		);
 	}
 

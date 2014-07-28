@@ -1,7 +1,7 @@
 <?php
 
 /* _includes/forms/time */
-class __TwigTemplate_b5d40579ab99fe5892756dada13ee24ab77a725843d1e7e851af711b626e9814 extends Twig_Template
+class __TwigTemplate_b5d40579ab99fe5892756dada13ee24ab77a725843d1e7e851af711b626e9814 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -37,26 +37,50 @@ class __TwigTemplate_b5d40579ab99fe5892756dada13ee24ab77a725843d1e7e851af711b626
         // line 17
         echo "<div class=\"timewrapper\">";
         // line 18
-        $this->env->loadTemplate("_includes/forms/text")->display(array_merge($context, array("autocomplete" => false, "size" => 10, "value" => (((isset($context["value"]) ? $context["value"] : null)) ? ($this->getAttribute((isset($context["value"]) ? $context["value"] : null), "localeTime", array(), "method")) : ("")))));
+        $this->env->loadTemplate("_includes/forms/text")->display(array_merge($context, array("autocomplete" => false, "size" => 10, "value" => ((((isset($context["value"]) ? $context["value"] : null) && $this->getAttribute((isset($context["value"]) ? $context["value"] : null), "localeTime", array(), "any", true, true))) ? ($this->getAttribute((isset($context["value"]) ? $context["value"] : null), "localeTime", array(), "method")) : ((isset($context["value"]) ? $context["value"] : null))))));
         // line 19
         echo "</div>";
         // line 21
+        $context["localeData"] = $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "i18n"), "getLocaleData", array(), "method");
+        // line 23
         ob_start();
-        // line 22
+        // line 24
         echo "
 \tvar \$timePicker = \$('#";
-        // line 23
+        // line 25
         echo twig_escape_filter($this->env, twig_escape_filter($this->env, \Craft\craft()->templates->namespaceInputId((isset($context["id"]) ? $context["id"] : null)), "js"), "html", null, true);
         echo "');
 \t\$timePicker.timepicker({
 \t\ttimeFormat: '";
-        // line 25
+        // line 27
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "i18n"), "timepickerJsFormat"), "html", null, true);
         echo "',
-\t\tcloseOnWindowScroll: false
+\t\tcloseOnWindowScroll: false,
+\t\torientation: '";
+        // line 29
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["localeData"]) ? $context["localeData"] : null), "getOrientation", array(), "method"), "html", null, true);
+        echo "',
+\t\tlang: {
+\t\t\tam: '";
+        // line 31
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["localeData"]) ? $context["localeData"] : null), "getAMName", array(), "method"), "html", null, true);
+        echo "',
+\t\t\tAM: '";
+        // line 32
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["localeData"]) ? $context["localeData"] : null), "getAMName", array(), "method"), "html", null, true);
+        echo "',
+\t\t\tpm: '";
+        // line 33
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["localeData"]) ? $context["localeData"] : null), "getPMName", array(), "method"), "html", null, true);
+        echo "',
+\t\t\tPM: '";
+        // line 34
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["localeData"]) ? $context["localeData"] : null), "getPMName", array(), "method"), "html", null, true);
+        echo "'
+\t\t}
 \t});";
         $context["js"] = ('' === $tmp = ob_get_clean()) ? '' : new Twig_Markup($tmp, $this->env->getCharset());
-        // line 30
+        // line 39
         \Craft\craft()->templates->includeJs((isset($context["js"]) ? $context["js"] : null));
     }
 
@@ -72,6 +96,6 @@ class __TwigTemplate_b5d40579ab99fe5892756dada13ee24ab77a725843d1e7e851af711b626
 
     public function getDebugInfo()
     {
-        return array (  60 => 30,  44 => 21,  40 => 18,  71 => 27,  66 => 23,  62 => 22,  33 => 13,  28 => 8,  54 => 25,  52 => 21,  41 => 10,  39 => 16,  36 => 8,  34 => 7,  67 => 11,  45 => 12,  37 => 15,  27 => 4,  23 => 3,  59 => 5,  57 => 17,  48 => 20,  31 => 11,  21 => 2,  19 => 1,  422 => 203,  420 => 202,  415 => 197,  412 => 196,  409 => 195,  404 => 193,  400 => 192,  397 => 191,  394 => 190,  391 => 189,  383 => 187,  381 => 186,  375 => 182,  362 => 180,  360 => 179,  357 => 178,  354 => 177,  351 => 176,  348 => 175,  345 => 174,  342 => 173,  339 => 172,  337 => 171,  330 => 169,  322 => 164,  316 => 160,  314 => 159,  311 => 158,  306 => 155,  303 => 154,  298 => 152,  294 => 151,  289 => 150,  287 => 149,  284 => 148,  276 => 146,  274 => 145,  269 => 143,  265 => 142,  259 => 141,  255 => 139,  253 => 138,  247 => 134,  243 => 132,  237 => 129,  232 => 128,  230 => 127,  227 => 126,  223 => 124,  220 => 121,  216 => 119,  213 => 115,  210 => 114,  204 => 112,  201 => 111,  199 => 110,  195 => 108,  193 => 101,  189 => 99,  187 => 92,  184 => 91,  180 => 89,  177 => 83,  175 => 82,  172 => 81,  168 => 79,  165 => 73,  163 => 72,  159 => 70,  157 => 63,  150 => 62,  148 => 61,  144 => 59,  142 => 58,  138 => 56,  134 => 54,  131 => 47,  129 => 46,  126 => 45,  120 => 43,  118 => 42,  115 => 41,  109 => 39,  107 => 38,  102 => 36,  98 => 35,  95 => 34,  88 => 31,  85 => 30,  83 => 29,  81 => 26,  77 => 22,  74 => 23,  72 => 20,  69 => 19,  64 => 6,  49 => 23,  46 => 22,  42 => 19,  38 => 17,  35 => 14,  32 => 6,  30 => 5,  26 => 7,  24 => 5,);
+        return array (  78 => 34,  70 => 32,  44 => 21,  40 => 18,  38 => 17,  71 => 27,  66 => 31,  52 => 21,  33 => 13,  31 => 11,  24 => 5,  62 => 22,  51 => 25,  48 => 24,  34 => 8,  67 => 12,  64 => 20,  59 => 18,  42 => 19,  37 => 15,  30 => 6,  28 => 8,  26 => 7,  23 => 3,  72 => 15,  57 => 13,  55 => 16,  46 => 23,  21 => 2,  19 => 1,  568 => 289,  564 => 287,  561 => 286,  555 => 283,  549 => 280,  543 => 276,  540 => 275,  535 => 272,  529 => 269,  526 => 268,  524 => 267,  518 => 263,  510 => 261,  508 => 260,  505 => 259,  492 => 257,  490 => 256,  487 => 255,  484 => 254,  481 => 253,  478 => 252,  475 => 251,  472 => 250,  469 => 249,  467 => 248,  460 => 246,  452 => 241,  443 => 235,  438 => 232,  435 => 227,  432 => 225,  428 => 223,  422 => 220,  416 => 217,  412 => 216,  406 => 212,  403 => 208,  400 => 206,  395 => 203,  390 => 201,  386 => 200,  381 => 199,  378 => 198,  375 => 196,  367 => 194,  364 => 189,  359 => 186,  353 => 183,  347 => 182,  341 => 178,  339 => 177,  336 => 176,  333 => 174,  329 => 172,  323 => 169,  319 => 168,  316 => 167,  314 => 166,  309 => 163,  305 => 161,  303 => 158,  300 => 157,  297 => 156,  290 => 152,  286 => 151,  283 => 150,  281 => 149,  278 => 148,  273 => 145,  271 => 140,  268 => 139,  265 => 138,  263 => 137,  260 => 136,  257 => 135,  255 => 134,  251 => 132,  249 => 125,  245 => 123,  243 => 116,  240 => 115,  236 => 113,  233 => 106,  231 => 105,  228 => 104,  224 => 102,  221 => 95,  219 => 94,  215 => 92,  213 => 85,  210 => 84,  206 => 82,  203 => 76,  201 => 75,  197 => 73,  195 => 72,  192 => 71,  188 => 69,  181 => 67,  177 => 65,  170 => 64,  167 => 58,  163 => 57,  161 => 56,  155 => 55,  152 => 54,  148 => 53,  145 => 52,  143 => 51,  140 => 50,  137 => 49,  128 => 46,  126 => 45,  120 => 42,  117 => 41,  113 => 39,  110 => 38,  108 => 37,  101 => 32,  98 => 29,  96 => 28,  90 => 24,  84 => 39,  81 => 21,  74 => 33,  68 => 19,  63 => 18,  61 => 29,  56 => 27,  53 => 15,  47 => 297,  45 => 12,  43 => 12,  41 => 11,  39 => 16,  35 => 14,  32 => 7,  29 => 12,  27 => 3,  25 => 4,);
     }
 }

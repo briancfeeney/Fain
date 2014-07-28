@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::PublishPro);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class EntryRevisionsVariable
  *
+ * @package craft.app.validators
  */
 class EntryRevisionsVariable
 {

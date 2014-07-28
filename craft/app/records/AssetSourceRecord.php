@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class AssetSourceRecord
  *
+ * @package craft.app.records
  */
 class AssetSourceRecord extends BaseRecord
 {
@@ -35,6 +37,17 @@ class AssetSourceRecord extends BaseRecord
 			'type'                => array(AttributeType::ClassName, 'required' => true),
 			'settings'            => AttributeType::Mixed,
 			'sortOrder'           => AttributeType::SortOrder,
+			'fieldLayoutId'       => AttributeType::Number,
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function defineRelations()
+	{
+		return array(
+			'fieldLayout' => array(static::BELONGS_TO, 'FieldLayoutRecord', 'onDelete' => static::SET_NULL),
 		);
 	}
 

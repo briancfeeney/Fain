@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class ConsoleCommandRunner
  *
+ * @package craft.app.etc.console
  */
 class ConsoleCommandRunner extends \CConsoleCommandRunner
 {
@@ -22,7 +24,7 @@ class ConsoleCommandRunner extends \CConsoleCommandRunner
 	 */
 	public function createCommand($name)
 	{
-		$name = strtolower($name);
+		$name = StringHelper::toLowerCase($name);
 
 		$command = null;
 

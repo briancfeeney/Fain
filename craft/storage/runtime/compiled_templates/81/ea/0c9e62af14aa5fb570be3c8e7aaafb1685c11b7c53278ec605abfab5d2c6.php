@@ -1,7 +1,7 @@
 <?php
 
 /* settings/assets/_layout */
-class __TwigTemplate_81ea0c9e62af14aa5fb570be3c8e7aaafb1685c11b7c53278ec605abfab5d2c6 extends Twig_Template
+class __TwigTemplate_81ea0c9e62af14aa5fb570be3c8e7aaafb1685c11b7c53278ec605abfab5d2c6 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -25,7 +25,7 @@ class __TwigTemplate_81ea0c9e62af14aa5fb570be3c8e7aaafb1685c11b7c53278ec605abfab
         // line 4
         $context["crumbs"] = array(0 => array("label" => \Craft\Craft::t("Settings"), "url" => \Craft\UrlHelper::getUrl("settings")));
         // line 9
-        $context["tabs"] = array("sources" => array("label" => \Craft\Craft::t("Sources"), "url" => \Craft\UrlHelper::getUrl("settings/assets")), "transforms" => array("label" => \Craft\Craft::t("Image Transforms"), "url" => \Craft\UrlHelper::getUrl("settings/assets/transforms")), "fields" => array("label" => \Craft\Craft::t("Fields"), "url" => \Craft\UrlHelper::getUrl("settings/assets/fields")));
+        $context["tabs"] = array("sources" => array("label" => \Craft\Craft::t("Sources"), "url" => \Craft\UrlHelper::getUrl("settings/assets")), "transforms" => array("label" => \Craft\Craft::t("Image Transforms"), "url" => \Craft\UrlHelper::getUrl("settings/assets/transforms")));
         $this->parent->display($context, array_merge($this->blocks, $blocks));
     }
 

@@ -12,16 +12,18 @@ namespace Craft;
  */
 
 /**
+ * Class UsersService
  *
+ * @package craft.app.services
  */
 class UsersService extends BaseApplicationComponent
 {
 	private $_usersById;
 
 	/**
-	 * Gets a user by their ID.
+	 * Gets a user by their ID in the database.  Returns null if one can’t be found.
 	 *
-	 * @param $userId
+	 * @param $userId The user’s ID in the database.
 	 * @return UserModel|null
 	 */
 	public function getUserById($userId)
@@ -44,10 +46,10 @@ class UsersService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Gets a user by their username or email.
+	 * Gets a user by their username or email.  Returns null if one can’t be found.
 	 *
-	 * @param string $usernameOrEmail
-	 * @return UserModel
+	 * @param string $usernameOrEmail The username or email address to search for.
+	 * @return UserModel|null
 	 */
 	public function getUserByUsernameOrEmail($usernameOrEmail)
 	{
@@ -60,60 +62,102 @@ class UsersService extends BaseApplicationComponent
 		{
 			return UserModel::populateModel($userRecord);
 		}
+
+		return null;
 	}
 
 	/**
-	 * Gets a user by a verification code and their uid.
+	 * Returns a user by their UID in the database.  Returns null if one can’t be found.
 	 *
-	 * @param        $code
-	 * @param        $uid
+	 * @param $uid The UID to search for.
 	 * @return UserModel|null
 	 */
-	public function getUserByVerificationCodeAndUid($code, $uid)
+	public function getUserByUid($uid)
 	{
 		$userRecord = UserRecord::model()->findByAttributes(array(
 			'uid' => $uid
 		));
 
-		if ($userRecord && $userRecord->verificationCodeIssuedDate)
+		if ($userRecord)
 		{
-			$user = UserModel::populateModel($userRecord);
-
-			// Fire an 'onBeforeVerifyUser' event
-			$this->onBeforeVerifyUser(new Event($this, array(
-				'user' => $user
-			)));
-
-			$minCodeIssueDate = DateTimeHelper::currentUTCDateTime();
-			$duration = new DateInterval(craft()->config->get('verificationCodeDuration'));
-			$minCodeIssueDate->sub($duration);
-
-			if (
-				$userRecord->verificationCodeIssuedDate > $minCodeIssueDate &&
-				craft()->security->checkPassword($code, $userRecord->verificationCode)
-			)
-			{
-				return $user;
-			}
-			else
-			{
-				Craft::log('Found a user with UID:'.$uid.', but the verification code given: '.$code.' has either expired or does not match the hash in the database.', LogLevel::Warning);
-			}
-		}
-		else
-		{
-			Craft::log('Could not find a user with UID:'.$uid.'.', LogLevel::Warning);
+			return UserModel::populateModel($userRecord);
 		}
 
 		return null;
 	}
 
 	/**
-	 * Saves a user, or registers a new one.
+	 * Checks to see if a verification code is valid for the given user.  First it checks if the code has expired
+	 * past the “verificationCodeDuration” config setting. If it is still valid then, the checks the validity of the
+	 * contents of the code. If both of those are true, it will return true, otherwise, false.
 	 *
-	 * @param UserModel $user
-	 * @throws Exception
+	 * @param UserModel $user The user to check the code for.
+	 * @param           $code The verification code to check for.
 	 * @return bool
+	 */
+	public function isVerificationCodeValidForUser(UserModel $user, $code)
+	{
+		$valid = false;
+		$userRecord = $this->_getUserRecordById($user->id);
+
+		if ($userRecord)
+		{
+			$minCodeIssueDate = DateTimeHelper::currentUTCDateTime();
+			$duration = new DateInterval(craft()->config->get('verificationCodeDuration'));
+			$minCodeIssueDate->sub($duration);
+
+			$valid = $userRecord->verificationCodeIssuedDate > $minCodeIssueDate;
+
+			if (!$valid)
+			{
+				// It's expired, go ahead and remove it from the record so if they click the link again, it'll throw an Exception.
+				$userRecord = $this->_getUserRecordById($user->id);
+				$userRecord->verificationCodeIssuedDate = null;
+				$userRecord->verificationCode = null;
+				$userRecord->save();
+			}
+			else
+			{
+				if (craft()->security->checkPassword($code, $userRecord->verificationCode))
+				{
+					$valid = true;
+				}
+				else
+				{
+					$valid = false;
+					Craft::log('The verification code ('.$code.') given for userId: '.$user->id.' does not match the hash in the database.', LogLevel::Warning);
+				}
+			}
+		}
+		else
+		{
+			Craft::log('Could not find a user with id:'.$user->id.'.', LogLevel::Warning);
+		}
+
+		return $valid;
+	}
+
+	/**
+	 * Returns the "Client" account if they're running Craft Client. Returns null if one is not found.
+	 *
+	 * @return UserModel|null
+	 */
+	public function getClient()
+	{
+		craft()->requireEdition(Craft::Client, false);
+
+		$criteria = craft()->elements->getCriteria(ElementType::User);
+		$criteria->client = true;
+		$criteria->status = null;
+		return $criteria->first();
+	}
+
+	/**
+	 * Saves an existing user, or registers a new one.
+	 *
+	 * @param  UserModel $user The user to save.
+	 * @throws \Exception
+	 * @return bool true or false, depending on if the save was successful or not.
 	 */
 	public function saveUser(UserModel $user)
 	{
@@ -139,14 +183,26 @@ class UsersService extends BaseApplicationComponent
 		$userRecord->username              = $user->username;
 		$userRecord->firstName             = $user->firstName;
 		$userRecord->lastName              = $user->lastName;
+		$userRecord->photo                 = $user->photo;
 		$userRecord->email                 = $user->email;
 		$userRecord->admin                 = $user->admin;
+		$userRecord->client                = $user->client;
 		$userRecord->passwordResetRequired = $user->passwordResetRequired;
 		$userRecord->preferredLocale       = $user->preferredLocale;
 		$userRecord->status                = $user->status;
+		$userRecord->unverifiedEmail       = $user->unverifiedEmail;
 
 		$userRecord->validate();
 		$user->addErrors($userRecord->getErrors());
+
+		if (craft()->getEdition() == Craft::Pro)
+		{
+			// Validate any content.
+			if (!craft()->content->validateContent($user))
+			{
+				$user->addErrors($user->getContent()->getErrors());
+			}
+		}
 
 		// If newPassword is set at all, even to an empty string, validate & set it.
 		if ($user->newPassword !== null)
@@ -156,80 +212,112 @@ class UsersService extends BaseApplicationComponent
 
 		if (!$user->hasErrors())
 		{
-			if ($user->verificationRequired)
+			$transaction = craft()->db->getCurrentTransaction() === null ? craft()->db->beginTransaction() : null;
+			try
 			{
-				$userRecord->status = $user->status = UserStatus::Pending;
-				$unhashedVerificationCode = $this->_setVerificationCodeOnUserRecord($userRecord);
-			}
-
-			// Fire an 'onBeforeSaveUser' event
-			$this->onBeforeSaveUser(new Event($this, array(
-				'user'      => $user,
-				'isNewUser' => $isNewUser
-			)));
-
-			if ($isNewUser)
-			{
-				// Create the element record
-				$elementRecord = new ElementRecord();
-				$elementRecord->type = ElementType::User;
-				$elementRecord->save();
-
-				// Now that we have the entry ID, save it on everything else
-				$user->id = $elementRecord->id;
-				$userRecord->id = $elementRecord->id;
-
-				// Create a row in content
-				$content = new ContentModel();
-				$content->elementId = $user->id;
-				craft()->content->saveContent($content);
-			}
-
-			$userRecord->save(false);
-
-			if (!$isNewUser)
-			{
-				// Has the username changed?
-				if ($user->username != $oldUsername)
+				// If we're going through account verification, in whatever form
+				if ($user->unverifiedEmail)
 				{
-					// Rename the user's photo directory
-					$oldFolder = craft()->path->getUserPhotosPath().$oldUsername;
-					$newFolder = craft()->path->getUserPhotosPath().$user->username;
+					$unhashedVerificationCode = $this->_setVerificationCodeOnUserRecord($userRecord);
+				}
 
-					if (IOHelper::folderExists($newFolder))
+				// Set a default status of pending, if one wasn't supplied.
+				if (!$user->status)
+				{
+					$user->status = UserStatus::Pending;
+				}
+
+				// Fire an 'onBeforeSaveUser' event
+				$this->onBeforeSaveUser(new Event($this, array(
+					'user'      => $user,
+					'isNewUser' => $isNewUser
+				)));
+
+				if (craft()->elements->saveElement($user, false))
+				{
+					// Now that we have an element ID, save it on the other stuff
+					if ($isNewUser)
 					{
-						IOHelper::deleteFolder($newFolder);
+						$userRecord->id = $user->id;
 					}
 
-					if (IOHelper::folderExists($oldFolder))
+					$userRecord->save(false);
+
+					if ($user->unverifiedEmail)
 					{
-						IOHelper::rename($oldFolder, $newFolder);
+						// Temporarily set the unverified email on the UserModel so the verification email goes to the right place
+						$originalEmail = $user->email;
+						$user->email = $user->unverifiedEmail;
+
+						try
+						{
+							craft()->email->sendEmailByKey($user, 'account_activation', array(
+								'link' => TemplateHelper::getRaw(craft()->config->getActivateAccountPath($unhashedVerificationCode, $userRecord->uid)),
+							));
+						}
+						catch (\phpmailerException $e)
+						{
+							craft()->userSession->setError(Craft::t('User saved, but couldn’t send verification email. Check your email settings.'));
+						}
+
+						$user->email = $originalEmail;
 					}
+
+					if (!$isNewUser)
+					{
+						// Has the username changed?
+						if ($user->username != $oldUsername)
+						{
+							// Rename the user's photo directory
+							$oldFolder = craft()->path->getUserPhotosPath().$oldUsername;
+							$newFolder = craft()->path->getUserPhotosPath().$user->username;
+
+							if (IOHelper::folderExists($newFolder))
+							{
+								IOHelper::deleteFolder($newFolder);
+							}
+
+							if (IOHelper::folderExists($oldFolder))
+							{
+								IOHelper::rename($oldFolder, $newFolder);
+							}
+						}
+					}
+
+					if ($transaction !== null)
+					{
+						$transaction->commit();
+					}
+
+					// Fire an 'onSaveUser' event
+					$this->onSaveUser(new Event($this, array(
+						'user'      => $user,
+						'isNewUser' => $isNewUser
+					)));
+
+					if ($this->hasEventHandler('onSaveProfile'))
+					{
+						// Fire an 'onSaveProfile' event (deprecated)
+						$this->onSaveProfile(new Event($this, array(
+							'user' => $user
+						)));
+					}
+
+					return true;
 				}
 			}
-
-			// Update the search index
-			craft()->search->indexElementAttributes($user);
-
-			if ($isNewUser && $user->verificationRequired)
+			catch (\Exception $e)
 			{
-				craft()->email->sendEmailByKey($user, 'account_activation', array(
-					'link' => new \Twig_Markup(craft()->config->getActivateAccountPath($unhashedVerificationCode, $userRecord->uid), craft()->templates->getTwig()->getCharset()),
-				));
+				if ($transaction !== null)
+				{
+					$transaction->rollback();
+				}
+
+				throw $e;
 			}
-
-			// Fire an 'onSaveUser' event
-			$this->onSaveUser(new Event($this, array(
-				'user'      => $user,
-				'isNewUser' => $isNewUser
-			)));
-
-			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -237,40 +325,32 @@ class UsersService extends BaseApplicationComponent
 	 *
 	 * @param UserModel $user
 	 * @return bool
+	 * @deprecated Deprecated in 2.0.
 	 */
 	public function saveProfile(UserModel $user)
 	{
-		craft()->requirePackage(CraftPackage::Users);
-
-		$fieldLayout = craft()->fields->getLayoutByType(ElementType::User);
-
-		if (craft()->content->saveElementContent($user, $fieldLayout))
-		{
-			// Fire an 'onSaveProfile' event
-			$this->onSaveProfile(new Event($this, array(
-				'user' => $user
-			)));
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		craft()->deprecator->log('UsersService::saveProfile()', 'UsersService::saveProfile() has been deprecated. Use saveUser() instead.');
+		return $this->saveUser($user);
 	}
 
 	/**
 	 * Fires an 'onSaveProfile' event.
 	 *
 	 * @param Event $event
+	 * @deprecated Deprecated in 2.0.
 	 */
 	public function onSaveProfile(Event $event)
 	{
+		craft()->deprecator->log('UsersService::onSaveProfile()', 'The users.onSaveProfile event has been deprecated. Use users.onSaveUser instead.');
 		$this->raiseEvent('onSaveProfile', $event);
 	}
 
 	/**
-	 * Sends an activation email
+	 * Sends a new account activation email for a user, regardless of their status.  A new verification code will
+	 * generated for the user overwriting any existing one.
+	 *
+	 * @param UserModel $user The user to send the activation email to.
+	 * @return bool
 	 */
 	public function sendActivationEmail(UserModel $user)
 	{
@@ -286,39 +366,33 @@ class UsersService extends BaseApplicationComponent
 	/**
 	 * Crop and save a user's photo by coordinates for a given user model.
 	 *
-	 * @param $source
-	 * @param $x1
-	 * @param $x2
-	 * @param $y1
-	 * @param $y2
+	 * @param $fileName
+	 * @param Image $image
 	 * @param UserModel $user
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function cropAndSaveUserPhoto($source, $x1, $x2, $y1, $y2, UserModel $user)
+	public function saveUserPhoto($fileName, Image $image, UserModel $user)
 	{
-		$userPhotoFolder = craft()->path->getUserPhotosPath().$user->username.'/';
+		$userName = IOHelper::cleanFilename($user->username);
+		$userPhotoFolder = craft()->path->getUserPhotosPath().$userName.'/';
 		$targetFolder = $userPhotoFolder.'original/';
 
 		IOHelper::ensureFolderExists($userPhotoFolder);
 		IOHelper::ensureFolderExists($targetFolder);
 
-		$filename = IOHelper::getFileName($source);
-		$targetPath = $targetFolder . $filename;
+		$targetPath = $targetFolder.$fileName;
 
-
-		$image = craft()->images->loadImage($source);
-		$image->crop($x1, $x2, $y1, $y2);
 		$result = $image->saveAs($targetPath);
 
 		if ($result)
 		{
 			IOHelper::changePermissions($targetPath, IOHelper::getWritableFilePermissions());
 			$record = UserRecord::model()->findById($user->id);
-			$record->photo = $filename;
+			$record->photo = $fileName;
 			$record->save();
 
-			$user->photo = $filename;
+			$user->photo = $fileName;
 
 			return true;
 		}
@@ -340,6 +414,11 @@ class UsersService extends BaseApplicationComponent
 		{
 			IOHelper::deleteFolder($folder);
 		}
+
+		$record = UserRecord::model()->findById($user->id);
+		$record->photo = null;
+		$user->photo = null;
+		$record->save();
 	}
 
 	/**
@@ -457,6 +536,11 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function activateUser(UserModel $user)
 	{
+		// Fire an 'onBeforeActivateUser' event
+		$this->onBeforeActivateUser(new Event($this, array(
+			'user' => $user
+		)));
+
 		$userRecord = $this->_getUserRecordById($user->id);
 
 		$userRecord->status = $user->status = UserStatus::Active;
@@ -464,7 +548,32 @@ class UsersService extends BaseApplicationComponent
 		$userRecord->verificationCodeIssuedDate = null;
 		$userRecord->lockoutDate = null;
 
-		return $userRecord->save();
+		// If they have an unverified email address, now is the time to set it to their primary email address
+		if ($user->unverifiedEmail)
+		{
+			$userRecord->email = $user->unverifiedEmail;
+
+			if (craft()->config->get('useEmailAsUsername'))
+			{
+				$userRecord->username = $user->unverifiedEmail;
+			}
+
+			$userRecord->unverifiedEmail = null;
+		}
+
+		if ($userRecord->save())
+		{
+			// Fire an 'onActivateUser' event
+			$this->onActivateUser(new Event($this, array(
+				'user' => $user
+			)));
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -475,13 +584,30 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function unlockUser(UserModel $user)
 	{
+		// Fire an 'onBeforeUnlockUser' event
+		$this->onBeforeUnlockUser(new Event($this, array(
+			'user' => $user
+		)));
+
 		$userRecord = $this->_getUserRecordById($user->id);
 
 		$userRecord->status = $user->status = UserStatus::Active;
 		$userRecord->invalidLoginCount = $user->invalidLoginCount = null;
 		$userRecord->invalidLoginWindowStart = null;
 
-		return $userRecord->save();
+		if ($userRecord->save())
+		{
+			// Fire an 'onUnlockUser' event
+			$this->onUnlockUser(new Event($this, array(
+				'user' => $user
+			)));
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -492,11 +618,60 @@ class UsersService extends BaseApplicationComponent
 	 */
 	public function suspendUser(UserModel $user)
 	{
+		// Fire an 'onBeforeSuspendUser' event
+		$this->onBeforeSuspendUser(new Event($this, array(
+			'user' => $user
+		)));
+
 		$userRecord = $this->_getUserRecordById($user->id);
 
 		$userRecord->status = $user->status = UserStatus::Suspended;
 
-		return $userRecord->save();
+		if ($userRecord->save())
+		{
+			// Fire an 'onSuspendUser' event
+			$this->onSuspendUser(new Event($this, array(
+				'user' => $user
+			)));
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Unsuspends a user.
+	 *
+	 * @param UserModel $user
+	 * @return bool
+	 */
+	public function unsuspendUser(UserModel $user)
+	{
+		// Fire an 'onBeforeUnsuspendUser' event
+		$this->onBeforeUnsuspendUser(new Event($this, array(
+			'user' => $user
+		)));
+
+		$userRecord = $this->_getUserRecordById($user->id);
+
+		$userRecord->status = $user->status = UserStatus::Active;
+
+		if ($userRecord->save())
+		{
+			// Fire an 'onUnsuspendUser' event
+			$this->onUnsuspendUser(new Event($this, array(
+				'user' => $user
+			)));
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -522,13 +697,15 @@ class UsersService extends BaseApplicationComponent
 			)));
 
 			// Grab the entry IDs that were authored by this user so we can delete them too.
-			$entryIds = craft()->db->createCommand()
-				->select('id')
-				->from('entries')
-				->where(array('authorId' => $user->id))
-				->queryColumn();
+			$criteria = craft()->elements->getCriteria(ElementType::Entry);
+			$criteria->authorId = $user->id;
+			$criteria->limit = null;
+			$entries = $criteria->find();
 
-			craft()->elements->deleteElementById($entryIds);
+			if ($entries)
+			{
+				craft()->entries->deleteEntry($entries);
+			}
 
 			// Delete the user
 			$success = craft()->elements->deleteElementById($user->id);
@@ -536,20 +713,6 @@ class UsersService extends BaseApplicationComponent
 			if ($transaction !== null)
 			{
 				$transaction->commit();
-			}
-
-			if ($success)
-			{
-				// Fire an 'onDeleteUser' event
-				$this->onDeleteUser(new Event($this, array(
-					'user' => $user
-				)));
-
-				return true;
-			}
-			else
-			{
-				return false;
 			}
 		}
 		catch (\Exception $e)
@@ -561,21 +724,20 @@ class UsersService extends BaseApplicationComponent
 
 			throw $e;
 		}
-	}
 
-	/**
-	 * Unsuspends a user.
-	 *
-	 * @param UserModel $user
-	 * @return bool
-	 */
-	public function unsuspendUser(UserModel $user)
-	{
-		$userRecord = $this->_getUserRecordById($user->id);
+		if ($success)
+		{
+			// Fire an 'onDeleteUser' event
+			$this->onDeleteUser(new Event($this, array(
+				'user' => $user
+			)));
 
-		$userRecord->status = $user->status = UserStatus::Active;
-
-		return $userRecord->save();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -682,6 +844,33 @@ class UsersService extends BaseApplicationComponent
 		return false;
 	}
 
+	/**
+	 * If the purgePendingUsersDuration config setting has a valid duration, this method will delete any users in a pending
+	 * state that as past the duration.
+	 */
+	public function purgeExpiredPendingUsers()
+	{
+		if (($duration = craft()->config->get('purgePendingUsersDuration')) !== false)
+		{
+			$interval = new DateInterval($duration);
+			$expire = DateTimeHelper::currentUTCDateTime();
+			$pastTimeStamp = $expire->sub($interval)->getTimestamp();
+			$pastTime = DateTimeHelper::formatTimeForDb($pastTimeStamp);
+
+			$ids = craft()->db->createCommand()->select('id')
+				->from('users')
+				->where('status = :status AND verificationCodeIssuedDate < :pastTime', array('status' => 'pending', 'pastTime' => $pastTime))
+				->queryColumn();
+
+			$affectedRows = craft()->db->createCommand()->delete('elements', array('in', 'id', $ids));
+
+			if ($affectedRows > 0)
+			{
+				Craft::log('Just deleted '.$affectedRows.' pending users from the users table, because the were more than '.$duration.' old', LogLevel::Info, true);
+			}
+		}
+	}
+
 	// Events
 
 	/**
@@ -712,6 +901,86 @@ class UsersService extends BaseApplicationComponent
 	public function onBeforeVerifyUser(Event $event)
 	{
 		$this->raiseEvent('onBeforeVerifyUser', $event);
+	}
+
+	/**
+	 * Fires an 'onBeforeActivateUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onBeforeActivateUser(Event $event)
+	{
+		$this->raiseEvent('onBeforeActivateUser', $event);
+	}
+
+	/**
+	 * Fires an 'onActivateUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onActivateUser(Event $event)
+	{
+		$this->raiseEvent('onActivateUser', $event);
+	}
+
+	/**
+	 * Fires an 'onBeforeUnlockUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onBeforeUnlockUser(Event $event)
+	{
+		$this->raiseEvent('onBeforeUnlockUser', $event);
+	}
+
+	/**
+	 * Fires an 'onUnlockUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onUnlockUser(Event $event)
+	{
+		$this->raiseEvent('onUnlockUser', $event);
+	}
+
+	/**
+	 * Fires an 'onBeforeSuspendUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onBeforeSuspendUser(Event $event)
+	{
+		$this->raiseEvent('onBeforeSuspendUser', $event);
+	}
+
+	/**
+	 * Fires an 'onSuspendUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onSuspendUser(Event $event)
+	{
+		$this->raiseEvent('onSuspendUser', $event);
+	}
+
+	/**
+	 * Fires an 'onBeforeUnsuspendUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onBeforeUnsuspendUser(Event $event)
+	{
+		$this->raiseEvent('onBeforeUnsuspendUser', $event);
+	}
+
+	/**
+	 * Fires an 'onUnsuspendUser' event.
+	 *
+	 * @param Event $event
+	 */
+	public function onUnsuspendUser(Event $event)
+	{
+		$this->raiseEvent('onUnsuspendUser', $event);
 	}
 
 	/**
@@ -812,7 +1081,12 @@ class UsersService extends BaseApplicationComponent
 			$hash = craft()->security->hashPassword($user->newPassword);
 
 			$userRecord->password = $user->password = $hash;
-			$userRecord->status = $user->status = UserStatus::Active;
+
+			if (!$user->unverifiedEmail)
+			{
+				$userRecord->status = $user->status = UserStatus::Active;
+			}
+
 			$userRecord->invalidLoginWindowStart = null;
 			$userRecord->invalidLoginCount = $user->invalidLoginCount = null;
 			$userRecord->verificationCode = null;
@@ -833,7 +1107,7 @@ class UsersService extends BaseApplicationComponent
 		else
 		{
 			// If it's a new user AND we allow public registration, set it on the 'password' field and not 'newpassword'.
-			if (!$user->id && craft()->systemSettings->getSetting('users', 'allowPublicRegistration', false))
+			if (!$user->id && craft()->systemSettings->getSetting('users', 'allowPublicRegistration'))
 			{
 				$user->addErrors(array(
 					'password' => $passwordModel->getErrors('password')

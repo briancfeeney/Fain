@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Rebrand);
+craft()->requireEdition(Craft::Client);
 
 /**
- * Handles rebranding tasks
+ * Handles rebranding tasks.
+ *
+ * @package craft.app.controllers
  */
 class RebrandController extends BaseController
 {
@@ -27,20 +29,20 @@ class RebrandController extends BaseController
 		$this->requireAdmin();
 
 		// Upload the file and drop it in the temporary folder
-		$uploader = new \qqFileUploader();
+		$file = $_FILES['image-upload'];
 
 		try
 		{
 			// Make sure a file was uploaded
-			if ($uploader->file && $uploader->file->getSize())
+			if (!empty($file['name']) && !empty($file['size'])  )
 			{
 				$folderPath = craft()->path->getTempUploadsPath();
 				IOHelper::ensureFolderExists($folderPath);
 				IOHelper::clearFolder($folderPath, true);
 
-				$fileName = IOHelper::cleanFilename($uploader->file->getName());
+				$fileName = IOHelper::cleanFilename($file['name']);
 
-				$uploader->file->save($folderPath.$fileName);
+				move_uploaded_file($file['tmp_name'], $folderPath.$fileName);
 
 				// Test if we will be able to perform image actions on this image
 				if (!craft()->images->checkMemoryForImage($folderPath.$fileName))
@@ -65,7 +67,8 @@ class RebrandController extends BaseController
 							'imageUrl' => UrlHelper::getResourceUrl('tempuploads/'.$fileName),
 							'width' => round($width * $factor),
 							'height' => round($height * $factor),
-							'factor' => $factor
+							'factor' => $factor,
+							'constraint' => $constraint
 						)
 					);
 

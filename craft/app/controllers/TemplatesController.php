@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class TemplatesController
  *
+ * @package craft.app.controllers
  */
 class TemplatesController extends BaseController
 {
@@ -24,7 +26,15 @@ class TemplatesController extends BaseController
 	 */
 	public function actionRender($template, array $variables = array())
 	{
-		$this->_render($template, $variables);
+		// Does that template exist?
+		if (craft()->templates->doesTemplateExist($template))
+		{
+			$this->renderTemplate($template, $variables);
+		}
+		else
+		{
+			throw new HttpException(404);
+		}
 	}
 
 	/**
@@ -33,17 +43,14 @@ class TemplatesController extends BaseController
 	public function actionOffline()
 	{
 		// If this is a site request, make sure the offline template exists
-		if (craft()->request->isSiteRequest())
+		if (craft()->request->isSiteRequest() && !craft()->templates->doesTemplateExist('offline'))
 		{
-			if (!IOHelper::fileExists(craft()->path->getSiteTemplatesPath().'offline.html'))
-			{
-				// Set PathService to use the CP templates path instead
-				craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
-			}
+			// Set PathService to use the CP templates path instead
+			craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
 		}
 
 		// Output the offline template
-		$this->_render('offline');
+		$this->renderTemplate('offline');
 	}
 
 	/**
@@ -51,7 +58,7 @@ class TemplatesController extends BaseController
 	 */
 	public function actionManualUpdateNotification()
 	{
-		$this->_render('_special/dbupdate');
+		$this->renderTemplate('_special/dbupdate');
 	}
 
 	/**
@@ -59,21 +66,8 @@ class TemplatesController extends BaseController
 	 */
 	public function actionManualUpdate()
 	{
-		$this->_render('updates/_go', array(
+		$this->renderTemplate('updates/_go', array(
 			'handle' => craft()->request->getSegment(2)
-		));
-	}
-
-	/**
-	 * Renders the Breakpoint Update notification template.
-	 */
-	public function actionBreakpointUpdateNotification()
-	{
-		$this->_render('_special/breakpointupdate', array(
-			'minBuild'      => CRAFT_MIN_BUILD_REQUIRED,
-			'minBuildURL'   => CRAFT_MIN_BUILD_URL,
-			'targetVersion' => CRAFT_VERSION,
-			'targetBuild'   => CRAFT_BUILD
 		));
 	}
 
@@ -98,11 +92,11 @@ class TemplatesController extends BaseController
 					}
 				}
 
-				throw new Exception(Craft::t('The update can’t be installed. :( {message}', array('message' => $message)));
+				throw new Exception(Craft::t('The update can’t be installed :( {message}', array('message' => $message)));
 			}
 			else
 			{
-				$this->_render('_special/cantrun', array('reqCheck' => $reqCheck));
+				$this->renderTemplate('_special/cantrun', array('reqCheck' => $reqCheck));
 				craft()->end();
 			}
 
@@ -111,7 +105,7 @@ class TemplatesController extends BaseController
 		else
 		{
 			// Cache the app path.
-			craft()->fileCache->set('appPath', craft()->path->getAppPath());
+			craft()->cache->set('appPath', craft()->path->getAppPath());
 		}
 	}
 
@@ -121,33 +115,31 @@ class TemplatesController extends BaseController
 	public function actionRenderError()
 	{
 		$error = craft()->errorHandler->getError();
-		$template = (string) $error['code'];
+		$code = (string) $error['code'];
 
 		if (craft()->request->isSiteRequest())
 		{
-			if (!craft()->templates->doesTemplateExist($template))
-			{
-				// How bout a generic error template?
-				if (craft()->templates->doesTemplateExist('error'))
-				{
-					$template = 'error';
-				}
-				else
-				{
-					// Fall back on the CP error template
-					craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
+			$prefix = craft()->config->get('errorTemplatePrefix');
 
-					// Look for the template again
-					if (!craft()->templates->doesTemplateExist($template))
-					{
-						$template = 'error';
-					}
-				}
+			if (craft()->templates->doesTemplateExist($prefix.$code))
+			{
+				$template = $prefix.$code;
+			}
+			else if (craft()->templates->doesTemplateExist($prefix.'error'))
+			{
+				$template = $prefix.'error';
 			}
 		}
-		else
+
+		if (!isset($template))
 		{
-			if (!craft()->templates->doesTemplateExist($template))
+			craft()->path->setTemplatesPath(craft()->path->getCpTemplatesPath());
+
+			if (craft()->templates->doesTemplateExist($code))
+			{
+				$template = $code;
+			}
+			else
 			{
 				$template = 'error';
 			}
@@ -167,34 +159,6 @@ class TemplatesController extends BaseController
 			{
 				// Just output the error message
 				echo $e->getMessage();
-			}
-		}
-	}
-
-	/**
-	 * Renders a template, sets the mime type header, etc..
-	 *
-	 * @access private
-	 * @param string     $template
-	 * @param array|null $variables
-	 * @throws HttpException
-	 * @throws TemplateLoaderException|\Exception
-	 */
-	private function _render($template, $variables = array())
-	{
-		try
-		{
-			$this->renderTemplate($template, $variables);
-		}
-		catch (TemplateLoaderException $e)
-		{
-			if ($e->template == $template)
-			{
-				throw new HttpException(404);
-			}
-			else
-			{
-				throw $e;
 			}
 		}
 	}

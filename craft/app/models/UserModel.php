@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * User model class
+ * User model class.
+ *
+ * @package craft.app.models
  */
 class UserModel extends BaseElementModel
 {
@@ -25,7 +27,7 @@ class UserModel extends BaseElementModel
 	 */
 	function __toString()
 	{
-		return $this->getName();
+		return $this->username;
 	}
 
 	/**
@@ -34,25 +36,29 @@ class UserModel extends BaseElementModel
 	 */
 	protected function defineAttributes()
 	{
+		$requireUsername = !craft()->config->get('useEmailAsUsername');
+
 		return array_merge(parent::defineAttributes(), array(
-			'username'               => array(AttributeType::String, 'maxLength' => 100, 'required' => true),
-			'photo'                  => AttributeType::String,
-			'firstName'              => AttributeType::String,
-			'lastName'               => AttributeType::String,
-			'email'                  => AttributeType::Email,
-			'password'               => AttributeType::String,
-			'preferredLocale'        => AttributeType::Locale,
-			'admin'                  => AttributeType::Bool,
-			'status'                 => AttributeType::Enum,
-			'lastLoginDate'          => AttributeType::DateTime,
-			'invalidLoginCount'      => AttributeType::Number,
-			'lastInvalidLoginDate'   => AttributeType::DateTime,
-			'lockoutDate'            => AttributeType::DateTime,
-			'passwordResetRequired'  => AttributeType::Bool,
-			'lastPasswordChangeDate' => AttributeType::DateTime,
-			'verificationRequired'   => AttributeType::Bool,
-			'newPassword'            => AttributeType::String,
-			'currentPassword'        => AttributeType::String,
+			'username'                   => array(AttributeType::String, 'maxLength' => 100, 'required' => $requireUsername),
+			'photo'                      => AttributeType::String,
+			'firstName'                  => AttributeType::String,
+			'lastName'                   => AttributeType::String,
+			'email'                      => array(AttributeType::Email, 'required' => !$requireUsername),
+			'password'                   => AttributeType::String,
+			'preferredLocale'            => AttributeType::Locale,
+			'admin'                      => AttributeType::Bool,
+			'client'                     => AttributeType::Bool,
+			'status'                     => array(AttributeType::Enum, 'values' => array(UserStatus::Active, UserStatus::Locked, UserStatus::Suspended, UserStatus::Pending, UserStatus::Archived), 'default' => UserStatus::Pending),
+			'lastLoginDate'              => AttributeType::DateTime,
+			'invalidLoginCount'          => AttributeType::Number,
+			'lastInvalidLoginDate'       => AttributeType::DateTime,
+			'lockoutDate'                => AttributeType::DateTime,
+			'passwordResetRequired'      => AttributeType::Bool,
+			'lastPasswordChangeDate'     => AttributeType::DateTime,
+			'unverifiedEmail'            => AttributeType::Email,
+			'newPassword'                => AttributeType::String,
+			'currentPassword'            => AttributeType::String,
+			'verificationCodeIssuedDate' => AttributeType::DateTime,
 		));
 	}
 
@@ -74,7 +80,7 @@ class UserModel extends BaseElementModel
 	 */
 	public function getGroups($indexBy = null)
 	{
-		if (craft()->hasPackage(CraftPackage::Users))
+		if (craft()->getEdition() == Craft::Pro)
 		{
 			return craft()->userGroups->getGroupsByUserId($this->id, $indexBy);
 		}
@@ -92,7 +98,7 @@ class UserModel extends BaseElementModel
 	 */
 	public function isInGroup($group)
 	{
-		if (craft()->hasPackage(CraftPackage::Users))
+		if (craft()->getEdition() == Craft::Pro)
 		{
 			if (is_object($group) && $group instanceof UserGroupModel)
 			{
@@ -235,9 +241,9 @@ class UserModel extends BaseElementModel
 	 */
 	public function can($permission)
 	{
-		if (craft()->hasPackage(CraftPackage::Users))
+		if (craft()->getEdition() == Craft::Pro)
 		{
-			if ($this->admin)
+			if ($this->admin || $this->client)
 			{
 				return true;
 			}
@@ -316,7 +322,15 @@ class UserModel extends BaseElementModel
 	 */
 	public function getCpEditUrl()
 	{
-		if (craft()->hasPackage(CraftPackage::Users))
+		if ($this->isCurrent())
+		{
+			return UrlHelper::getCpUrl('myaccount');
+		}
+		else if (craft()->getEdition() == Craft::Client && $this->client)
+		{
+			return UrlHelper::getCpUrl('clientaccount');
+		}
+		else if (craft()->getEdition() == Craft::Pro)
 		{
 			return UrlHelper::getCpUrl('users/'.$this->id);
 		}

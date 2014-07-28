@@ -14,7 +14,7 @@ namespace Craft;
 /**
  * GlobalSet model class
  *
- * Used for transporting page data throughout the system.
+ * @package craft.app.models
  */
 class GlobalSetModel extends BaseElementModel
 {
@@ -51,6 +51,16 @@ class GlobalSetModel extends BaseElementModel
 		return array(
 			'fieldLayout' => new FieldLayoutBehavior(ElementType::GlobalSet),
 		);
+	}
+
+	/**
+	 * Returns the field layout used by this element.
+	 *
+	 * @return FieldLayoutModel|null
+	 */
+	public function getFieldLayout()
+	{
+		return $this->asa('fieldLayout')->getFieldLayout();
 	}
 
 	/**

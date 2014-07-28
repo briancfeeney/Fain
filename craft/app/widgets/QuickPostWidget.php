@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class QuickPostWidget
  *
+ * @package craft.app.widgets
  */
 class QuickPostWidget extends BaseWidget
 {
@@ -102,7 +104,7 @@ class QuickPostWidget extends BaseWidget
 	 */
 	public function getTitle()
 	{
-		if (craft()->hasPackage(CraftPackage::PublishPro))
+		if (craft()->getEdition() >= Craft::Client)
 		{
 			$section = $this->_getSection();
 

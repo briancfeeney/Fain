@@ -1,7 +1,7 @@
 <?php
 
 /* _components/assetsourcetypes/Local/settings */
-class __TwigTemplate_82551ef00d3e6ed0b87e61e8649bad6af24e96c1f8bd2e993c044d3df74627c7 extends Twig_Template
+class __TwigTemplate_82551ef00d3e6ed0b87e61e8649bad6af24e96c1f8bd2e993c044d3df74627c7 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -16,19 +16,19 @@ class __TwigTemplate_82551ef00d3e6ed0b87e61e8649bad6af24e96c1f8bd2e993c044d3df74
     protected function doDisplay(array $context, array $blocks = array())
     {
         // line 1
-        $context["__internal_1f8c0c1610bb27d00d73eb8ad5b39f1de9b23161c13d6af78731544c1dd60b66"] = $this->env->loadTemplate("_includes/forms");
+        $context["__internal_cfb1865d54f09a42341e58c782d95c5b78cb7aa434cad62d20adbab62804133c"] = $this->env->loadTemplate("_includes/forms");
         // line 2
         echo "
 ";
         // line 3
-        echo $context["__internal_1f8c0c1610bb27d00d73eb8ad5b39f1de9b23161c13d6af78731544c1dd60b66"]->gettextField(array("label" => \Craft\Craft::t("File System Path"), "instructions" => \Craft\Craft::t("The path to your folder on the file system."), "id" => "path", "name" => "path", "value" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "path"), "errors" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getErrors", array(0 => "path"), "method"), "required" => true, "placeholder" => "/path/to/folder/"));
-        // line 12
+        echo $context["__internal_cfb1865d54f09a42341e58c782d95c5b78cb7aa434cad62d20adbab62804133c"]->gettextField(array("label" => \Craft\Craft::t("File System Path"), "instructions" => \Craft\Craft::t("The path to your folder on the file system."), "id" => "path", "class" => "ltr", "name" => "path", "value" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "path"), "errors" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getErrors", array(0 => "path"), "method"), "required" => true, "placeholder" => \Craft\Craft::t("/path/to/folder/")));
+        // line 13
         echo "
 
 ";
-        // line 14
-        echo $context["__internal_1f8c0c1610bb27d00d73eb8ad5b39f1de9b23161c13d6af78731544c1dd60b66"]->gettextField(array("label" => \Craft\Craft::t("URL"), "instructions" => \Craft\Craft::t("The URL to your folder."), "id" => "url", "name" => "url", "value" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "url"), "errors" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getErrors", array(0 => "url"), "method"), "required" => true, "placeholder" => "http://url/to/folder/"));
-        // line 23
+        // line 15
+        echo $context["__internal_cfb1865d54f09a42341e58c782d95c5b78cb7aa434cad62d20adbab62804133c"]->gettextField(array("label" => \Craft\Craft::t("URL"), "instructions" => \Craft\Craft::t("The URL to your folder."), "id" => "url", "class" => "ltr", "name" => "url", "value" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "url"), "errors" => $this->getAttribute((isset($context["settings"]) ? $context["settings"] : null), "getErrors", array(0 => "url"), "method"), "required" => true, "placeholder" => \Craft\Craft::t("http://example.com/path/to/folder/")));
+        // line 25
         echo "
 ";
     }
@@ -45,6 +45,6 @@ class __TwigTemplate_82551ef00d3e6ed0b87e61e8649bad6af24e96c1f8bd2e993c044d3df74
 
     public function getDebugInfo()
     {
-        return array (  21 => 2,  19 => 1,  194 => 78,  190 => 76,  187 => 75,  168 => 73,  160 => 72,  155 => 69,  148 => 67,  144 => 66,  138 => 64,  132 => 62,  129 => 61,  119 => 66,  113 => 64,  107 => 62,  104 => 61,  97 => 60,  89 => 59,  86 => 58,  83 => 57,  79 => 56,  75 => 54,  73 => 46,  70 => 45,  68 => 44,  64 => 42,  62 => 41,  58 => 39,  56 => 29,  53 => 28,  47 => 27,  42 => 24,  40 => 23,  37 => 19,  34 => 17,  32 => 23,  30 => 14,  28 => 7,  26 => 12,  24 => 3,);
+        return array (  32 => 25,  21 => 2,  19 => 1,  191 => 73,  184 => 68,  182 => 63,  177 => 60,  174 => 59,  155 => 57,  147 => 56,  144 => 55,  137 => 53,  133 => 52,  127 => 50,  121 => 48,  118 => 47,  108 => 52,  102 => 50,  96 => 48,  93 => 47,  86 => 46,  78 => 45,  75 => 44,  72 => 43,  68 => 42,  64 => 40,  62 => 32,  59 => 31,  57 => 30,  53 => 28,  51 => 27,  47 => 25,  45 => 15,  41 => 13,  35 => 12,  30 => 15,  28 => 8,  26 => 13,  24 => 3,);
     }
 }

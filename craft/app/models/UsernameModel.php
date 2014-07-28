@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Username model
+ * Username model.
+ *
+ * @package craft.app.models
  */
 class UsernameModel extends BaseModel
 {
@@ -22,8 +24,10 @@ class UsernameModel extends BaseModel
 	 */
 	protected function defineAttributes()
 	{
+		$requireUsername = !craft()->config->get('useEmailAsUsername');
+
 		return array(
-			'username' => array(AttributeType::String, 'maxLength' => 100, 'required' => true),
+			'username' => array(AttributeType::String, 'maxLength' => 100, 'required' => $requireUsername),
 		);
 	}
 

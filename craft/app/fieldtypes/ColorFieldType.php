@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class ColorFieldType
  *
+ * @package craft.app.fieldtypes
  */
 class ColorFieldType extends BaseFieldType
 {
@@ -45,10 +47,31 @@ class ColorFieldType extends BaseFieldType
 	 */
 	public function getInputHtml($name, $value)
 	{
+		// Default to black, so the JS-based color picker is consistent with Chrome
+		if (!$value)
+		{
+			$value = '#000000';
+		}
+
 		return craft()->templates->render('_includes/forms/color', array(
 			'id'    => craft()->templates->formatInputId($name),
 			'name'  => $name,
 			'value' => $value,
 		));
+	}
+
+	/**
+	 * Returns static HTML for the field's value.
+	 *
+	 * @param mixed $value
+	 * @return string
+	 */
+	public function getStaticHtml($value)
+	{
+		if ($value)
+		{
+			return '<div class="color" style="cursor: default;"><div class="colorpreview" style="background-color: '.$value.';"></div></div>' .
+				'<div class="colorhex">'.$value.'</div>';
+		}
 	}
 }

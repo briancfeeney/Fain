@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Stores the locales
+ * Stores the locales.
+ *
+ * @package craft.app.records
  */
 class LocaleRecord extends BaseRecord
 {
@@ -41,6 +43,16 @@ class LocaleRecord extends BaseRecord
 		return array(
 			'locale'    => array(AttributeType::Locale, 'required' => true, 'primaryKey' => true),
 			'sortOrder' => AttributeType::SortOrder,
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function defineIndexes()
+	{
+		return array(
+			array('columns' => array('sortOrder')),
 		);
 	}
 }

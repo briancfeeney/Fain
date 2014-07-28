@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Content functions
+ * Class FieldsVariable
+ *
+ * @package craft.app.validators
  */
 class FieldsVariable
 {
@@ -53,6 +55,17 @@ class FieldsVariable
 	public function getFieldById($fieldId)
 	{
 		return craft()->fields->getFieldById($fieldId);
+	}
+
+	/**
+	 * Returns a field by its handle.
+	 *
+	 * @param string $handle
+	 * @return FieldModel|null
+	 */
+	public function getFieldByHandle($handle)
+	{
+		return craft()->fields->getFieldByHandle($handle);
 	}
 
 	/**

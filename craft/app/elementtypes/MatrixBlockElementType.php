@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Matrix block element type
+ * Matrix block element type.
+ *
+ * @package craft.app.elementtypes
  */
 class MatrixBlockElementType extends BaseElementType
 {
@@ -54,10 +56,11 @@ class MatrixBlockElementType extends BaseElementType
 	public function defineCriteriaAttributes()
 	{
 		return array(
-			'fieldId' => AttributeType::Number,
-			'order'   => array(AttributeType::String, 'default' => 'sortOrder'),
-			'ownerId' => AttributeType::Number,
-			'type'    => AttributeType::Mixed,
+			'fieldId'     => AttributeType::Number,
+			'order'       => array(AttributeType::String, 'default' => 'matrixblocks.sortOrder'),
+			'ownerId'     => AttributeType::Number,
+			'ownerLocale' => AttributeType::Locale,
+			'type'        => AttributeType::Mixed,
 		);
 	}
 
@@ -127,7 +130,7 @@ class MatrixBlockElementType extends BaseElementType
 	public function modifyElementsQuery(DbCommand $query, ElementCriteriaModel $criteria)
 	{
 		$query
-			->addSelect('matrixblocks.fieldId, matrixblocks.ownerId, matrixblocks.typeId, matrixblocks.sortOrder')
+			->addSelect('matrixblocks.fieldId, matrixblocks.ownerId, matrixblocks.ownerLocale, matrixblocks.typeId, matrixblocks.sortOrder')
 			->join('matrixblocks matrixblocks', 'matrixblocks.id = elements.id');
 
 		if ($criteria->fieldId)
@@ -138,6 +141,11 @@ class MatrixBlockElementType extends BaseElementType
 		if ($criteria->ownerId)
 		{
 			$query->andWhere(DbHelper::parseParam('matrixblocks.ownerId', $criteria->ownerId, $query->params));
+		}
+
+		if ($criteria->ownerLocale)
+		{
+			$query->andWhere(DbHelper::parseParam('matrixblocks.ownerLocale', $criteria->ownerLocale, $query->params));
 		}
 
 		if ($criteria->type)

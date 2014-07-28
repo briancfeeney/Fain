@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Rebrand);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class LogoVariable
  *
+ * @package craft.app.validators
  */
 class LogoVariable extends ImageVariable
 {

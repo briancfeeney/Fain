@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::PublishPro);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class EntryVersionModel
  *
+ * @package craft.app.models
  */
 class EntryVersionModel extends BaseEntryRevisionModel
 {
@@ -26,8 +28,7 @@ class EntryVersionModel extends BaseEntryRevisionModel
 	{
 		return array_merge(parent::defineAttributes(), array(
 			'versionId'   => AttributeType::Number,
-			'notes'       => AttributeType::String,
-			'dateCreated' => AttributeType::DateTime,
+			'num'         => AttributeType::Number,
 		));
 	}
 
@@ -50,8 +51,9 @@ class EntryVersionModel extends BaseEntryRevisionModel
 		$fieldContent = isset($entryData['fields']) ? $entryData['fields'] : null;
 		$attributes['versionId'] = $attributes['id'];
 		$attributes['id'] = $attributes['entryId'];
+		$attributes['revisionNotes'] = $attributes['notes'];
 		$title = $entryData['title'];
-		unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $entryData['title']);
+		unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $attributes['notes'], $entryData['title']);
 
 		$attributes = array_merge($attributes, $entryData);
 

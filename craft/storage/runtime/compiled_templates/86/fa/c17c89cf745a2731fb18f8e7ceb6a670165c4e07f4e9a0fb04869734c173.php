@@ -1,7 +1,7 @@
 <?php
 
 /* _elements/tableview/elements */
-class __TwigTemplate_86fac17c89cf745a2731fb18f8e7ceb6a670165c4e07f4e9a0fb04869734c173 extends Twig_Template
+class __TwigTemplate_86fac17c89cf745a2731fb18f8e7ceb6a670165c4e07f4e9a0fb04869734c173 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -37,13 +37,7 @@ class __TwigTemplate_86fac17c89cf745a2731fb18f8e7ceb6a670165c4e07f4e9a0fb0486973
             if (twig_in_filter($this->getAttribute((isset($context["element"]) ? $context["element"] : null), "id"), (isset($context["disabledElementIds"]) ? $context["disabledElementIds"] : null))) {
                 echo " class=\"disabled\"";
             }
-            echo " data-id=\"";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["element"]) ? $context["element"] : null), "id"), "html", null, true);
-            echo "\" data-label=\"";
-            echo twig_escape_filter($this->env, (isset($context["element"]) ? $context["element"] : null), "html", null, true);
-            echo "\" data-status=\"";
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["element"]) ? $context["element"] : null), "getStatus", array(), "method"), "html", null, true);
-            echo "\">
+            echo ">
 \t\t";
             // line 3
             $context['_parent'] = (array) $context;
@@ -127,6 +121,6 @@ class __TwigTemplate_86fac17c89cf745a2731fb18f8e7ceb6a670165c4e07f4e9a0fb0486973
 
     public function getDebugInfo()
     {
-        return array (  102 => 12,  88 => 11,  80 => 9,  76 => 7,  74 => 6,  69 => 5,  66 => 4,  49 => 3,  36 => 2,  54 => 11,  52 => 10,  48 => 8,  31 => 6,  28 => 5,  24 => 4,  19 => 1,);
+        return array (  96 => 12,  82 => 11,  74 => 9,  70 => 7,  68 => 6,  63 => 5,  60 => 4,  43 => 3,  36 => 2,  54 => 11,  52 => 10,  48 => 8,  31 => 6,  28 => 5,  24 => 4,  19 => 1,);
     }
 }

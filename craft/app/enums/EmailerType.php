@@ -12,9 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class EmailerType
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class EmailerType
+abstract class EmailerType extends BaseEnum
 {
 	const Php      = 'php';
 	const Sendmail = 'sendmail';

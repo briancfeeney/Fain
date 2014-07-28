@@ -38,9 +38,10 @@
 
 	
 	<section id="releaseList">
-			{% for album in entry.releaseList %}
-				{{ album.albumRelease }}
-			{% endfor %}
+		{% for album in entry.releaseList %}
+			<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
+			</iframe>
+		{% endfor %}
 	</section>
 	
 	<section id="mailingList">

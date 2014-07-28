@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Localize);
+craft()->requireEdition(Craft::Pro);
 
 /**
  * Handles localization actions.
+ *
+ * @package craft.app.controllers
  */
 class LocalizationController extends BaseController
 {

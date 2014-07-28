@@ -12,10 +12,13 @@ namespace Craft;
  */
 
 /**
+ * Class PatchManifestFileAction
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class PatchManifestFileAction
+abstract class PatchManifestFileAction extends BaseEnum
 {
-	const Add = 'Add';
+	const Add    = 'Add';
 	const Remove = 'Remove';
 }

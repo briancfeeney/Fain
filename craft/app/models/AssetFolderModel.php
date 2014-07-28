@@ -12,11 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class AssetFolderModel
  *
+ * @package craft.app.models
  */
 class AssetFolderModel extends BaseModel
 {
-
 	/**
 	 * @var array
 	 */
@@ -43,7 +44,7 @@ class AssetFolderModel extends BaseModel
 			'parentId' => AttributeType::Number,
 			'sourceId' => AttributeType::Number,
 			'name'     => AttributeType::String,
-			'fullPath' => AttributeType::String,
+			'path'     => AttributeType::String,
 		);
 	}
 
@@ -68,6 +69,19 @@ class AssetFolderModel extends BaseModel
 		}
 
 		return $this->_children;
+	}
+
+	/**
+	 * @return AssetFolderModel|null
+	 */
+	public function getParent()
+	{
+		if (!$this->parentId)
+		{
+			return null;
+		}
+
+		return craft()->assets->getFolderById($this->parentId);
 	}
 
 	/**

@@ -12,12 +12,14 @@ namespace Craft;
  */
 
 /**
+ * Class RichTextFieldType
  *
+ * @package craft.app.fieldtypes
  */
 class RichTextFieldType extends BaseFieldType
 {
 	private static $_includedFieldResources = false;
-	private static $_inputLang = 'en';
+	private static $_redactorLang = 'en';
 
 	/**
 	 * Returns the type of field this is.
@@ -117,9 +119,10 @@ class RichTextFieldType extends BaseFieldType
 
 		craft()->templates->includeJs('new Craft.RichTextInput(' .
 			'"'.craft()->templates->namespaceInputId($id).'", ' .
-			'"'.static::$_inputLang.'", ' .
 			JsonHelper::encode($this->_getSectionSources()).', ' .
-			$this->_getConfigJs() .
+			'"'.(isset($this->element) ? $this->element->locale : craft()->language).'", ' .
+			$this->_getConfigJs().', ' .
+			'"'.static::$_redactorLang.'"' .
 		');');
 
 		if ($value instanceof RichTextData)
@@ -181,6 +184,17 @@ class RichTextFieldType extends BaseFieldType
 		}, $value);
 
 		return $value;
+	}
+
+	/**
+	 * Returns static HTML for the field's value.
+	 *
+	 * @param mixed $value
+	 * @return string
+	 */
+	public function getStaticHtml($value)
+	{
+		return '<div class="text">'.($value ? $value : '&nbsp;').'</div>';
 	}
 
 	/**
@@ -260,11 +274,11 @@ class RichTextFieldType extends BaseFieldType
 		if (craft()->language != craft()->sourceLanguage)
 		{
 			// First try to include the actual target locale
-			if (!$this->_includeLangFile(craft()->language))
+			if (!$this->_includeRedactorLangFile(craft()->language))
 			{
 				// Otherwise try to load the language (without the territory half)
 				$languageId = craft()->locale->getLanguageID(craft()->language);
-				$this->_includeLangFile($languageId);
+				$this->_includeRedactorLangFile($languageId);
 			}
 		}
 	}
@@ -276,14 +290,14 @@ class RichTextFieldType extends BaseFieldType
 	 * @param string $lang
 	 * @return bool
 	 */
-	private function _includeLangFile($lang)
+	private function _includeRedactorLangFile($lang)
 	{
 		$path = 'lib/redactor/lang/'.$lang.'.js';
 
 		if (IOHelper::fileExists(craft()->path->getResourcesPath().$path))
 		{
 			craft()->templates->includeJsResource($path);
-			static::$_inputLang = $lang;
+			static::$_redactorLang = $lang;
 
 			return true;
 		}

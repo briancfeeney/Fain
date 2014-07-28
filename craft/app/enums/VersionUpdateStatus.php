@@ -12,10 +12,13 @@ namespace Craft;
  */
 
 /**
+ * Class VersionUpdateStatus
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class VersionUpdateStatus
+abstract class VersionUpdateStatus extends BaseEnum
 {
-	const UpToDate = 'UpToDate';
+	const UpToDate        = 'UpToDate';
 	const UpdateAvailable = 'UpdateAvailable';
 }

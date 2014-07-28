@@ -1,17 +1,4 @@
-{#
- # News entry template
- # -------------------
- #
- # This template gets loaded whenever a News entry’s URL is
- # requested. That’s because the News section’s Template setting is
- # set to “news/_entry”, the path to this template.
- #
- # When this template is loaded, it will already have an ‘entry’
- # variable, set to the requested News entry.
- #
- # See this page for more details on how Craft routes requests:
- # http://buildwithcraft.com/docs/routing
- #}
+{# Song entry template #}
 
 {% extends "_layout" %}
 
@@ -22,15 +9,38 @@
 	{% endif %}
 
 	<article>
-		<h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2>
+		<h2>
+			<a href="{{ entry.url }}">{{ entry.title }}</a>
+			{% if entry.coWriters | length %}
+			<small class="writer-credit">(
+				{% for writer in entry.coWriters %}
+					{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+				{% endfor %}
+			)</small>
+			{% endif %}
+		</h2>
 		<div class="row">
 			<div class="col-sm-9">
-				{{ entry.soundcloudId }}
+				<!-- <iframe width="100%" height="20" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ entry.soundcloudId }}%3Fsecret_token%3Ds-6J7so&amp;color=000000&amp;inverse=false&amp;auto_play=false"></iframe> -->
+				
+				<audio controls>
+					{% if entry.mp3Download | length %}
+					{% for asset in entry.mp3Download %}
+						<source src="{{ asset.url }}" type="audio/mpeg">
+					{% endfor %}
+					{% endif %}
+					{% if entry.songOgg | length %}
+					{% for asset in entry.songOgg %}
+						<source src="{{ asset.url }}" type="audio/ogg">
+					{% endfor %}
+					{% endif %}
+						Your browser does not support the audio element.
+				</audio>
 			</div>
 			<div class="col-sm-3">
 				{% if entry.mp3Download | length %}
 				    {% for asset in entry.mp3Download %}
-				        <a href="{{ asset.url }}">Download MP3</a>
+				        <a href="{{ asset.url }}" target="_blank">Download MP3</a>
 				    {% endfor %}
 				{% endif %}
 			</div>
@@ -57,12 +67,7 @@
 				
 				<div class="row">
 					
-					{% if entry.coWriters | length %}
-						<div class="col-sm-6">
-							<h3>Co-Writers</h3>
-							<p>{{ entry.coWriters }}</p>
-						</div>
-					{% endif %}
+
 
 					<div class="col-sm-6">
 						<h3>Date</h3>
@@ -82,7 +87,8 @@
 				<section id="releaseList">
 					<h3>Appears on These Releases</h3>
 					{% for album in entry.releaseList %}
-						{{ album.albumRelease }}
+						<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
+						</iframe>
 					{% endfor %}
 				</section>
 				{% endif %}

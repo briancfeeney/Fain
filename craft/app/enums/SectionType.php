@@ -12,9 +12,12 @@ namespace Craft;
  */
 
 /**
- * Section types
+ * Class SectionType
+ *
+ * @abstract
+ * @package craft.app.enums
  */
-class SectionType
+abstract class SectionType extends BaseEnum
 {
 	const Single    = 'single';
 	const Channel   = 'channel';

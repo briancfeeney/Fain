@@ -12,7 +12,10 @@ namespace Craft;
  */
 
 /**
+ * Class BaseOptionsFieldType
  *
+ * @abstract
+ * @package craft.app.fieldtypes
  */
 abstract class BaseOptionsFieldType extends BaseFieldType
 {
@@ -201,6 +204,24 @@ abstract class BaseOptionsFieldType extends BaseFieldType
 		}
 
 		return $this->_options;
+	}
+
+	/**
+	 * Returns the field options, with labels run through Craft::t().
+	 *
+	 * @access protected
+	 * @return array
+	 */
+	protected function getTranslatedOptions()
+	{
+		$options = $this->getOptions();
+
+		foreach ($options as &$option)
+		{
+			$option['label'] = Craft::t($option['label']);
+		}
+
+		return $options;
 	}
 
 	/**

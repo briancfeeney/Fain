@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class TemplatesService
  *
+ * @package craft.app.services
  */
 class TemplatesService extends BaseApplicationComponent
 {
@@ -36,8 +38,8 @@ class TemplatesService extends BaseApplicationComponent
 	private $_translations = array();
 
 	private $_hooks;
-
 	private $_textareaMarkers;
+	private $_renderingTemplate;
 
 	/**
 	 * Init
@@ -80,29 +82,49 @@ class TemplatesService extends BaseApplicationComponent
 			$twig->getExtension('core')->setTimezone($timezone);
 
 			// Give plugins a chance to add their own Twig extensions
-
-			// All plugins may not have been loaded yet if an exception is being thrown
-			// or a plugin is loading a template as part of of its init() function.
-			if (craft()->plugins->arePluginsLoaded())
-			{
-				$pluginExtensions = craft()->plugins->call('addTwigExtension');
-
-				foreach ($pluginExtensions as $extension)
-				{
-					$twig->addExtension($extension);
-				}
-			}
-			else
-			{
-				// Wait around for plugins to actually be loaded,
-				// then do it for all Twig environments that have been created.
-				craft()->on('plugins.loadPlugins', array($this, '_onPluginsLoaded'));
-			}
+			$this->_addPluginTwigExtensions($twig);
 
 			$this->_twigs[$loaderClass] = $twig;
 		}
 
 		return $this->_twigs[$loaderClass];
+	}
+
+	/**
+	 * Returns whether a template is currently being rendered.
+	 *
+	 * @return bool
+	 */
+	public function isRendering()
+	{
+		return isset($this->_renderingTemplate);
+	}
+
+	/**
+	 * Returns the template path that is currently being rendered, or the full template if renderString() or renderObjectTemplate() was called.
+	 *
+	 * @return string|null
+	 */
+	public function getRenderingTemplate()
+	{
+		if ($this->isRendering())
+		{
+			if (strncmp($this->_renderingTemplate, 'string:', 7) === 0)
+			{
+				$template = $this->_renderingTemplate;
+			}
+			else
+			{
+				$template = $this->findTemplate($this->_renderingTemplate);
+
+				if (!$template)
+				{
+					$template = craft()->path->getTemplatesPath().$this->_renderingTemplate;
+				}
+			}
+
+			return $template;
+		}
 	}
 
 	/**
@@ -115,7 +137,12 @@ class TemplatesService extends BaseApplicationComponent
 	public function render($template, $variables = array())
 	{
 		$twig = $this->getTwig();
-		return $twig->render($template, $variables);
+
+		$lastRenderingTemplate = $this->_renderingTemplate;
+		$this->_renderingTemplate = $template;
+		$result = $twig->render($template, $variables);
+		$this->_renderingTemplate = $lastRenderingTemplate;
+		return $result;
 	}
 
 	/**
@@ -130,7 +157,12 @@ class TemplatesService extends BaseApplicationComponent
 	{
 		$twig = $this->getTwig();
 		$twigTemplate = $twig->loadTemplate($template);
-		return call_user_func_array(array($twigTemplate, 'get'.$macro), $args);
+
+		$lastRenderingTemplate = $this->_renderingTemplate;
+		$this->_renderingTemplate = $template;
+		$result = call_user_func_array(array($twigTemplate, 'get'.$macro), $args);
+		$this->_renderingTemplate = $lastRenderingTemplate;
+		return $result;
 	}
 
 	/**
@@ -143,7 +175,12 @@ class TemplatesService extends BaseApplicationComponent
 	public function renderString($template, $variables = array())
 	{
 		$stringTemplate = new StringTemplate(md5($template), $template);
-		return $this->render($stringTemplate, $variables);
+
+		$lastRenderingTemplate = $this->_renderingTemplate;
+		$this->_renderingTemplate = 'string:'.$template;
+		$result = $this->render($stringTemplate, $variables);
+		$this->_renderingTemplate = $lastRenderingTemplate;
+		return $result;
 	}
 
 	/**
@@ -155,13 +192,21 @@ class TemplatesService extends BaseApplicationComponent
 	 */
 	public function renderObjectTemplate($template, $object)
 	{
+		// If there are no dynamic tags, just return the template
+		if (strpos($template, '{') === false)
+		{
+			return $template;
+		}
+
 		// Get a Twig instance with the String template loader
 		$twig = $this->getTwig('Twig_Loader_String');
 
 		// Have we already parsed this template?
 		if (!isset($this->_objectTemplates[$template]))
 		{
-			$formattedTemplate = str_replace(array('{', '}'), array('{{object.', '}}'), $template);
+			// Replace shortcut "{var}"s with "{{object.var}}"s, without affecting normal Twig tags
+			$formattedTemplate = preg_replace('/(?<![\{\%])\{(?![\{\%])/', '{{object.', $template);
+			$formattedTemplate = preg_replace('/(?<![\}\%])\}(?![\}\%])/', '}}', $formattedTemplate);
 			$this->_objectTemplates[$template] = $twig->loadTemplate($formattedTemplate);
 		}
 
@@ -173,9 +218,12 @@ class TemplatesService extends BaseApplicationComponent
 		}
 
 		// Render it!
-		$return = $this->_objectTemplates[$template]->render(array(
+		$lastRenderingTemplate = $this->_renderingTemplate;
+		$this->_renderingTemplate = 'string:'.$template;
+		$result = $this->_objectTemplates[$template]->render(array(
 			'object' => $object
 		));
+		$this->_renderingTemplate = $lastRenderingTemplate;
 
 		// Re-enable strict variables
 		if ($strictVariables)
@@ -183,7 +231,7 @@ class TemplatesService extends BaseApplicationComponent
 			$twig->enableStrictVariables();
 		}
 
-		return $return;
+		return $result;
 	}
 
 
@@ -214,11 +262,11 @@ class TemplatesService extends BaseApplicationComponent
 	 *
 	 * @param string    $node
 	 * @param bool|null $first
-	 * @deprecated Deprecated since 1.1
+	 * @deprecated Deprecated in 1.1.
 	 */
 	public function includeHeadNode($node, $first = false)
 	{
-		Craft::log('The craft()->templates->includeHeadNode() method has been deprecated. Use craft()->templates->includeHeadHtml() instead.', LogLevel::Warning);
+		craft()->deprecator->log('TemplatesService::includeHeadNode()', 'TemplatesService::includeHeadNode() has been deprecated. includeHeadHtml() instead.');
 		$this->includeHeadHtml($node, $first);
 	}
 
@@ -227,11 +275,11 @@ class TemplatesService extends BaseApplicationComponent
 	 *
 	 * @param string    $node
 	 * @param bool|null $first
-	 * @deprecated Deprecated since 1.1
+	 * @deprecated Deprecated in 1.1.
 	 */
 	public function includeFootNode($node, $first = false)
 	{
-		Craft::log('The craft()->templates->includeFootNode() method has been deprecated. Use craft()->templates->includeFootHtml() instead.', LogLevel::Warning);
+		craft()->deprecator->log('TemplatesService::includeFootNode()', 'TemplatesService::includeFootNode() has been deprecated. Use includeFootNode() instead.');
 		$this->includeFootHtml($node, $first);
 	}
 
@@ -438,6 +486,20 @@ class TemplatesService extends BaseApplicationComponent
 	 */
 	public function getFootHtml()
 	{
+		if (craft()->isInstalled() && craft()->request->isCpRequest())
+		{
+			// Include any JS/resource flashes
+			foreach (craft()->userSession->getJsResourceFlashes() as $path)
+			{
+				$this->includeJsResource($path);
+			}
+
+			foreach (craft()->userSession->getJsFlashes() as $js)
+			{
+				$this->includeJs($js, true);
+			}
+		}
+
 		// Are there any JS files to include?
 		if (!empty($this->_jsFiles))
 		{
@@ -517,47 +579,51 @@ class TemplatesService extends BaseApplicationComponent
 	 */
 	public function doesTemplateExist($name)
 	{
-		try
-		{
-			$this->findTemplate($name);
-			return true;
-		}
-		catch (TemplateLoaderException $e)
-		{
-			return false;
-		}
+		return (bool) $this->findTemplate($name);
 	}
 
 	/**
 	 * Finds a template on the file system and returns its path.
 	 *
 	 * @param string $name
-	 * @throws TemplateLoaderException
-	 * @return string
+	 * @return string|false
 	 */
 	public function findTemplate($name)
 	{
 		// Normalize the template name
 		$name = trim(preg_replace('#/{2,}#', '/', strtr($name, '\\', '/')), '/');
 
+		// Get the latest template base path
+		$templatesPath = craft()->path->getTemplatesPath();
+
+		$key = $templatesPath.':'.$name;
+
 		// Is this template path already cached?
-		if (isset($this->_templatePaths[$name]))
+		if (isset($this->_templatePaths[$key]))
 		{
-			return $this->_templatePaths[$name];
+			return $this->_templatePaths[$key];
 		}
 
 		// Validate the template name
 		$this->_validateTemplateName($name);
 
-		// Check if the template exists in the main templates path
+		// Look for the template in the main templates folder
+		$basePaths = array();
 
-		// Set the view path
-		//  - We need to set this for each template request, in case it was changed to a plugin's template path
-		$basePath = craft()->path->getTemplatesPath();
-
-		if (($path = $this->_findTemplate($basePath.$name)) !== null)
+		// Should we be looking for a localized version of the template?
+		if (craft()->request->isSiteRequest() && IOHelper::folderExists($templatesPath.craft()->language))
 		{
-			return $this->_templatePaths[$name] = $path;
+			$basePaths[] = $templatesPath.craft()->language.'/';
+		}
+
+		$basePaths[] = $templatesPath;
+
+		foreach ($basePaths as $basePath)
+		{
+			if (($path = $this->_findTemplate($basePath.$name)) !== null)
+			{
+				return $this->_templatePaths[$key] = $path;
+			}
 		}
 
 		// Otherwise maybe it's a plugin template?
@@ -569,24 +635,24 @@ class TemplatesService extends BaseApplicationComponent
 			$name = craft()->request->decodePathInfo($name);
 
 			$parts = array_filter(explode('/', $name));
-			$pluginHandle = mb_strtolower(array_shift($parts));
+			$pluginHandle = StringHelper::toLowerCase(array_shift($parts));
 
 			if ($pluginHandle && ($plugin = craft()->plugins->getPlugin($pluginHandle)) !== null)
 			{
 				// Get the template path for the plugin.
-				$basePath = craft()->path->getPluginsPath().mb_strtolower($plugin->getClassHandle()).'/templates/';
+				$basePath = craft()->path->getPluginsPath().StringHelper::toLowerCase($plugin->getClassHandle()).'/templates/';
 
 				// Chop off the plugin segment, since that's already covered by $basePath
 				$tempName = implode('/', $parts);
 
 				if (($path = $this->_findTemplate($basePath.$tempName)) !== null)
 				{
-					return $this->_templatePaths[$name] = $path;
+					return $this->_templatePaths[$key] = $path;
 				}
 			}
 		}
 
-		throw new TemplateLoaderException($name);
+		return false;
 	}
 
 	/**
@@ -637,7 +703,7 @@ class TemplatesService extends BaseApplicationComponent
 			if ($otherAttributes)
 			{
 				$idNamespace = $this->formatInputId($namespace);
-				$html = preg_replace('/(?<![\w\-])((id=|for=|data\-target=|data-target-prefix=)(\'|"))([^\'"]+)\3/i', '$1'.$idNamespace.'-$4$3', $html);
+				$html = preg_replace('/(?<![\w\-])((id|for|list|data\-target|data\-reverse\-target|data\-target\-prefix)=(\'|")#?)([^\.][^\'"]*)\3/i', '$1'.$idNamespace.'-$4$3', $html);
 			}
 
 			// Bring back the textarea content
@@ -746,8 +812,9 @@ class TemplatesService extends BaseApplicationComponent
 		if (!isset($this->_twigOptions))
 		{
 			$this->_twigOptions = array(
-				'cache'       => craft()->path->getCompiledTemplatesPath(),
-				'auto_reload' => true,
+				'base_template_class' => 'Craft\BaseTemplate',
+				'cache'               => craft()->path->getCompiledTemplatesPath(),
+				'auto_reload'         => true,
 			);
 
 			if (craft()->config->get('devMode'))
@@ -843,6 +910,39 @@ class TemplatesService extends BaseApplicationComponent
 	}
 
 	/**
+	 * Adds any plugin-supplied Twig extensions to a given Twig instance.
+	 *
+	 * @access private
+	 * @param \Twig_Environment $twig
+	 */
+	private function _addPluginTwigExtensions(\Twig_Environment $twig)
+	{
+		if (craft()->plugins->arePluginsLoaded())
+		{
+			$pluginExtensions = craft()->plugins->call('addTwigExtension');
+
+			try
+			{
+				foreach ($pluginExtensions as $extension)
+				{
+					$twig->addExtension($extension);
+				}
+			}
+			catch (\LogicException $e)
+			{
+				Craft::log('Tried to register plugin-supplied Twig extensions, but Twig environment has already initialized its extensions.', LogLevel::Warning);
+				return;
+			}
+		}
+		else
+		{
+			// Wait around for plugins to actually be loaded,
+			// then do it for all Twig environments that have been created.
+			craft()->on('plugins.loadPlugins', array($this, '_onPluginsLoaded'));
+		}
+	}
+
+	/**
 	 * Loads plugin-supplied Twig extensions now that all plugins have been loaded.
 	 *
 	 * @access private
@@ -850,14 +950,9 @@ class TemplatesService extends BaseApplicationComponent
 	 */
 	public function _onPluginsLoaded(Event $event)
 	{
-		$pluginExtensions = craft()->plugins->call('addTwigExtension');
-
 		foreach ($this->_twigs as $twig)
 		{
-			foreach ($pluginExtensions as $extension)
-			{
-				$twig->addExtension($extension);
-			}
+			$this->_addPluginTwigExtensions($twig);
 		}
 	}
 
@@ -965,7 +1060,18 @@ class TemplatesService extends BaseApplicationComponent
 			$html .= ' hasicon';
 		}
 
-		$html .= '" data-id="'.$context['element']->id.'" data-url="'.$context['element']->getUrl().'">';
+		$label = HtmlHelper::encode($context['element']);
+
+		$html .= '" data-id="'.$context['element']->id.'" data-locale="'.$context['element']->locale.'" data-status="'.$context['element']->getStatus().'" data-label="'.$label.'" data-url="'.$context['element']->getUrl().'"';
+
+		$isEditable = ElementHelper::isElementEditable($context['element']);
+
+		if ($isEditable)
+		{
+			$html .= ' data-editable="1"';
+		}
+
+		$html .= '>';
 
 		if ($context['context'] == 'field' && isset($context['name']))
 		{
@@ -984,21 +1090,32 @@ class TemplatesService extends BaseApplicationComponent
 
 		$html .= '<div class="label">';
 
-		if (isset($context['elementType']) && $context['elementType']->hasStatuses())
+		if (isset($context['elementType']))
 		{
-			$html .= '<div class="status '.$context['element']->getStatus().'"></div> ';
-		}
-
-		if ($context['context'] == 'index' && ($cpEditUrl = $context['element']->getCpEditUrl()))
-		{
-			$html .= '<a href="'.$cpEditUrl.'">'.HtmlHelper::encode($context['element']).'</a>';
+			$elementType = $context['elementType'];
 		}
 		else
 		{
-			$html .= $context['element'];
+			$elementType = craft()->elements->getElementType($context['element']->getElementType());
 		}
 
-		$html .= '</div></div>';
+		if ($elementType->hasStatuses())
+		{
+			$html .= '<span class="status '.$context['element']->getStatus().'"></span>';
+		}
+
+		$html .= '<span class="title">';
+
+		if ($context['context'] == 'index' && ($cpEditUrl = $context['element']->getCpEditUrl()))
+		{
+			$html .= '<a href="'.$cpEditUrl.'">'.$label.'</a>';
+		}
+		else
+		{
+			$html .= $label;
+		}
+
+		$html .= '</span></div></div>';
 
 		return $html;
 	}

@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::PublishPro);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class EntryDraftModel
  *
+ * @package craft.app.models
  */
 class EntryDraftModel extends BaseEntryRevisionModel
 {
@@ -49,14 +51,19 @@ class EntryDraftModel extends BaseEntryRevisionModel
 		$fieldContent = isset($entryData['fields']) ? $entryData['fields'] : null;
 		$attributes['draftId'] = $attributes['id'];
 		$attributes['id'] = $attributes['entryId'];
+		$attributes['revisionNotes'] = $attributes['notes'];
 		$title = $entryData['title'];
-		unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $entryData['title']);
+		unset($attributes['data'], $entryData['fields'], $attributes['entryId'], $attributes['notes'], $entryData['title']);
 
 		$attributes = array_merge($attributes, $entryData);
 
 		// Initialize the draft
 		$draft = parent::populateModel($attributes);
-		$draft->getContent()->title = $title;
+
+		if ($title)
+		{
+			$draft->getContent()->title = $title;
+		}
 
 		if ($fieldContent)
 		{

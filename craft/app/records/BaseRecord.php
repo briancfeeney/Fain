@@ -12,9 +12,10 @@ namespace Craft;
  */
 
 /**
- * Active Record base class
+ * Active Record base class.
  *
  * @abstract
+ * @package craft.app.records
  */
 abstract class BaseRecord extends \CActiveRecord
 {
@@ -190,13 +191,9 @@ abstract class BaseRecord extends \CActiveRecord
 				}
 				case AttributeType::Mixed:
 				{
-					if (!empty($value) && is_string($value))
+					if (is_string($value) && mb_strlen($value) && ($value[0] == '[' || $value[0] == '{'))
 					{
 						$this->setAttribute($name, JsonHelper::decode($value));
-					}
-					else
-					{
-						$this->setAttribute($name, array());
 					}
 
 					break;
@@ -404,14 +401,25 @@ abstract class BaseRecord extends \CActiveRecord
 	}
 
 	/**
-	 * @param        $id
-	 * @param string $condition
-	 * @param array  $params
+	 * @param mixed $id
+	 * @param mixed $condition
+	 * @param array $params
 	 * @return \CActiveRecord
 	 */
 	public function findById($id, $condition = '', $params = array())
 	{
 		return $this->findByPk($id, $condition, $params);
+	}
+
+	/**
+	 * @param mixed $id
+	 * @param mixed $condition
+	 * @param array $params
+	 * @return \CActiveRecord[]
+	 */
+	public function findAllById($id, $condition = '', $params = array())
+	{
+		return $this->findAllByPk($id, $condition, $params);
 	}
 
 	// CModel and CActiveRecord methods

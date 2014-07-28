@@ -1,16 +1,22 @@
 <?php
+
 /**
- * NestedSetBehavior class file.
+ * Craft by Pixel & Tonic
  *
- * @author Alexander Kochetov <creocoder@gmail.com>
- * @link https://github.com/yiiext/nested-set-behavior
+ * @package   Craft
+ * @author    Pixel & Tonic, Inc.
+ * @copyright Copyright (c) 2014, Pixel & Tonic, Inc.
+ * @license   http://buildwithcraft.com/license Craft License Agreement
+ * @link      http://buildwithcraft.com
  */
 
 /**
  * Provides nested set functionality for a model.
  *
  * @version 1.06
- * @package yiiext.behaviors.model.trees
+ * @author Alexander Kochetov <creocoder@gmail.com>
+ * @link https://github.com/yiiext/nested-set-behavior
+ * @package craft.app.extensions
  */
 class NestedSetBehavior extends CActiveRecordBehavior
 {
@@ -18,7 +24,7 @@ class NestedSetBehavior extends CActiveRecordBehavior
 	public $rootAttribute='root';
 	public $leftAttribute='lft';
 	public $rightAttribute='rgt';
-	public $levelAttribute='depth';
+	public $levelAttribute='level';
 	private $_ignoreEvent=false;
 	private $_deleted=false;
 	private $_id;
@@ -27,10 +33,10 @@ class NestedSetBehavior extends CActiveRecordBehavior
 
 	/**
 	 * Named scope. Gets descendants for node.
-	 * @param int $depth the depth.
+	 * @param int $level the level.
 	 * @return CActiveRecord the owner.
 	 */
-	public function descendants($depth=null)
+	public function descendants($level=null)
 	{
 		$owner=$this->getOwner();
 		$db=$owner->getDbConnection();
@@ -43,8 +49,8 @@ class NestedSetBehavior extends CActiveRecordBehavior
 			'order'=>$alias.'.'.$db->quoteColumnName($this->leftAttribute),
 		));
 
-		if($depth!==null)
-			$criteria->addCondition($alias.'.'.$db->quoteColumnName($this->levelAttribute).'<='.($owner->{$this->levelAttribute}+$depth));
+		if($level!==null)
+			$criteria->addCondition($alias.'.'.$db->quoteColumnName($this->levelAttribute).'<='.($owner->{$this->levelAttribute}+$level));
 
 		if($this->hasManyRoots)
 		{
@@ -66,10 +72,10 @@ class NestedSetBehavior extends CActiveRecordBehavior
 
 	/**
 	 * Named scope. Gets ancestors for node.
-	 * @param int $depth the depth.
+	 * @param int $level the level.
 	 * @return CActiveRecord the owner.
 	 */
-	public function ancestors($depth=null)
+	public function ancestors($level=null)
 	{
 		$owner=$this->getOwner();
 		$db=$owner->getDbConnection();
@@ -82,8 +88,8 @@ class NestedSetBehavior extends CActiveRecordBehavior
 			'order'=>$alias.'.'.$db->quoteColumnName($this->leftAttribute),
 		));
 
-		if($depth!==null)
-			$criteria->addCondition($alias.'.'.$db->quoteColumnName($this->levelAttribute).'>='.($owner->{$this->levelAttribute}-$depth));
+		if($level!==null)
+			$criteria->addCondition($alias.'.'.$db->quoteColumnName($this->levelAttribute).'>='.($owner->{$this->levelAttribute}-$level));
 
 		if($this->hasManyRoots)
 		{

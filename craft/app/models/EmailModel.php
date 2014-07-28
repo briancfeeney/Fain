@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Email message model class
+ * Email message model class.
+ *
+ * @package craft.app.models
  */
 class EmailModel extends BaseModel
 {
@@ -42,6 +44,7 @@ class EmailModel extends BaseModel
 			'bcc'               => array(AttributeType::Mixed),
 			'stringAttachments' => array(AttributeType::Mixed),
 			'attachments'       => array(AttributeType::Mixed),
+			'customHeaders'     => array(AttributeType::Mixed),
 		);
 	}
 

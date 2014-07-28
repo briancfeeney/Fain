@@ -1,7 +1,7 @@
 <?php
 
 /* assets */
-class __TwigTemplate_fc8d110795ca7739f20beb7ff555dbffc21fe25b7b3ca33789f897031bbb8e02 extends Twig_Template
+class __TwigTemplate_fc8d110795ca7739f20beb7ff555dbffc21fe25b7b3ca33789f897031bbb8e02 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -26,6 +26,10 @@ class __TwigTemplate_fc8d110795ca7739f20beb7ff555dbffc21fe25b7b3ca33789f897031bb
         $context["elementType"] = "Asset";
         // line 5
         \Craft\craft()->templates->includeCssResource("css/assets.css");
+        // line 6
+        \Craft\craft()->templates->includeJsResource("lib/fileupload/jquery.ui.widget.js");
+        // line 7
+        \Craft\craft()->templates->includeJsResource("lib/fileupload/jquery.fileupload.js");
         $this->parent->display($context, array_merge($this->blocks, $blocks));
     }
 
@@ -41,6 +45,6 @@ class __TwigTemplate_fc8d110795ca7739f20beb7ff555dbffc21fe25b7b3ca33789f897031bb
 
     public function getDebugInfo()
     {
-        return array (  28 => 5,  26 => 3,  24 => 2,);
+        return array (  32 => 7,  30 => 6,  28 => 5,  26 => 3,  24 => 2,);
     }
 }

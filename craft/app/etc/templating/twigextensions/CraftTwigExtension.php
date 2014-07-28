@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class CraftTwigExtension
  *
+ * @package craft.app.etc.templating.twigextensions
  */
 class CraftTwigExtension extends \Twig_Extension
 {
@@ -26,6 +28,7 @@ class CraftTwigExtension extends \Twig_Extension
 	public function getTokenParsers()
 	{
 		return array(
+			new Cache_TokenParser(),
 			new Exit_TokenParser(),
 			new Header_TokenParser(),
 			new Hook_TokenParser(),
@@ -41,8 +44,8 @@ class CraftTwigExtension extends \Twig_Extension
 			new Nav_TokenParser(),
 			new Paginate_TokenParser(),
 			new Redirect_TokenParser(),
+			new RequireEdition_TokenParser(),
 			new RequireLogin_TokenParser(),
-			new RequirePackage_TokenParser(),
 			new RequirePermission_TokenParser(),
 			new Switch_TokenParser(),
 		);
@@ -61,8 +64,9 @@ class CraftTwigExtension extends \Twig_Extension
 
 		return array(
 			'currency'           => new \Twig_Filter_Function('\Craft\craft()->numberFormatter->formatCurrency'),
+			'date'               => new \Twig_Filter_Method($this, 'dateFilter', array('needs_environment' => true)),
 			'datetime'           => new \Twig_Filter_Function('\Craft\craft()->dateFormatter->formatDateTime'),
-			'filesize'	         => new \Twig_Filter_Function('\Craft\craft()->formatter->formatSize'),
+			'filesize'           => new \Twig_Filter_Function('\Craft\craft()->formatter->formatSize'),
 			'filter'             => new \Twig_Filter_Function('array_filter'),
 			'group'              => new \Twig_Filter_Method($this, 'groupFilter'),
 			'indexOf'            => new \Twig_Filter_Method($this, 'indexOfFilter'),
@@ -81,6 +85,7 @@ class CraftTwigExtension extends \Twig_Extension
 			'translate'          => $translateFilter,
 			't'                  => $translateFilter,
 			'ucfirst'            => new \Twig_Filter_Function('ucfirst'),
+			'ucwords'            => new \Twig_Filter_Function('ucwords'),
 			'without'            => new \Twig_Filter_Method($this, 'withoutFilter'),
 		);
 	}
@@ -121,8 +126,7 @@ class CraftTwigExtension extends \Twig_Extension
 	public function parseRefsFilter($str)
 	{
 		$str = craft()->elements->parseRefs($str);
-		$charset = craft()->templates->getTwig()->getCharset();
-		return new \Twig_Markup($str, $charset);
+		return TemplateHelper::getRaw($str);
 	}
 
 	/**
@@ -145,6 +149,38 @@ class CraftTwigExtension extends \Twig_Extension
 			// Otherwise use str_replace
 			return str_replace($search, $replace, $str);
 		}
+	}
+
+	/**
+	 * Extending Twig's |date filter so we can run any translations on the output.
+	 *
+	 * @param \Twig_Environment $env
+	 * @param                   $date
+	 * @param null              $format
+	 * @param null              $timezone
+	 * @return mixed|string
+	 */
+	public function dateFilter(\Twig_Environment $env, $date, $format = null, $timezone = null)
+	{
+		// Let Twig do it's thing.
+		$value = \twig_date_format_filter($env, $date, $format, $timezone);
+
+		// Get the "words".  Split on anything that is not a unicode letter or number.
+		preg_match_all('/[\p{L}\p{N}]+/u', $value, $words);
+
+		if ($words && isset($words[0]) && count($words[0]) > 0)
+		{
+			foreach ($words[0] as $word)
+			{
+				// Translate and swap out.
+				$translatedWord = Craft::t($word);
+				$value = str_replace($word, $translatedWord, $value);
+			}
+		}
+
+		// Return the translated value.
+		return $value;
+
 	}
 
 	/**
@@ -219,8 +255,7 @@ class CraftTwigExtension extends \Twig_Extension
 	public function markdownFilter($str)
 	{
 		$html = StringHelper::parseMarkdown($str);
-		$charset = craft()->templates->getTwig()->getCharset();
-		return new \Twig_Markup($html, $charset);
+		return TemplateHelper::getRaw($html);
 	}
 
 	/**
@@ -257,7 +292,7 @@ class CraftTwigExtension extends \Twig_Extension
 	public function getHeadHtmlFunction()
 	{
 		$html = craft()->templates->getHeadHtml();
-		return $this->getTwigMarkup($html);
+		return TemplateHelper::getRaw($html);
 	}
 
 	/**
@@ -268,7 +303,7 @@ class CraftTwigExtension extends \Twig_Extension
 	public function getFootHtmlFunction()
 	{
 		$html = craft()->templates->getFootHtml();
-		return $this->getTwigMarkup($html);
+		return TemplateHelper::getRaw($html);
 	}
 
 	/**
@@ -335,6 +370,14 @@ class CraftTwigExtension extends \Twig_Extension
 			$globals['user'] = null;
 		}
 
+		if (craft()->request->isCpRequest())
+		{
+			$globals['CraftEdition']  = craft()->getEdition();
+			$globals['CraftPersonal'] = Craft::Personal;
+			$globals['CraftClient']   = Craft::Client;
+			$globals['CraftPro']      = Craft::Pro;
+		}
+
 		return $globals;
 	}
 
@@ -346,18 +389,5 @@ class CraftTwigExtension extends \Twig_Extension
 	public function getName()
 	{
 		return 'craft';
-	}
-
-	/**
-	 * Returns a string wrapped in a Twig_Markup object.
-	 *
-	 * @access private
-	 * @param string $str
-	 * @return \Twig_Markup
-	 */
-	private function getTwigMarkup($str)
-	{
-		$charset = craft()->templates->getTwig()->getCharset();
-		return new \Twig_Markup($str, $charset);
 	}
 }

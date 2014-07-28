@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class DateTime
  *
+ * @package craft.app.etc.dates
  */
 class DateTime extends \DateTime
 {
@@ -80,6 +82,11 @@ class DateTime extends \DateTime
 		{
 			$dt = $date;
 
+			if (!$timezone)
+			{
+				$timezone = craft()->getTimeZone();
+			}
+
 			if (empty($dt['date']) && empty($dt['time']))
 			{
 				return null;
@@ -105,12 +112,7 @@ class DateTime extends \DateTime
 				$date = '';
 				$format = '';
 
-				if (!$timezone)
-				{
-					$timezone = craft()->getTimeZone();
-				}
-
-				// Default to the current date, because that makes more sense than Jan 1, 1970
+				// Default to the current date
 				$current = new DateTime('now', new \DateTimeZone($timezone));
 				$date .= $current->month().'/'.$current->day().'/'.$current->year();
 				$format .= 'n/j/Y';
@@ -118,6 +120,10 @@ class DateTime extends \DateTime
 
 			if (!empty($dt['time']))
 			{
+				// Replace the localized "AM" and "PM"
+				$localeData = craft()->i18n->getLocaleData();
+				$dt['time'] = str_replace(array($localeData->getAMName(), $localeData->getPMName()), array('AM', 'PM'), $dt['time']);
+
 				$date .= ' '.$dt['time'];
 				$format .= ' '.$dateFormatter->getTimepickerPhpFormat();
 			}
@@ -177,8 +183,8 @@ class DateTime extends \DateTime
 
 		if ($timezone)
 		{
-			$format .= 'e';
-			$date   .= $timezone;
+			$format .= ' e';
+			$date   .= ' '.$timezone;
 		}
 
 		return static::createFromFormat('!'.$format, $date);

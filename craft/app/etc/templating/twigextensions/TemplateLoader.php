@@ -13,6 +13,9 @@ namespace Craft;
 
 /**
  * Loads Craft templates into Twig.
+ *
+ * @implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface
+ * @package craft.app.etc.templating
  */
 class TemplateLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterface
 {
@@ -38,7 +41,7 @@ class TemplateLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterfa
 	{
 		if (is_string($name))
 		{
-			$template = craft()->templates->findTemplate($name);
+			$template = $this->_findTemplate($name);
 
 			if (IOHelper::isReadable($template))
 			{
@@ -65,7 +68,7 @@ class TemplateLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterfa
 	{
 		if (is_string($name))
 		{
-			return craft()->templates->findTemplate($name);
+			return $this->_findTemplate($name);
 		}
 		else
 		{
@@ -90,12 +93,31 @@ class TemplateLoader implements \Twig_LoaderInterface, \Twig_ExistsLoaderInterfa
 
 		if (is_string($name))
 		{
-			$sourceModifiedTime = IOHelper::getLastTimeModified(craft()->templates->findTemplate($name));
+			$sourceModifiedTime = IOHelper::getLastTimeModified($this->_findTemplate($name));
 			return $sourceModifiedTime->getTimestamp() <= $time;
 		}
 		else
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Returns the path to a given template, or throws a TemplateLoaderException.
+	 *
+	 * @access private
+	 * @throws TemplateLoaderException
+	 * @return string $name
+	 */
+	private function _findTemplate($name)
+	{
+		$template = craft()->templates->findTemplate($name);
+
+		if (!$template)
+		{
+			throw new TemplateLoaderException($name);
+		}
+
+		return $template;
 	}
 }

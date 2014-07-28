@@ -14,6 +14,8 @@ namespace Craft;
 /**
  * UserIdentity represents the data needed to identify a user.
  * It contains the authentication method that checks if the provided data can identity the user.
+ *
+ * @package craft.app.etc.users
  */
 class UserIdentity extends \CUserIdentity
 {
@@ -45,6 +47,14 @@ class UserIdentity extends \CUserIdentity
 			$this->errorCode = static::ERROR_USERNAME_INVALID;
 			return false;
 		}
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getId()
+	{
+		return $this->_id;
 	}
 
 	/**
@@ -99,9 +109,7 @@ class UserIdentity extends \CUserIdentity
 					else
 					{
 						// Finally, everything is well with the world. Let's log in.
-						$this->_id = $user->id;
-						$this->username = $user->username;
-						$this->errorCode = static::ERROR_NONE;
+						$this->logUserIn($user);
 					}
 				}
 				else
@@ -129,6 +137,16 @@ class UserIdentity extends \CUserIdentity
 	}
 
 	/**
+	 * @param $user
+	 */
+	public function logUserIn($user)
+	{
+		$this->_id = $user->id;
+		$this->username = $user->username;
+		$this->errorCode = static::ERROR_NONE;
+	}
+
+	/**
 	 * Returns the proper Account Locked error code, based on the system's Invalid Login Mode
 	 *
 	 * @access private
@@ -144,13 +162,5 @@ class UserIdentity extends \CUserIdentity
 		{
 			return static::ERROR_ACCOUNT_LOCKED;
 		}
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getId()
-	{
-		return $this->_id;
 	}
 }

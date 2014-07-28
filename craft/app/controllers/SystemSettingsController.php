@@ -13,6 +13,8 @@ namespace Craft;
 
 /**
  * Handles settings from the control panel.
+ *
+ * @package craft.app.controllers
  */
 class SystemSettingsController extends BaseController
 {
@@ -281,7 +283,7 @@ class SystemSettingsController extends BaseController
 		$settings['emailAddress'] = $emailSettings->emailAddress;
 		$settings['senderName']   = $emailSettings->senderName;
 
-		if (craft()->hasPackage(CraftPackage::Rebrand))
+		if (craft()->getEdition() >= Craft::Client)
 		{
 			$settings['template'] = craft()->request->getPost('template');
 		}

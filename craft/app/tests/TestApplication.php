@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class TestApplication
  *
+ * @package craft.app.tests
  */
 class TestApplication extends WebApp
 {
@@ -32,6 +34,9 @@ class TestApplication extends WebApp
 		mb_http_input('UTF-8');
 		mb_http_output('UTF-8');
 		mb_detect_order('auto');
+
+		// No matter how much you want to delete this line... DONT DO IT.
+		Craft::$enableIncludePath = false;
 
 		parent::__construct($config);
 	}

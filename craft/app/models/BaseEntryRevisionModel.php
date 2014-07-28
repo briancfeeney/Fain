@@ -11,10 +11,13 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::PublishPro);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class BaseEntryRevisionModel
  *
+ * @abstract
+ * @package craft.app.models
  */
 class BaseEntryRevisionModel extends EntryModel
 {
@@ -25,7 +28,9 @@ class BaseEntryRevisionModel extends EntryModel
 	protected function defineAttributes()
 	{
 		return array_merge(parent::defineAttributes(), array(
-			'creatorId' => AttributeType::Number,
+			'creatorId'   => AttributeType::Number,
+			'dateUpdated' => AttributeType::DateTime,
+			'dateCreated' => AttributeType::DateTime,
 		));
 	}
 
@@ -50,14 +55,7 @@ class BaseEntryRevisionModel extends EntryModel
 		}
 
 		// Set the values and prep them
-		$this->getContent()->setAttributes($contentByFieldHandles);
-
-		$type = $this->getType();
-
-		if ($type)
-		{
-			craft()->content->prepElementContentForSave($this, $type->getFieldLayout(), false);
-		}
+		$this->setContentFromPost($contentByFieldHandles);
 	}
 
 	/**
@@ -68,5 +66,20 @@ class BaseEntryRevisionModel extends EntryModel
 	public function getCreator()
 	{
 		return craft()->users->getUserById($this->creatorId);
+	}
+
+	/**
+	 * Returns the element's full URL.
+	 *
+	 * @return string
+	 */
+	public function getUrl()
+	{
+		if ($this->uri === null)
+		{
+			ElementHelper::setUniqueUri($this);
+		}
+
+		return parent::getUrl();
 	}
 }

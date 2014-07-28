@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class PathService
  *
+ * @package craft.app.services
  */
 class PathService extends BaseApplicationComponent
 {
@@ -119,6 +121,16 @@ class PathService extends BaseApplicationComponent
 	/**
 	 * @return string
 	 */
+	public function getAssetsTempSourcePath()
+	{
+		$path = $this->getAssetsPath().'tempuploads/';
+		IOHelper::ensureFolderExists($path);
+		return $path;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getAssetsImageSourcePath()
 	{
 		$path = $this->getAssetsPath() . 'sources/';
@@ -198,7 +210,7 @@ class PathService extends BaseApplicationComponent
 	{
 		if ($pluginHandle)
 		{
-			return $this->getPluginsPath().mb_strtolower($pluginHandle).'/migrations/';
+			return $this->getPluginsPath().StringHelper::toLowerCase($pluginHandle).'/migrations/';
 		}
 
 		return $this->getAppPath().'migrations/';
@@ -316,7 +328,13 @@ class PathService extends BaseApplicationComponent
 	 */
 	public function getCachePath()
 	{
-		$path = $this->getRuntimePath().'cache/';
+		$path = craft()->config->get('cachePath', ConfigFile::FileCache);
+
+		if (!$path)
+		{
+			$path = $this->getRuntimePath().'cache/';
+		}
+
 		IOHelper::ensureFolderExists($path);
 		return $path;
 	}

@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Rebrand);
+craft()->requireEdition(Craft::Client);
 
 /**
+ * Class EmailMessageRecord
  *
+ * @package craft.app.records
  */
 class EmailMessageRecord extends BaseRecord
 {

@@ -1,7 +1,7 @@
 <?php
 
 /* settings/assets/sources/index */
-class __TwigTemplate_f3db1543cef4ef3e74748e72c94052837ef7a06b161262de6a9c4b192b350c9e extends Twig_Template
+class __TwigTemplate_f3db1543cef4ef3e74748e72c94052837ef7a06b161262de6a9c4b192b350c9e extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -46,7 +46,7 @@ class __TwigTemplate_f3db1543cef4ef3e74748e72c94052837ef7a06b161262de6a9c4b192b3
             $context["sortable"] = (twig_length_filter($this->env, (isset($context["sources"]) ? $context["sources"] : null)) > 1);
             // line 14
             echo "
-\t\t<table id=\"sources\" class=\"data collapsible\">
+\t\t<table id=\"sources\" class=\"data fullwidth collapsible\">
 \t\t\t<thead>
 \t\t\t\t<th scope=\"col\">";
             // line 17
@@ -54,7 +54,7 @@ class __TwigTemplate_f3db1543cef4ef3e74748e72c94052837ef7a06b161262de6a9c4b192b3
             echo "</th>
 \t\t\t\t";
             // line 18
-            if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "Cloud"), "method")) {
+            if (((isset($context["CraftEdition"]) ? $context["CraftEdition"] : null) == (isset($context["CraftPro"]) ? $context["CraftPro"] : null))) {
                 echo "<th scope=\"col\">";
                 echo twig_escape_filter($this->env, \Craft\Craft::t("Type"), "html", null, true);
                 echo "</th>";
@@ -89,11 +89,11 @@ class __TwigTemplate_f3db1543cef4ef3e74748e72c94052837ef7a06b161262de6a9c4b192b3
                 echo "</a></th>
 \t\t\t\t\t\t";
                 // line 26
-                if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "Cloud"), "method")) {
+                if (((isset($context["CraftEdition"]) ? $context["CraftEdition"] : null) == (isset($context["CraftPro"]) ? $context["CraftPro"] : null))) {
                     echo "<td data-title=\"";
                     echo twig_escape_filter($this->env, \Craft\Craft::t("Type"), "html", null, true);
                     echo "\">";
-                    echo twig_escape_filter($this->env, $this->getAttribute((isset($context["source"]) ? $context["source"] : null), "getSourceTypeName", array(), "method"), "html", null, true);
+                    echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["source"]) ? $context["source"] : null), "getSourceType", array(), "method"), "getName", array(), "method"), "html", null, true);
                     echo "</td>";
                 }
                 // line 27

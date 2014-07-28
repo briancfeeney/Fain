@@ -1,7 +1,7 @@
 <?php
 
 /* settings/fields/_edit */
-class __TwigTemplate_03920e9f1afaaf5aedcf9c45f19d29b9b0992eb310773c7509eb06c7d5f15858 extends Twig_Template
+class __TwigTemplate_03920e9f1afaaf5aedcf9c45f19d29b9b0992eb310773c7509eb06c7d5f15858 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -89,7 +89,7 @@ class __TwigTemplate_03920e9f1afaaf5aedcf9c45f19d29b9b0992eb310773c7509eb06c7d5f
         // line 62
         ob_start();
         // line 63
-        echo "\t<form method=\"post\" action=\"\" accept-charset=\"UTF-8\" data-saveshortcut=\"1\">
+        echo "\t<form method=\"post\" accept-charset=\"UTF-8\" data-saveshortcut=\"1\">
 \t\t<input type=\"hidden\" name=\"action\" value=\"fields/saveField\">
 \t\t<input type=\"hidden\" name=\"redirect\" value=\"settings/fields/{groupId}\">
 \t\t";
@@ -146,7 +146,7 @@ class __TwigTemplate_03920e9f1afaaf5aedcf9c45f19d29b9b0992eb310773c7509eb06c7d5f
 
 \t\t";
         // line 119
-        if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "Localize"), "method")) {
+        if ($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "isLocalized", array(), "method")) {
             // line 120
             echo "\t\t\t";
             echo $context["forms"]->getcheckboxField(array("label" => \Craft\Craft::t("This field is translatable"), "name" => "translatable", "checked" => ((array_key_exists("field", $context)) ? ($this->getAttribute((isset($context["field"]) ? $context["field"] : null), "translatable")) : (false))));

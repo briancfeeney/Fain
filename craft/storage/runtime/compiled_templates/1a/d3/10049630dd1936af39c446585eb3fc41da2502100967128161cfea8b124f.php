@@ -1,7 +1,7 @@
 <?php
 
 /* settings/fields */
-class __TwigTemplate_1ad310049630dd1936af39c446585eb3fc41da2502100967128161cfea8b124f extends Twig_Template
+class __TwigTemplate_1ad310049630dd1936af39c446585eb3fc41da2502100967128161cfea8b124f extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -157,7 +157,7 @@ class __TwigTemplate_1ad310049630dd1936af39c446585eb3fc41da2502100967128161cfea8
         // line 72
         if ((isset($context["fields"]) ? $context["fields"] : null)) {
             // line 73
-            echo "\t\t<table id=\"fields\" class=\"data collapsible\">
+            echo "\t\t<table id=\"fields\" class=\"data fullwidth collapsible\">
 \t\t\t<thead>
 \t\t\t\t<th scope=\"col\">";
             // line 75

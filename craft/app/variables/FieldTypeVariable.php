@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Field type template variable
+ * Field type template variable.
+ *
+ * @package craft.app.validators
  */
 class FieldTypeVariable extends BaseComponentTypeVariable
 {
@@ -26,5 +28,16 @@ class FieldTypeVariable extends BaseComponentTypeVariable
 	public function getInputHtml($handle, $value)
 	{
 		return $this->component->getInputHtml($handle, $value);
+	}
+
+	/**
+	 * Returns static HTML for the field's value.
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	public function getStaticHtml($value)
+	{
+		return $this->component->getStaticHtml($value);
 	}
 }

@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Request functions
+ * Request functions.
+ *
+ * @package craft.app.validators
  */
 class HttpRequestVariable
 {
@@ -41,13 +43,7 @@ class HttpRequestVariable
 	 */
 	public function isLivePreview()
 	{
-		$actionSegments = craft()->request->getActionSegments();
-
-		return (
-			count($actionSegments) == 2 &&
-			$actionSegments[0] == 'entries' &&
-			$actionSegments[1] == 'previewEntry'
-		);
+		return craft()->request->isLivePreview();
 	}
 
 	/**
@@ -105,7 +101,7 @@ class HttpRequestVariable
 	/**
 	 * Returns the first URI segment.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getFirstSegment()
 	{
@@ -115,16 +111,11 @@ class HttpRequestVariable
 	/**
 	 * Returns the last URL segment.
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getLastSegment()
 	{
-		$segments = craft()->request->getSegments();
-
-		if ($segments)
-		{
-			return $segments[count($segments)-1];
-		}
+		return craft()->request->getSegment(-1);
 	}
 
 	/**
@@ -142,11 +133,11 @@ class HttpRequestVariable
 	/**
 	 * Returns a variable from the query string.
 	 *
-	 * @param string $name
-	 * @param string $default
+	 * @param string|null $name
+	 * @param string|null $default
 	 * @return mixed
 	 */
-	public function getQuery($name, $default = null)
+	public function getQuery($name = null, $default = null)
 	{
 		return craft()->request->getQuery($name, $default);
 	}
@@ -154,11 +145,11 @@ class HttpRequestVariable
 	/**
 	 * Returns a value from post data.
 	 *
-	 * @param string $name
-	 * @param string $default
+	 * @param string|null $name
+	 * @param string|null $default
 	 * @return mixed
 	 */
-	public function getPost($name, $default = null)
+	public function getPost($name = null, $default = null)
 	{
 		return craft()->request->getPost($name, $default);
 	}
@@ -211,4 +202,119 @@ class HttpRequestVariable
 	{
 		return craft()->request->isMobileBrowser($detectTablets);
 	}
+
+	/**
+	 * Returns the page number if this is a paginated request.
+	 *
+	 * @return int
+	 */
+	public function getPageNum()
+	{
+		return craft()->request->getPageNum();
+	}
+
+	/**
+	 * Returns the schema and host part of the application URL.  The returned URL does not have an ending slash.
+	 * By default this is determined based on the user request information.
+	 *
+	 * @param string $schema
+	 * @return string
+	 */
+	public function getHostInfo($schema = '')
+	{
+		return craft()->request->getHostInfo($schema);
+	}
+
+	/**
+	 * Returns the relative URL of the entry script.
+	 *
+	 * @return string
+	 */
+	public function getScriptUrl()
+	{
+		return craft()->request->getScriptUrl();
+	}
+
+	/**
+	 * Returns the path info of the currently requested URL. This refers to the part that is after the entry script and before the question mark.
+	 * The starting and ending slashes are stripped off.
+	 *
+	 * @return string
+	 */
+	public function getPathInfo()
+	{
+		return craft()->request->getPathInfo();
+	}
+
+	/**
+	 * Returns the request URI portion for the currently requested URL.  This refers to the portion that is after the host info part.
+	 * It includes the query string part if any.
+	 *
+	 * @return string
+	 */
+	public function getRequestUri()
+	{
+		return craft()->request->getRequestUri();
+	}
+
+	/**
+	 * Returns the server port number.
+	 *
+	 * @return int
+	 */
+	public function getServerPort()
+	{
+		return craft()->request->getServerPort();
+	}
+
+	/**
+	 * Returns the URL referrer or null if not present.
+	 *
+	 * @return string
+	 */
+	public function getUrlReferrer()
+	{
+		return craft()->request->getUrlReferrer();
+	}
+
+	/**
+	 * Returns the user agent or null if not present.
+	 *
+	 * @return string
+	 */
+	public function getUserAgent()
+	{
+		return craft()->request->getUserAgent();
+	}
+
+	/**
+	 * Returns the user IP address.
+	 *
+	 * @return string
+	 */
+	public function getUserHostAddress()
+	{
+		return craft()->request->getUserHostAddress();
+	}
+
+	/**
+	 * Returns the user host name or null if it cannot be determined.
+	 *
+	 * @return string
+	 */
+	public function getUserHost()
+	{
+		return craft()->request->getUserHost();
+	}
+
+	/**
+	 * Returns the port to use for insecure requests. Defaults to 80, or the port specified by the server if the current request is insecure.
+	 *
+	 * @return int
+	 */
+	public function getPort()
+	{
+		return craft()->request->getPort();
+	}
+
 }

@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class TemplateHelper
  *
+ * @package craft.app.helpers
  */
 class TemplateHelper
 {
@@ -23,7 +25,7 @@ class TemplateHelper
 	{
 		$currentPage = craft()->request->getPageNum();
 		$limit = $criteria->limit;
-		$total = $criteria->total();
+		$total = $criteria->total() - $criteria->offset;
 		$totalPages = ceil($total / $limit);
 
 		if ($currentPage > $totalPages)
@@ -32,6 +34,12 @@ class TemplateHelper
 		}
 
 		$offset = $limit * ($currentPage - 1);
+
+		// Is there already an offset set?
+		if ($criteria->offset)
+		{
+			$offset += $criteria->offset;
+		}
 
 		$last = $offset + $limit;
 
@@ -52,5 +60,17 @@ class TemplateHelper
 		$entities = $criteria->find();
 
 		return array($paginateVariable, $entities);
+	}
+
+	/**
+	 * Returns a string wrapped in a \Twig_Markup object
+	 *
+	 * @param $value
+	 * @return \Twig_Markup
+	 */
+	public static function getRaw($value)
+	{
+		$charset = craft()->templates->getTwig()->getCharset();
+		return new \Twig_Markup($value, $charset);
 	}
 }

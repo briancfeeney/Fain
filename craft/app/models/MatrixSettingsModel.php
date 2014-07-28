@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Matrix block model class
+ * Matrix block model class.
+ *
+ * @package craft.app.models
  */
 class MatrixSettingsModel extends BaseModel
 {
@@ -27,6 +29,19 @@ class MatrixSettingsModel extends BaseModel
 	function __construct(FieldModel $matrixField = null)
 	{
 		$this->_matrixField = $matrixField;
+	}
+
+	/**
+	 * Defines this model's attributes.
+	 *
+	 * @access protected
+	 * @return array
+	 */
+	protected function defineAttributes()
+	{
+		return array(
+			'maxBlocks' => AttributeType::Number,
+		);
 	}
 
 	/**

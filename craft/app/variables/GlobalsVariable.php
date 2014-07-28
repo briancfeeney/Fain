@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Globals functions
+ * Globals functions.
+ *
+ * @package craft.app.validators
  */
 class GlobalsVariable
 {
@@ -31,6 +33,8 @@ class GlobalsVariable
 	 * Returns all global sets that are editable by the current user.
 	 *
 	 * @param string|null $indexBy
+	 * @param null        $localeId
+	 *
 	 * @return array
 	 */
 	public function getEditableSets($indexBy = null, $localeId = null)
@@ -61,11 +65,24 @@ class GlobalsVariable
 	/**
 	 * Returns a global set by its ID.
 	 *
-	 * @param int $id
+	 * @param int $globalSetId
+	 * @param string|null $localeId
 	 * @return GlobalSetModel|null
 	 */
-	public function getSetById($id)
+	public function getSetById($globalSetId, $localeId = null)
 	{
-		return craft()->globals->getSetById($id);
+		return craft()->globals->getSetById($globalSetId, $localeId);
+	}
+
+	/**
+	 * Returns a global set by its handle.
+	 *
+	 * @param int $globalSetHandle
+	 * @param string|null $localeId
+	 * @return GlobalSetModel|null
+	 */
+	public function getSetByHandle($globalSetHandle, $localeId = null)
+	{
+		return craft()->globals->getSetByHandle($globalSetHandle, $localeId);
 	}
 }

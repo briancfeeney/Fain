@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Settings functions
+ * Settings functions.
+ *
+ * @package craft.app.validators
  */
 class SystemSettingsVariable
 {
@@ -36,18 +38,5 @@ class SystemSettingsVariable
 	public function __get($category)
 	{
 		return craft()->systemSettings->getSettings($category);
-	}
-
-	/**
-	 * Returns an individual system setting.
-	 *
-	 * @param string $category
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function getSetting($category, $key, $default = null)
-	{
-		return craft()->systemSettings->getSetting($category, $key, $default);
 	}
 }

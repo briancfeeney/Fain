@@ -13,6 +13,8 @@ namespace Craft;
 
 /**
  * Extends CHttpSession to add support for setting the session folder and creating it if it doesn't exist.
+ *
+ * @package craft.app.services
  */
 class HttpSessionService extends \CHttpSession
 {
@@ -21,6 +23,9 @@ class HttpSessionService extends \CHttpSession
 	 */
 	public function init()
 	{
+		// Set the PHP session cookie to HTTP only.
+		$this->setCookieParams(array('httponly' => true));
+
 		// Check if the config value has actually been set to true/false
 		$configVal = craft()->config->get('overridePHPSessionLocation');
 

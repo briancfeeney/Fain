@@ -10,11 +10,9 @@
 
 	<h2>Songs tagged “{{ tag.name }}”</h2>
 	
-	{% for entry in craft.entries.section('songs').find() %}
+	{% for entry in craft.entries.section('songs').relatedTo(tag).order('title') %}
 
-		{% set entries = craft.entries.relatedTo(tag).order('title') %}
-
-		{% if entries | length %}
+		{% if entry | length %}
 	        
 			<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
 	        

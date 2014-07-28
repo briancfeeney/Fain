@@ -12,11 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class ResourcesService
  *
+ * @package craft.app.services
  */
 class ResourcesService extends BaseApplicationComponent
 {
-
 	const DefaultUserphotoFilename = 'user.gif';
 
 	public $dateParam;
@@ -29,7 +30,7 @@ class ResourcesService extends BaseApplicationComponent
 	 */
 	public function getCachedResourcePath($path)
 	{
-		$realPath = craft()->fileCache->get('resourcePath:'.$path);
+		$realPath = craft()->cache->get('resourcePath:'.$path);
 
 		if ($realPath && IOHelper::fileExists($realPath))
 		{
@@ -50,13 +51,14 @@ class ResourcesService extends BaseApplicationComponent
 			$realPath = ':(';
 		}
 
-		craft()->fileCache->set('resourcePath:'.$path, $realPath);
+		craft()->cache->set('resourcePath:'.$path, $realPath);
 	}
 
 	/**
 	 * Resolves a resource path to the actual file system path, or returns false if the resource cannot be found.
 	 *
 	 * @param string $path
+	 * @throws HttpException
 	 * @return string
 	 */
 	public function getResourcePath($path)
@@ -97,8 +99,14 @@ class ResourcesService extends BaseApplicationComponent
 							return false;
 						}
 
+						$size = IOHelper::cleanFilename($segs[2]);
+						// Looking for either a numeric size or "original" keyword
+						if (!is_numeric($size) && $size != "original")
+						{
+							return false;
+						}
+
 						$username = IOHelper::cleanFilename($segs[1]);
-						$size     = IOHelper::cleanFilename($segs[2]);
 						$filename = IOHelper::cleanFilename($segs[3]);
 
 						$userPhotosPath = craft()->path->getUserPhotosPath().$username.'/';
@@ -166,6 +174,12 @@ class ResourcesService extends BaseApplicationComponent
 					return craft()->path->getTempUploadsPath().implode('/', $segs);
 				}
 
+				case 'tempassets':
+				{
+					array_shift($segs);
+					return craft()->path->getAssetsTempSourcePath().implode('/', $segs);
+				}
+
 				case 'assetthumbs':
 				{
 					if (empty($segs[1]) || empty($segs[2]) || !is_numeric($segs[1]) || !is_numeric($segs[2]))
@@ -179,28 +193,8 @@ class ResourcesService extends BaseApplicationComponent
 						return false;
 					}
 
-					$sourceType = craft()->assetSources->getSourceTypeById($fileModel->sourceId);
-
 					$size = $segs[2];
-
-					$thumbFolder = craft()->path->getAssetsThumbsPath().$size.'/';
-					IOHelper::ensureFolderExists($thumbFolder);
-
-					$thumbPath = $thumbFolder.$fileModel->id.'.'.pathinfo($fileModel->filename, PATHINFO_EXTENSION);
-
-					if (!IOHelper::fileExists($thumbPath))
-					{
-						$sourcePath = $sourceType->getImageSourcePath($fileModel);
-						if (!IOHelper::fileExists($sourcePath))
-						{
-							return false;
-						}
-						craft()->images->loadImage($sourcePath)
-							->scaleAndCrop($size, $size)
-							->saveAs($thumbPath);
-					}
-
-					return $thumbPath;
+					return craft()->assetTransforms->getThumbServerPath($fileModel, $size);
 				}
 
 				case 'icons':
@@ -210,7 +204,7 @@ class ResourcesService extends BaseApplicationComponent
 						return false;
 					}
 
-					$ext = mb_strtolower($segs[1]);
+					$ext = StringHelper::toLowerCase($segs[1]);
 					$size = $segs[2];
 
 					$iconPath = $this->_getIconPath($ext, $size);
@@ -221,6 +215,21 @@ class ResourcesService extends BaseApplicationComponent
 				case 'logo':
 				{
 					return craft()->path->getStoragePath().implode('/', $segs);
+				}
+
+				case 'transforms':
+				{
+					try
+					{
+						$transformIndexModel = craft()->assetTransforms->getTransformIndexModelById((int) $segs[1]);
+						$url = craft()->assetTransforms->ensureTransformUrlByIndexModel($transformIndexModel);
+					}
+					catch (Exception $exception)
+					{
+						throw new HttpException(404, $exception->getMessage());
+					}
+					craft()->request->redirect($url, true, 302);
+					craft()->end();
 				}
 			}
 		}
@@ -443,7 +452,7 @@ class ResourcesService extends BaseApplicationComponent
 			if ($ext)
 			{
 				$color = imagecolorallocate($image, 153, 153, 153);
-				$text = mb_strtoupper($ext);
+				$text = StringHelper::toUpperCase($ext);
 				$font = craft()->path->getAppPath().'etc/assets/helveticaneue-webfont.ttf';
 
 				// Get the bounding box so we can calculate the position

@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class MultiSelectFieldType
  *
+ * @package craft.app.fieldtypes
  */
 class MultiSelectFieldType extends BaseOptionsFieldType
 {
@@ -48,10 +50,10 @@ class MultiSelectFieldType extends BaseOptionsFieldType
 	 */
 	public function getInputHtml($name, $values)
 	{
-		$options = $this->getOptions();
+		$options = $this->getTranslatedOptions();
 
 		// If this is a new entry, look for any default options
-		if ($values === null && $this->isFresh())
+		if ($this->isFresh())
 		{
 			$values = array();
 

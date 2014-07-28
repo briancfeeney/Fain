@@ -11,10 +11,12 @@ namespace Craft;
  * @link      http://buildwithcraft.com
  */
 
-craft()->requirePackage(CraftPackage::Users);
+craft()->requireEdition(Craft::Pro);
 
 /**
- * User group functions
+ * User group functions.
+ *
+ * @package craft.app.validators
  */
 class UserGroupsVariable
 {

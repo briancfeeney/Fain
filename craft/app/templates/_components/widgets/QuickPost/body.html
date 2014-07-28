@@ -2,22 +2,24 @@
 {% set fieldNamespace = 'fields'~random() %}
 
 
-<form method="post" action="" accept-charset="UTF-8">
+<form method="post" accept-charset="UTF-8">
 	<input type="hidden" name="fieldsLocation" value="{{ fieldNamespace }}">
 
-	{{ forms.textField({
-		label: entryType.titleLabel|t,
-		id: 'title',
-		name: 'title',
-		required: true,
-		first: true
-	}) }}
+	{% if section.type != 'single' and entryType.hasTitleField %}
+		{{ forms.textField({
+			label: entryType.titleLabel|t,
+			id: 'title',
+			name: 'title',
+			required: true,
+			first: true
+		}) }}
+	{% endif %}
 
 	{% namespace fieldNamespace %}
 		{% for field in entryType.getFieldLayout().getFields() %}
 			{% if field.required or field.fieldId in settings.fields %}
 				{% include "_includes/field" with {
-					fieldId: field.fieldId,
+					field: field.getField(),
 					required: field.required,
 					entry: null
 				} only %}

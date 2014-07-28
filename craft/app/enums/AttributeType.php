@@ -12,9 +12,12 @@ namespace Craft;
  */
 
 /**
+ * Class AttributeType
  *
+ * @abstract
+ * @package craft.app.enums
  */
-class AttributeType
+abstract class AttributeType extends BaseEnum
 {
 	const Mixed      = 'mixed';
 	const Bool       = 'bool';
@@ -31,5 +34,6 @@ class AttributeType
 	const String     = 'string';
 	const Template   = 'template';
 	const Url        = 'url';
+	const UrlFormat  = 'urlformat';
 	const Uri        = 'uri';
 }

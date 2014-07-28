@@ -1,7 +1,7 @@
 <?php
 
 /* settings/sections/_entrytypes/index */
-class __TwigTemplate_729db21b3e702bfd8d8c76b7e5a452e79c026b59ec4f39b3d5ad8f471c28d10d extends Twig_Template
+class __TwigTemplate_729db21b3e702bfd8d8c76b7e5a452e79c026b59ec4f39b3d5ad8f471c28d10d extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -27,7 +27,7 @@ class __TwigTemplate_729db21b3e702bfd8d8c76b7e5a452e79c026b59ec4f39b3d5ad8f471c2
         // line 6
         ob_start();
         // line 7
-        echo "\t<table id=\"entrytypes\" class=\"data collapsible\">
+        echo "\t<table id=\"entrytypes\" class=\"data fullwidth collapsible\">
 \t\t<thead>
 \t\t\t<th scope=\"col\">";
         // line 9

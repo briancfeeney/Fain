@@ -1,7 +1,7 @@
 <?php
 
 /* settings/sections/index */
-class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16cc2586 extends Twig_Template
+class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16cc2586 extends Craft\BaseTemplate
 {
     public function __construct(Twig_Environment $env)
     {
@@ -44,7 +44,7 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
         // line 16
         if (twig_length_filter($this->env, (isset($context["sections"]) ? $context["sections"] : null))) {
             // line 17
-            echo "\t\t<table id=\"sections\" class=\"data collapsible\">
+            echo "\t\t<table id=\"sections\" class=\"data fullwidth collapsible\">
 \t\t\t<thead>
 \t\t\t\t<th scope=\"col\">";
             // line 19
@@ -103,7 +103,7 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
 \t\t\t\t\t\t<td data-title=\"";
                 // line 32
                 echo twig_escape_filter($this->env, \Craft\Craft::t("URL Format"), "html", null, true);
-                echo "\">";
+                echo "\" dir=\"ltr\">";
                 // line 33
                 if ($this->getAttribute((isset($context["section"]) ? $context["section"] : null), "isHomepage", array(), "method")) {
                     // line 34
@@ -128,7 +128,7 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
                     $context["entryType"] = $this->getAttribute($this->getAttribute((isset($context["section"]) ? $context["section"] : null), "getEntryTypes", array(), "method"), 0, array(), "array");
                     // line 42
                     echo "\t\t\t\t\t\t\t\t<a href=\"";
-                    echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl(((("settings/sections/" . $this->getAttribute((isset($context["section"]) ? $context["section"] : null), "id")) . "/entrytypes/") . $this->getAttribute((isset($context["entryType"]) ? $context["entryType"] : null), "id"))), "html", null, true);
+                    echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entryType"]) ? $context["entryType"] : null), "getCpEditUrl", array(), "method"), "html", null, true);
                     echo "\">";
                     echo twig_escape_filter($this->env, \Craft\Craft::t("Edit entry type"), "html", null, true);
                     echo "</a>
@@ -140,12 +140,37 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
                     echo "\">";
                     echo twig_escape_filter($this->env, \Craft\Craft::t("Edit entry types ({count})", array("count" => twig_length_filter($this->env, $this->getAttribute((isset($context["section"]) ? $context["section"] : null), "getEntryTypes", array(), "method")))), "html", null, true);
                     echo "</a>
+\t\t\t\t\t\t\t\t<a class=\"menubtn\" title=\"";
+                    // line 45
+                    echo twig_escape_filter($this->env, \Craft\Craft::t("Entry Types"), "html", null, true);
+                    echo "\"></a>
+\t\t\t\t\t\t\t\t<div class=\"menu\">
+\t\t\t\t\t\t\t\t\t<ul>
+\t\t\t\t\t\t\t\t\t\t";
+                    // line 48
+                    $context['_parent'] = (array) $context;
+                    $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["section"]) ? $context["section"] : null), "getEntryTypes", array(), "method"));
+                    foreach ($context['_seq'] as $context["_key"] => $context["entryType"]) {
+                        // line 49
+                        echo "\t\t\t\t\t\t\t\t\t\t\t<li><a href=\"";
+                        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entryType"]) ? $context["entryType"] : null), "getCpEditUrl", array(), "method"), "html", null, true);
+                        echo "\">";
+                        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entryType"]) ? $context["entryType"] : null), "name"), "html", null, true);
+                        echo "</a></li>
+\t\t\t\t\t\t\t\t\t\t";
+                    }
+                    $_parent = $context['_parent'];
+                    unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entryType'], $context['_parent'], $context['loop']);
+                    $context = array_intersect_key($context, $_parent) + $_parent;
+                    // line 51
+                    echo "\t\t\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t";
                 }
-                // line 46
+                // line 54
                 echo "\t\t\t\t\t\t</td>
 \t\t\t\t\t\t<td class=\"thin\"><a class=\"delete icon\" title=\"";
-                // line 47
+                // line 55
                 echo twig_escape_filter($this->env, \Craft\Craft::t("Delete"), "html", null, true);
                 echo "\" role=\"button\"></a></td>
 \t\t\t\t\t</tr>
@@ -154,21 +179,21 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['section'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 50
+            // line 58
             echo "\t\t\t</tbody>
 \t\t</table>
 \t";
         }
-        // line 53
+        // line 61
         echo "
 \t<div id=\"newsectioncontainer\" class=\"buttons";
-        // line 54
-        if (((!$this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "PublishPro"), "method")) && (twig_length_filter($this->env, (isset($context["sections"]) ? $context["sections"] : null)) >= (isset($context["maxSections"]) ? $context["maxSections"] : null)))) {
+        // line 62
+        if ((((isset($context["CraftEdition"]) ? $context["CraftEdition"] : null) == (isset($context["CraftPersonal"]) ? $context["CraftPersonal"] : null)) && (twig_length_filter($this->env, (isset($context["sections"]) ? $context["sections"] : null)) >= (isset($context["maxSections"]) ? $context["maxSections"] : null)))) {
             echo " hidden";
         }
         echo "\">
 \t\t<a href=\"";
-        // line 55
+        // line 63
         echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl("settings/sections/new"), "html", null, true);
         echo "\" class=\"btn submit add icon\">";
         echo twig_escape_filter($this->env, \Craft\Craft::t("New Section"), "html", null, true);
@@ -176,26 +201,26 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
 \t</div>
 ";
         $context["content"] = ('' === $tmp = ob_get_clean()) ? '' : new Twig_Markup($tmp, $this->env->getCharset());
-        // line 60
+        // line 68
         ob_start();
-        // line 61
+        // line 69
         echo "\tvar adminTable = new Craft.AdminTable({
 \t\ttableSelector: '#sections',
 \t\tnoObjectsSelector: '#nosections',
 \t\tnewObjectBtnSelector: '#newsectioncontainer',
 \t\tdeleteAction: 'sections/deleteSection',
 \t\tconfirmDeleteMessage: '";
-        // line 66
+        // line 74
         echo twig_escape_filter($this->env, \Craft\Craft::t("Are you sure you want to delete “{name}” and all its entries?"), "html", null, true);
         echo "',
 \t\t";
-        // line 67
-        if ((!$this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "hasPackage", array(0 => "PublishPro"), "method"))) {
+        // line 75
+        if (((isset($context["CraftEdition"]) ? $context["CraftEdition"] : null) == (isset($context["CraftPersonal"]) ? $context["CraftPersonal"] : null))) {
             echo "maxObjects: ";
             echo twig_escape_filter($this->env, (isset($context["maxSections"]) ? $context["maxSections"] : null), "html", null, true);
             echo ",";
         }
-        // line 68
+        // line 76
         echo "\t\tonDeleteObject: function()
 \t\t{
 \t\t\t// Hide the Entries tab if that was the last one
@@ -207,7 +232,7 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
 \t});
 ";
         $context["js"] = ('' === $tmp = ob_get_clean()) ? '' : new Twig_Markup($tmp, $this->env->getCharset());
-        // line 78
+        // line 86
         \Craft\craft()->templates->includeJs((isset($context["js"]) ? $context["js"] : null));
         $this->parent->display($context, array_merge($this->blocks, $blocks));
     }
@@ -224,6 +249,6 @@ class __TwigTemplate_ad4e553a6a16701f02a84855f895ab5614b4355427cd21534d1754cf16c
 
     public function getDebugInfo()
     {
-        return array (  211 => 78,  199 => 68,  193 => 67,  189 => 66,  182 => 61,  180 => 60,  172 => 55,  166 => 54,  163 => 53,  158 => 50,  149 => 47,  146 => 46,  138 => 44,  130 => 42,  127 => 41,  125 => 40,  121 => 39,  118 => 38,  115 => 36,  110 => 34,  108 => 33,  105 => 32,  99 => 31,  93 => 30,  85 => 29,  78 => 28,  74 => 27,  67 => 23,  63 => 22,  59 => 21,  55 => 20,  51 => 19,  47 => 17,  45 => 16,  39 => 13,  32 => 12,  30 => 11,  28 => 8,  26 => 4,  24 => 2,);
+        return array (  236 => 86,  224 => 76,  218 => 75,  214 => 74,  207 => 69,  205 => 68,  197 => 63,  191 => 62,  188 => 61,  183 => 58,  174 => 55,  171 => 54,  166 => 51,  155 => 49,  151 => 48,  145 => 45,  138 => 44,  130 => 42,  127 => 41,  125 => 40,  121 => 39,  118 => 38,  115 => 36,  110 => 34,  108 => 33,  105 => 32,  99 => 31,  93 => 30,  85 => 29,  78 => 28,  74 => 27,  67 => 23,  63 => 22,  59 => 21,  55 => 20,  51 => 19,  47 => 17,  45 => 16,  39 => 13,  32 => 12,  30 => 11,  28 => 8,  26 => 4,  24 => 2,);
     }
 }

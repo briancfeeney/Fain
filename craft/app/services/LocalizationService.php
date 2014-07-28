@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class LocalizationService
  *
+ * @package craft.app.services
  */
 class LocalizationService extends BaseApplicationComponent
 {
@@ -21,9 +23,11 @@ class LocalizationService extends BaseApplicationComponent
 	private $_localeData;
 
 	/**
-	 * Returns of all known locales.
+	 * Returns an array of all known locales.
 	 *
-	 * @return array
+	 * The list of known locales is based on whatever files exist in craft/app/framework/i18n/data/.
+	 *
+	 * @return array An array of LocaleModel objects.
 	 */
 	public function getAllLocales()
 	{
@@ -39,9 +43,11 @@ class LocalizationService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Returns a list of language ids from the languages directory that Craft is translated into.
+	 * Returns an array of locales that Craft is translated into.
 	 *
-	 * @return mixed
+	 * The list of locales is based on whatever files exist in craft/app/translations/.
+	 *
+	 * @return array An array of LocaleModel objects.
 	 */
 	public function getAppLocales()
 	{
@@ -71,7 +77,9 @@ class LocalizationService extends BaseApplicationComponent
 	/**
 	 * Returns an array of the locale IDs which Craft has been translated into.
 	 *
-	 * @return array
+	 * The list of locales is based on whetever files exist in craft/app/translations/.
+	 *
+	 * @return array An array of locale IDs.
 	 */
 	public function getAppLocaleIds()
 	{
@@ -87,9 +95,11 @@ class LocalizationService extends BaseApplicationComponent
 	}
 
 	/**
-	 * Returns the locales that the site is translated for.
+	 * Returns an array of the site locales.
 	 *
-	 * @return array
+	 * The list of locales is based on whatever was defined in Settings > Locales in the CP.
+	 *
+	 * @return array An array of LocaleModel objects.
 	 */
 	public function getSiteLocales()
 	{
@@ -100,7 +110,7 @@ class LocalizationService extends BaseApplicationComponent
 				->from('locales')
 				->order('sortOrder');
 
-			if (!craft()->hasPackage(CraftPackage::Localize))
+			if (craft()->getEdition() != Craft::Pro)
 			{
 				$query->limit(1);
 			}
@@ -124,7 +134,9 @@ class LocalizationService extends BaseApplicationComponent
 	/**
 	 * Returns the site's primary locale.
 	 *
-	 * @return LocaleModel
+	 * The primary locale is whatever is listed first in Settings > Locales in the CP.
+	 *
+	 * @return LocaleModel A LocaleModel object representing the primary locale.
 	 */
 	public function getPrimarySiteLocale()
 	{
@@ -135,7 +147,9 @@ class LocalizationService extends BaseApplicationComponent
 	/**
 	 * Returns the site's primary locale ID.
 	 *
-	 * @return string
+	 * The primary locale is whatever is listed first in Settings > Locales in the CP.
+	 *
+	 * @return string The primary locale ID.
 	 */
 	public function getPrimarySiteLocaleId()
 	{
@@ -145,7 +159,9 @@ class LocalizationService extends BaseApplicationComponent
 	/**
 	 * Returns an array of the site locale IDs.
 	 *
-	 * @return array
+	 * The list of locales is based on whatever was defined in Settings > Locales in the CP.
+	 *
+	 * @return array An array of locale IDs.
 	 */
 	public function getSiteLocaleIds()
 	{
@@ -167,7 +183,7 @@ class LocalizationService extends BaseApplicationComponent
 	 */
 	public function getEditableLocales()
 	{
-		if (craft()->hasPackage(CraftPackage::Localize))
+		if (craft()->isLocalized())
 		{
 			$locales = $this->getSiteLocales();
 			$editableLocales = array();
@@ -227,7 +243,41 @@ class LocalizationService extends BaseApplicationComponent
 	{
 		$maxSortOrder = craft()->db->createCommand()->select('max(sortOrder)')->from('locales')->queryScalar();
 		$affectedRows = craft()->db->createCommand()->insert('locales', array('locale' => $localeId, 'sortOrder' => $maxSortOrder+1));
-		return (bool) $affectedRows;
+		$success = (bool) $affectedRows;
+
+		if ($success)
+		{
+			$this->_siteLocales[] = new LocaleModel($localeId);
+
+			// Add this locale to each of the category groups
+			$categoryLocales = craft()->db->createCommand()
+				->select('groupId, urlFormat, nestedUrlFormat')
+				->from('categorygroups_i18n')
+				->where('locale = :locale', array(':locale' => $this->getPrimarySiteLocaleId()))
+				->queryAll();
+
+			if ($categoryLocales)
+			{
+				$newCategoryLocales = array();
+
+				foreach ($categoryLocales as $categoryLocale)
+				{
+					$newCategoryLocales[] = array($categoryLocale['groupId'], $localeId, $categoryLocale['urlFormat'], $categoryLocale['nestedUrlFormat']);
+				}
+
+				craft()->db->createCommand()->insertAll('categorygroups_i18n', array('groupId', 'locale', 'urlFormat', 'nestedUrlFormat'), $newCategoryLocales);
+			}
+
+			// Resave all of the localizable elements
+			if (!craft()->tasks->areTasksPending('ResaveAllElements'))
+			{
+				craft()->tasks->createTask('ResaveAllElements', null, array(
+					'localizableOnly' => true,
+				));
+			}
+		}
+
+		return $success;
 	}
 
 	/**
@@ -238,9 +288,58 @@ class LocalizationService extends BaseApplicationComponent
 	 */
 	public function reorderSiteLocales($localeIds)
 	{
+		$oldPrimaryLocaleId = $this->getPrimarySiteLocaleId();
+
 		foreach ($localeIds as $sortOrder => $localeId)
 		{
 			craft()->db->createCommand()->update('locales', array('sortOrder' => $sortOrder+1), array('locale' => $localeId));
+		}
+
+		$this->_siteLocales = null;
+		$newPrimaryLocaleId = $this->getPrimarySiteLocaleId();
+
+		// Did the primary site locale just change?
+		if ($oldPrimaryLocaleId != $newPrimaryLocaleId)
+		{
+			craft()->config->maxPowerCaptain();
+
+			// Update all of the non-localized elements
+			$nonLocalizedElementTypes = array();
+
+			foreach (craft()->elements->getAllElementTypes() as $elementType)
+			{
+				if (!$elementType->isLocalized())
+				{
+					$nonLocalizedElementTypes[] = $elementType->getClassHandle();
+				}
+			}
+
+			if ($nonLocalizedElementTypes)
+			{
+				$elementIds = craft()->db->createCommand()
+					->select('id')
+					->from('elements')
+					->where(array('in', 'type', $nonLocalizedElementTypes))
+					->queryColumn();
+
+				if ($elementIds)
+				{
+					// To be sure we don't hit any unique constraint MySQL errors,
+					// first make sure there are no rows for these elements that don't currently use the old primary locale
+					$deleteConditions = array('and', array('in', 'elementId', $elementIds), 'locale != :locale');
+					$deleteParams = array(':locale' => $oldPrimaryLocaleId);
+
+					craft()->db->createCommand()->delete('elements_i18n', $deleteConditions, $deleteParams);
+					craft()->db->createCommand()->delete('content', $deleteConditions, $deleteParams);
+
+					// Now convert the locales
+					$updateColumns = array('locale' => $newPrimaryLocaleId);
+					$updateConditions = array('in', 'elementId', $elementIds);
+
+					craft()->db->createCommand()->update('elements_i18n', $updateColumns, $updateConditions);
+					craft()->db->createCommand()->update('content', $updateColumns, $updateConditions);
+				}
+			}
 		}
 
 		return true;
@@ -262,7 +361,7 @@ class LocalizationService extends BaseApplicationComponent
 	 * Returns the localization data for a given locale.
 	 *
 	 * @param $localeId
-	 * @return \CLocale|null
+	 * @return LocaleData|null
 	 */
 	public function getLocaleData($localeId = null)
 	{

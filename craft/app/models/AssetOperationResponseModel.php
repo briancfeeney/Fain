@@ -13,10 +13,11 @@ namespace Craft;
 
 /**
  * This model represents an Asset Operation Response.
+ *
+ * @package craft.app.models
  */
 class AssetOperationResponseModel extends BaseModel
 {
-
 	const StatusError = 'error';
 	const StatusSuccess = 'success';
 	const StatusConflict = 'conflict';

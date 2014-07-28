@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Asset element type
+ * Asset element type.
+ *
+ * @package craft.app.elementtypes
  */
 class AssetElementType extends BaseElementType
 {
@@ -47,6 +49,16 @@ class AssetElementType extends BaseElementType
 	}
 
 	/**
+	 * Returns whether this element type stores data on a per-locale basis.
+	 *
+	 * @return bool
+	 */
+	public function isLocalized()
+	{
+		return true;
+	}
+
+	/**
 	 * Returns this element type's sources.
 	 *
 	 * @param string|null $context
@@ -54,7 +66,7 @@ class AssetElementType extends BaseElementType
 	 */
 	public function getSources($context = null)
 	{
-		if ($context == 'index' || $context == 'modal')
+		if ($context == 'index')
 		{
 			$sourceIds = craft()->assetSources->getViewableSourceIds();
 		}
@@ -63,8 +75,31 @@ class AssetElementType extends BaseElementType
 			$sourceIds = craft()->assetSources->getAllSourceIds();
 		}
 
-		$tree = craft()->assets->getFolderTree($sourceIds);
+		$tree = craft()->assets->getFolderTreeBySourceIds($sourceIds);
+
 		return $this->_assembleSourceList($tree);
+	}
+
+	/**
+	 * Returns a source by its key and context.
+	 *
+	 * @param string $key
+	 * @param string|null $context
+	 * @return array|null
+	 */
+	public function getSource($key, $context = null)
+	{
+		if (preg_match('/folder:(\d+)(:single)?/', $key, $matches))
+		{
+			$folder = craft()->assets->getFolderById($matches[1]);
+
+			if ($folder)
+			{
+				return $this->_assembleSourceInfoForFolder($folder, empty($matches[2]));
+			}
+		}
+
+		return parent::getSource($key, $context);
 	}
 
 	/**
@@ -153,7 +188,7 @@ class AssetElementType extends BaseElementType
 			'sourceId' => AttributeType::Number,
 			'folderId' => AttributeType::Number,
 			'filename' => AttributeType::String,
-			'kind'     => AttributeType::String,
+			'kind'     => AttributeType::Mixed,
 			'width'    => AttributeType::Number,
 			'height'   => AttributeType::Number,
 			'size'     => AttributeType::Number,
@@ -191,7 +226,15 @@ class AssetElementType extends BaseElementType
 
 		if ($criteria->kind)
 		{
-			$query->andWhere(DbHelper::parseParam('assetfiles.kind', $criteria->kind, $query->params));
+			if (is_array($criteria->kind))
+			{
+				$query->andWhere(DbHelper::parseParam('assetfiles.kind', array_merge(array('or'), $criteria->kind), $query->params));
+			}
+			else
+			{
+				$query->andWhere(DbHelper::parseParam('assetfiles.kind', $criteria->kind, $query->params));
+			}
+
 		}
 
 		if ($criteria->width)
@@ -222,29 +265,136 @@ class AssetElementType extends BaseElementType
 	}
 
 	/**
+	 * Returns the HTML for an editor HUD for the given element.
+	 *
+	 * @param BaseElementModel $element
+	 * @return string
+	 */
+	public function getEditorHtml(BaseElementModel $element)
+	{
+		$html = craft()->templates->renderMacro('_includes/forms', 'textField', array(
+			array(
+				'label'     => Craft::t('Filename'),
+				'id'        => 'filename',
+				'name'      => 'filename',
+				'value'     => $element->filename,
+				'errors'    => $element->getErrors('filename'),
+				'first'     => true,
+				'required'  => true
+			)
+		));
+
+		$html .= craft()->templates->renderMacro('_includes/forms', 'textField', array(
+			array(
+				'label'     => Craft::t('Title'),
+				'id'        => 'title',
+				'name'      => 'title',
+				'value'     => $element->title,
+				'errors'    => $element->getErrors('title'),
+				'required'  => true
+			)
+		));
+
+		$html .= parent::getEditorHtml($element);
+
+		return $html;
+	}
+
+	/**
+	 * Save the filename.
+	 *
+	 * @param BaseElementModel $element
+	 * @param array $params
+	 * @return bool
+	 */
+	public function saveElement(BaseElementModel $element, $params)
+	{
+		// Is the filename changing?
+		if (!empty($params['filename']) && $params['filename'] != $element->filename)
+		{
+			// Validate the content before we do anything drastic
+			if (!craft()->content->validateContent($element))
+			{
+				return false;
+			}
+
+			$oldFilename = $element->filename;
+			$newFilename = $params['filename'];
+
+			// Rename the file
+			$response = craft()->assets->renameFile($element, $newFilename);
+
+			// Did it work?
+			if ($response->isConflict())
+			{
+				$element->addError('filename', $response->getDataItem('prompt')->message);
+				return false;
+			}
+
+			if ($response->isError())
+			{
+				$element->addError('filename', $response->errorMessage);
+				return false;
+			}
+		}
+		else
+		{
+			$newFilename = null;
+		}
+
+		$success = parent::saveElement($element, $params);
+
+		if (!$success && $newFilename)
+		{
+			// Better rename it back
+			craft()->assets->renameFile($element, $oldFilename);
+		}
+
+		return $success;
+	}
+
+	/**
 	 * Transforms an asset folder tree into a source list.
 	 *
 	 * @access private
 	 * @param array $folders
-	 * @param bool  $nested
+	 * @param bool  $includeNestedFolders
 	 * @return array
 	 */
-	private function _assembleSourceList($folders, $nested = false)
+	private function _assembleSourceList($folders, $includeNestedFolders = true)
 	{
 		$sources = array();
 
 		foreach ($folders as $folder)
 		{
-			$key = 'folder:'.$folder->id;
-
-			$sources[$key] = array(
-				'label'     => $folder->name,
-				'hasThumbs' => true,
-				'criteria'  => array('folderId' => $folder->id),
-				'nested'    => $this->_assembleSourceList($folder->getChildren())
-			);
+			$sources['folder:'.$folder->id] = $this->_assembleSourceInfoForFolder($folder, $includeNestedFolders);
 		}
 
 		return $sources;
+	}
+
+	/**
+	 * Transforms an AssetFolderModel into a source info array.
+	 *
+	 * @access private
+	 * @param AssetFolderModel $folder
+	 * @param bool $includeNestedFolders
+	 * @return array
+	 */
+	private function _assembleSourceInfoForFolder(AssetFolderModel $folder, $includeNestedFolders = true)
+	{
+		$source = array(
+			'label'     => ($folder->parentId ? $folder->name : Craft::t($folder->name)),
+			'hasThumbs' => true,
+			'criteria'  => array('folderId' => $folder->id),
+			'data'      => array('upload' => is_null($folder->sourceId) ? true : (int) craft()->assets->canUserPerformAction($folder->id, 'uploadToAssetSource'))
+		);
+
+		if ($includeNestedFolders)
+		{
+			$source['nested'] = $this->_assembleSourceList($folder->getChildren(), true);
+		}
+
+		return $source;
 	}
 }

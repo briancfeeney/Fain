@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
+ * Class PasswordModel
  *
+ * @package craft.app.models
  */
 class PasswordModel extends BaseModel
 {
@@ -23,7 +25,7 @@ class PasswordModel extends BaseModel
 	protected function defineAttributes()
 	{
 		return array(
-			'password' => array(AttributeType::String, 'minLength' => 6, 'required' => true)
+			'password' => array(AttributeType::String, 'minLength' => 6, 'maxLength' => 160, 'required' => true)
 		);
 	}
 }

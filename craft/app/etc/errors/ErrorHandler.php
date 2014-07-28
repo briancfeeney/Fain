@@ -49,6 +49,8 @@ namespace Craft;
  * {@link CApplication::getErrorHandler()}.
  *
  * @property array $error The error details. Null if there is no error.
+ *
+ * @package craft.app.etc.errors
  */
 class ErrorHandler extends \CErrorHandler
 {
@@ -130,6 +132,22 @@ class ErrorHandler extends \CErrorHandler
 		}
 		else
 		{
+			// Check to see if this happened while running a task
+			foreach ($trace as $step)
+			{
+				if (isset($step['class']) && $step['class'] == __NAMESPACE__.'\\TasksService' && $step['function'] == 'runTask')
+				{
+					$task = craft()->tasks->getRunningTask();
+
+					if ($task)
+					{
+						craft()->tasks->fail($task, $event->message.' on line '.$event->line.' of '.$event->file);
+					}
+
+					break;
+				}
+			}
+
 			parent::handleError($event);
 		}
 	}
@@ -143,12 +161,9 @@ class ErrorHandler extends \CErrorHandler
 	protected function handleTwigError(\Twig_Error $exception)
 	{
 		$templateFile = $exception->getTemplateFile();
+		$file = craft()->templates->findTemplate($templateFile);
 
-		try
-		{
-			$file = craft()->templates->findTemplate($templateFile);
-		}
-		catch (TemplateLoaderException $e)
+		if (!$file)
 		{
 			$file = $templateFile;
 		}

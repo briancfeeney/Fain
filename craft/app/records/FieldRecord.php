@@ -12,7 +12,9 @@ namespace Craft;
  */
 
 /**
- * Field record class
+ * Field record class.
+ *
+ * @package craft.app.records
  */
 class FieldRecord extends BaseRecord
 {
@@ -25,15 +27,19 @@ class FieldRecord extends BaseRecord
 		'dateUpdated',
 		'enabled',
 		'expiryDate',
+		'firstName',
 		'handle',
 		'id',
+		'lastName',
 		'link',
 		'img',
 		'locale',
 		'name',
 		'parents',
 		'postDate',
+		'section',
 		'siblings',
+		'sortOrder',
 		'type',
 		'uid',
 		'uri',
@@ -117,6 +123,7 @@ class FieldRecord extends BaseRecord
 	{
 		return array(
 			array('columns' => array('handle', 'context'), 'unique' => true),
+			array('columns' => array('context')),
 		);
 	}
 
