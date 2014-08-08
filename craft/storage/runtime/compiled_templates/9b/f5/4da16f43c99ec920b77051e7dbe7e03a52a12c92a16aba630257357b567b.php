@@ -37,66 +37,75 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 \t<link rel=\"stylesheet\" type=\"text/css\" href=\"/public/css/fain.css\" />
 
 \t<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js\"></script>
+\t
+\t<script type=\"text/javascript\" src=\"//use.typekit.net/qon5fgi.js\"></script>
+\t<script type=\"text/javascript\">try{Typekit.load();}catch(e){}</script>
 </head>
 
 <body>
-\t<div class=\"container\">
-\t\t
-\t\t";
-        // line 26
+\t<nav>
+\t";
+        // line 28
         if ((isset($context["currentUser"]) ? $context["currentUser"] : null)) {
-            // line 27
-            echo "\t\t<nav>
-\t\t\t<ul class=\"list-inline\">
-\t\t\t\t<li><a href=\"";
             // line 29
+            echo "\t\t<ul class=\"list-inline\">
+\t\t\t<li><a href=\"";
+            // line 30
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "\">Home</a></li>
-\t\t\t\t<li><a href=\"";
-            // line 30
+\t\t\t<li><a href=\"";
+            // line 31
             echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl("dashboard"), "html", null, true);
             echo "\" ";
             if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "dashboard")) {
                 echo "class=\"active\"";
             }
             echo ">Dashboard</a></li>
-\t\t\t\t<li><a href=\"";
-            // line 31
+\t\t\t<li><a href=\"";
+            // line 32
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "admin\">Admin</a></li>
-\t\t\t</ul>
-\t\t</nav>
-\t\t";
+\t\t</ul>
+\t";
         } else {
             // line 35
-            echo "\t\t\t
-\t\t";
+            echo "\t\t<ul class=\"list-inline logged-out\">
+\t\t\t<li>Clay Fain is a musician and songwriter living in Brooklyn, NY.</li>
+\t\t</ul>
+\t";
         }
-        // line 37
-        echo "
+        // line 39
+        echo "\t\t<ul id=\"social-links\" class=\"list-inline\">
+\t\t</ul>
+\t</nav>
+\t
+\t<div class=\"container\">
+
 \t\t<main id=\"content\" role=\"main\">
 \t\t\t";
-        // line 39
-        $this->displayBlock('content', $context, $blocks);
-        // line 43
-        echo "\t\t</main>
-
-\t\t<footer id=\"footer\">
-\t\t\tCopyright Clay Fain ";
         // line 46
+        $this->displayBlock('content', $context, $blocks);
+        // line 50
+        echo "\t\t</main>
+\t\t
+\t</div>
+\t
+\t<footer id=\"footer\">
+\t\tCopyright Clay Fain ";
+        // line 55
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["now"]) ? $context["now"] : null), "year"), "html", null, true);
         echo ". All rights reserved 
-\t\t</footer>
-\t</div>
+\t</footer>
+\t
 </body>
 </html>
 ";
     }
 
-    // line 39
+    // line 46
     public function block_content($context, array $blocks = array())
     {
-        // line 40
+        // line 47
         echo "\t\t\t\t<p>If you see me, you haven’t set your <code>";
         echo "{% block content %}…{% endblock %}";
         echo "</code> yet.</p>
@@ -116,6 +125,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
     public function getDebugInfo()
     {
-        return array (  100 => 40,  97 => 39,  80 => 39,  72 => 35,  65 => 31,  57 => 30,  53 => 29,  49 => 27,  47 => 26,  35 => 17,  27 => 16,  20 => 11,  241 => 91,  237 => 89,  227 => 86,  223 => 85,  219 => 83,  217 => 82,  214 => 81,  208 => 78,  204 => 76,  202 => 75,  194 => 70,  189 => 67,  183 => 64,  179 => 62,  177 => 61,  172 => 58,  168 => 56,  157 => 54,  153 => 53,  149 => 51,  147 => 50,  142 => 47,  136 => 44,  132 => 42,  130 => 41,  124 => 37,  121 => 36,  112 => 34,  107 => 33,  105 => 32,  99 => 28,  96 => 27,  87 => 46,  82 => 43,  79 => 23,  76 => 37,  67 => 20,  62 => 19,  60 => 18,  54 => 15,  46 => 12,  42 => 10,  39 => 9,  36 => 8,  34 => 7,  31 => 6,  28 => 5,);
+        return array (  109 => 47,  106 => 46,  96 => 55,  89 => 50,  87 => 46,  78 => 39,  72 => 35,  66 => 32,  58 => 31,  54 => 30,  51 => 29,  49 => 28,  35 => 17,  27 => 16,  20 => 11,);
     }
 }

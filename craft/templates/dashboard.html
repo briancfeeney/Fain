@@ -35,53 +35,65 @@
 				
 				{% for entry in craft.entries.section('songs').order('songDate').songDate() %}
 					<article>
-						<div class="row">
-							<div class="col-sm-8">
-								<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>(Fain/Somebody) {{ entry.songDate | date('F Y') }}</small></h4>
-							</div>
-						</div>
+						<h1>
+							<a href="{{ entry.url }}">{{ entry.title }}</a>
+							<small>
+								{% if entry.coWriters | length %}
+								<span class="writer-credit">(
+									{% for writer in entry.coWriters %}
+										{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+									{% endfor %}
+								)</span>
+								{% endif %}
+								{{ entry.songDate | date('M Y') }}
+							</small>
+						</h1>
 					</article>
 				{% endfor %}
 			</section>
 		
 		</div>
 		<div class="col-sm-6">
-		
+			
 			<section id="search">
 				<form class="navbar-form navbar-left" role="search" action="{{ url('search') }}">
 					<div class="form-group">
-		 				<input type="search" name="search" class="form-control" placeholder="Search">
+		 				<input type="search" name="search" class="form-control">
 					</div>
 					<button type="submit" class="btn btn-default" value="go">Search</button>
 				</form>
 			</section>
+			
+			<div class="gray-box">
 		
-			<section id="tags">
-				<h3>Tags</h3>
-				{% set entries = craft.entries.section('songs').limit(null) %}
-				<ul class="list-inline">
-				    {% for tag in craft.tags.relatedTo(entries) %}
-				        <li><a href="/tags/{{ tag.name }}" class="btn">{{ tag.name }}</a></li>
-				    {% endfor %}
-				</ul>
-			</section>
+				<section id="tags">
+					<h3>Tags</h3>
+					{% set entries = craft.entries.section('songs').limit(null) %}
+					<ul class="list-inline">
+					    {% for tag in craft.tags.relatedTo(entries) %}
+					        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+					    {% endfor %}
+					</ul>
+				</section>
 		
-			<section id="playlists">
-				<h3>Playlists</h3>
-				{% set allEntries = craft.entries.section('playlists').limit(null) %}
-				{% for date, entries in allEntries | group("postDate|date('Y')") %}
-					<h5>{{ date }}</h5>
-					{% for entry in entries %}
-					<article>
-						<div class="row">
-							<div class="col-sm-8">
-								<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.postDate.format('F d, Y') }}</small></h4>
+				<section id="playlists">
+					<h3>Playlists</h3>
+					{% set allEntries = craft.entries.section('playlists').limit(null) %}
+					{% for date, entries in allEntries | group("postDate|date('Y')") %}
+						<h5>{{ date }}</h5>
+						{% for entry in entries %}
+						<article>
+							<div class="row">
+								<div class="col-sm-8">
+									<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.postDate.format('F d, Y') }}</small></h4>
+								</div>
 							</div>
-						</div>
-					</article>
+						</article>
+						{% endfor %}
 					{% endfor %}
-				{% endfor %}
-			</section>
+				</section>
+				
+			</div> <!-- gray box -->
 		
 		</div>
 	</div>

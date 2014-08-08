@@ -18,22 +18,29 @@
 	<link rel="stylesheet" type="text/css" href="/public/css/fain.css" />
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="//use.typekit.net/qon5fgi.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 
 <body>
+	<nav>
+	{% if currentUser %}
+		<ul class="list-inline">
+			<li><a href="{{ siteUrl }}">Home</a></li>
+			<li><a href="{{ url('dashboard') }}" {% if craft.request.firstSegment == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
+			<li><a href="{{ siteUrl }}admin">Admin</a></li>
+		</ul>
+	{% else %}
+		<ul class="list-inline logged-out">
+			<li>Clay Fain is a musician and songwriter living in Brooklyn, NY.</li>
+		</ul>
+	{% endif %}
+		<ul id="social-links" class="list-inline">
+		</ul>
+	</nav>
+	
 	<div class="container">
-		
-		{% if currentUser %}
-		<nav>
-			<ul class="list-inline">
-				<li><a href="{{ siteUrl }}">Home</a></li>
-				<li><a href="{{ url('dashboard') }}" {% if craft.request.firstSegment == 'dashboard' %}class="active"{% endif %}>Dashboard</a></li>
-				<li><a href="{{ siteUrl }}admin">Admin</a></li>
-			</ul>
-		</nav>
-		{% else %}
-			
-		{% endif %}
 
 		<main id="content" role="main">
 			{% block content %}
@@ -41,10 +48,12 @@
 				<p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
 			{% endblock %}
 		</main>
-
-		<footer id="footer">
-			Copyright Clay Fain {{ now.year }}. All rights reserved 
-		</footer>
+		
 	</div>
+	
+	<footer id="footer">
+		Copyright Clay Fain {{ now.year }}. All rights reserved 
+	</footer>
+	
 </body>
 </html>

@@ -19,6 +19,14 @@
 @brand-warning:         #f0ad4e;
 @brand-danger:          #d9534f;
 
+@darkblue:				#01000f;
+@graylight:				#e8e8e9;
+@gray:					#d9d9db;
+@graydark:				#9a999f;
+@yellow:				#f1aa63;
+@white:					#ffffff;
+
+
 
 //== Scaffolding
 //
@@ -38,6 +46,38 @@
 //== Typography
 //
 //## Font, line-height, and color for body text, headings, and more.
+
+.alternateGothic {
+	font-family: "alternate-gothic-no-3-d",sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+
+.freightTextBook {
+	font-family: "freight-text-pro",sans-serif;
+	font-style: normal;
+	font-weight: 400;
+}
+
+.freightTextBookI {
+	font-family: "freight-text-pro",sans-serif;
+	font-style: italic;
+	font-weight: 400;
+}
+
+.freightTextBold {
+	font-family: "freight-text-pro",sans-serif;
+	font-style: normal;
+	font-weight: 700;
+}
+
+.freightTextBoldI {
+	font-family: "freight-text-pro",sans-serif;
+	font-style: italic;
+	font-weight: 700;
+}
+
 
 @font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif;
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
@@ -99,7 +139,7 @@
 @line-height-large:         1.33;
 @line-height-small:         1.5;
 
-@border-radius-base:        4px;
+@border-radius-base:        0;
 @border-radius-large:       6px;
 @border-radius-small:       3px;
 
@@ -315,12 +355,12 @@
 @container-sm:                 @container-tablet;
 
 // Medium screen / desktop
-@container-desktop:            ((940px + @grid-gutter-width));
+@container-desktop:            ((970px + @grid-gutter-width));
 //** For `@screen-md-min` and up.
 @container-md:                 @container-desktop;
 
 // Large screen / wide desktop
-@container-large-desktop:      ((1140px + @grid-gutter-width));
+@container-large-desktop:      ((970px + @grid-gutter-width));
 //** For `@screen-lg-min` and up.
 @container-lg:                 @container-large-desktop;
 

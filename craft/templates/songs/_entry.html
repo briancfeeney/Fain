@@ -8,19 +8,21 @@
 		{% redirect '/' %}
 	{% endif %}
 
-	<article>
-		<h2>
-			<a href="{{ entry.url }}">{{ entry.title }}</a>
-			{% if entry.coWriters | length %}
-			<small class="writer-credit">(
-				{% for writer in entry.coWriters %}
-					{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
-				{% endfor %}
-			)</small>
-			{% endif %}
-		</h2>
+	<article class="song-entry">
 		<div class="row">
 			<div class="col-sm-9">
+				<h1>
+					{{ entry.title }}
+					<small>
+						{% if entry.coWriters | length %}
+						<span class="writer-credit">(
+							{% for writer in entry.coWriters %}
+								{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+							{% endfor %}
+						)</span>
+						{% endif %}
+					</small>
+				</h1>
 				<!-- <iframe width="100%" height="20" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ entry.soundcloudId }}%3Fsecret_token%3Ds-6J7so&amp;color=000000&amp;inverse=false&amp;auto_play=false"></iframe> -->
 				
 				<audio controls>
@@ -40,60 +42,63 @@
 			<div class="col-sm-3">
 				{% if entry.mp3Download | length %}
 				    {% for asset in entry.mp3Download %}
-				        <a href="{{ asset.url }}" target="_blank">Download MP3</a>
+				        <a href="{{ asset.url }}" class="btn mp3download" target="_blank">Download MP3</a>
 				    {% endfor %}
 				{% endif %}
 			</div>
 		</div>
-		<div class="row">
+		
+		<div class="gray-box">
+			<div class="row">
 			
-			{% if entry.coWriters | length %}
-			<div class="col-sm-6">
-				<h3>Lyrics</h3>
-				<p>{{ entry.lyrics }}</p>
-			</div>
-			{% endif %}
-			
-			<div class="col-sm-6">
-				
-				{% if craft.tags.relatedTo(entry.id) | length %}
-					<h3>Tags</h3>
-					<ul class="list-inline">
-					    {% for tag in craft.tags.relatedTo(entry.id) %}
-					        <li><a href="/tags/{{ tag.name }}" class="btn">{{ tag.name }}</a></li>
-					    {% endfor %}
-					</ul>
-				{% endif %}
-				
-				<div class="row">
-					
-
-
-					<div class="col-sm-6">
-						<h3>Date</h3>
-						<p>{{ entry.songDate | date('F Y') }}</p>
-					</div>
-					
+				{% if entry.coWriters | length %}
+				<div class="col-sm-6">
+					<h3>Lyrics</h3>
+					<p>{{ entry.lyrics }}</p>
 				</div>
-				
-				{% if entry.songNotes | length %}
-				<section>
-					<h3>Notes</h3>
-					<p>{{ entry.songNotes }}</p>
-				</section>
 				{% endif %}
+			
+				<div class="col-sm-6">
 				
-				{% if entry.releaseList | length %}
-				<section id="releaseList">
-					<h3>Appears on These Releases</h3>
-					{% for album in entry.releaseList %}
-						<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
-						</iframe>
-					{% endfor %}
-				</section>
-				{% endif %}
+					{% if craft.tags.relatedTo(entry.id) | length %}
+						<h3>Tags</h3>
+						<ul class="list-inline">
+						    {% for tag in craft.tags.relatedTo(entry.id) %}
+						        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+						    {% endfor %}
+						</ul>
+					{% endif %}
 				
-			</div>
+					<div class="row">
+					
+
+
+						<div class="col-sm-6">
+							<h3>Date</h3>
+							<p>{{ entry.songDate | date('F Y') }}</p>
+						</div>
+					
+					</div>
+				
+					{% if entry.songNotes | length %}
+					<section>
+						<h3>Notes</h3>
+						<p>{{ entry.songNotes }}</p>
+					</section>
+					{% endif %}
+				
+					{% if entry.releaseList | length %}
+					<section id="releaseList">
+						<h3>Appears on These Releases</h3>
+						{% for album in entry.releaseList %}
+							<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
+							</iframe>
+						{% endfor %}
+					</section>
+					{% endif %}
+				
+				</div>
+			</div> <!-- gray box -->
 		</div>
 	</article>
 {% endblock %}

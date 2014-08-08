@@ -3,6 +3,48 @@
 /* ----------------------------------------------------------------------------- */
 // BASIC RESET
 
+body {
+	background: @graylight;
+	color: @darkblue;
+	.freightTextBook();
+}
+
+a {
+	color: @yellow;
+}
+
+p {
+	.freightTextBook();
+	a {
+		color: @darkblue;
+		text-decoration: underline;
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	.alternateGothic();
+	color: @yellow;
+	a {
+		color: @darkblue;
+		&:hover {
+			text-decoration: none;
+			color: @yellow;
+		}
+	}
+}
+
+h1 {
+	font-size: 2.5em;
+	small {
+		font-size: 60%;
+		margin-left: .5em;
+	}
+}
+
+h3 {
+	font-size: 1.6em;
+}
+
 
 
 /* ----------------------------------------------------------------------------- */
@@ -33,9 +75,89 @@
 	border-top: 5px solid #000;
 }
 
-/* ----------------------------------------------------------------------------- */
-// SONGS 
+.gray-box {
+	background: @gray;
+	padding: 1em;
+}
 
+.btn {
+	background-color: @yellow;
+	color: @white;
+	.alternateGothic();
+	font-size: 1.5em;
+	padding: .25em .25em .1em;
+	&:hover {
+		background-color: darken(@yellow, 10%);
+		color: @white;
+	}
+}
+
+.tag {
+	color: @darkblue;
+	background: @graydark;
+	.alternateGothic();
+	font-size: 1.5em;
+	margin-bottom: 1em;
+	border-radius: .25em;
+	padding: .25em .5em 0;
+	&:hover {
+		background: darken(@graydark, 10%);
+		color: @darkblue;
+	}
+}
+
+
+/* -------------------------------------------------------------------------------- */
+// INPUT FIELDS
+
+.navbar-form {
+	width: 100%;
+	.form-group {
+		width: 80%;
+		float: left;
+		.form-control {
+			width: 100%;
+			border: none;
+			height: 2.7em;
+			color: @darkblue;
+		}
+	}
+	button {
+		float: right;
+		width: 20%;
+		border: none;
+	}
+}
+
+/* -------------------------------------------------------------------------------- */
+// HEADER
+
+nav {
+	background-color: @darkblue;
+	margin-bottom: 5em;
+	.alternateGothic();
+	ul {
+		padding: .5em !important;
+		li {
+			font-size: 1.5em;
+			a {
+				color: @white;
+				&:hover {
+					color: @yellow;
+					text-decoration: none;
+				}
+			}
+		}
+		&.logged-out {
+			text-transform: none;
+			color: @white;
+		}
+	}
+}
+
+#social-links {
+	float: right;
+}
 
 
 /* ----------------------------------------------------------------------------- */
@@ -44,6 +166,30 @@
 section {
 	width: 100%;
 	clear: both;
+}
+
+#search {
+	overflow: hidden;
+	.navbar-form {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+
+/* ----------------------------------------------------------------------------- */
+// SONGS 
+
+.song-entry {
+	h1 {
+		font-size: 3.5em;
+		margin: 0;
+		color: @darkblue;
+	}
+	.mp3download {
+		float: right;
+		color: @darkblue;
+	}
 }
 
 
@@ -80,7 +226,10 @@ section {
 /* ----------------------------------------------------------------------------- */
 // FOOTER
 
-
+#footer {
+	text-align: center;
+	margin: 5em 0 2.5em;
+}
 
 /* ----------------------------------------------------------------------------- */
 // RESPONSIVE
