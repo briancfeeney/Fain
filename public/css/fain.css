@@ -6061,6 +6061,62 @@ button.close {
     display: none !important;
   }
 }
+@charset "UTF-8";
+@font-face {
+  font-family: "clay-fain";
+  src: url("../fonts/clay-fain.eot");
+  src: url("../fonts/clay-fain.eot?#iefix") format("embedded-opentype"), url("../fonts/clay-fain.woff") format("woff"), url("../fonts/clay-fain.ttf") format("truetype"), url("../fonts/clay-fain.svg#clay-fain") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[data-icon]:before {
+  font-family: "clay-fain" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "clay-fain" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-social-twitter:before {
+  content: "a";
+}
+.icon-play:before {
+  content: "b";
+}
+.icon-pause:before {
+  content: "c";
+}
+.icon-social-instagram:before {
+  content: "d";
+}
+.icon-social-facebook:before {
+  content: "e";
+}
+.icon-social-tumblr:before {
+  content: "f";
+}
+.icon-rss:before {
+  content: "g";
+}
+.icon-mail:before {
+  content: "h";
+}
 /* ----------------------------------------------------------------------------- */
 body {
   background: #e8e8e9;
@@ -6175,6 +6231,15 @@ h3 {
   background: #807f86;
   color: #01000f;
 }
+#social-links a {
+  font-family: "clay-fain";
+  cursor: pointer;
+  margin-left: .5em;
+  font-size: 1.25em;
+}
+.list-inline {
+  margin: 0;
+}
 /* -------------------------------------------------------------------------------- */
 .navbar-form {
   width: 100%;
@@ -6202,9 +6267,11 @@ nav {
   font-style: normal;
   font-weight: 400;
   text-transform: uppercase;
+  overflow: hidden;
 }
 nav ul {
-  padding: .5em !important;
+  padding: .5em;
+  margin: 0;
 }
 nav ul li {
   font-size: 1.5em;
@@ -6220,8 +6287,13 @@ nav ul.logged-out {
   text-transform: none;
   color: #ffffff;
 }
-#social-links {
+nav ul.main-nav,
+nav ul.logged-out {
+  float: left;
+}
+nav ul#social-links {
   float: right;
+  padding-bottom: 0;
 }
 /* ----------------------------------------------------------------------------- */
 section {

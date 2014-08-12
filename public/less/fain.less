@@ -1,4 +1,5 @@
 @import "bootstrap.less";
+@import "fain-font.less";
 
 /* ----------------------------------------------------------------------------- */
 // BASIC RESET
@@ -106,6 +107,18 @@ h3 {
 	}
 }
 
+#social-links {
+	a {
+		font-family: "clay-fain";
+		cursor: pointer;
+		margin-left: .5em;
+		font-size: 1.25em;
+	}
+}
+
+.list-inline {
+	margin: 0;
+}
 
 /* -------------------------------------------------------------------------------- */
 // INPUT FIELDS
@@ -136,8 +149,10 @@ nav {
 	background-color: @darkblue;
 	margin-bottom: 5em;
 	.alternateGothic();
+	overflow: hidden;
 	ul {
-		padding: .5em !important;
+		padding: .5em;
+		margin: 0;
 		li {
 			font-size: 1.5em;
 			a {
@@ -152,11 +167,15 @@ nav {
 			text-transform: none;
 			color: @white;
 		}
+		&.main-nav,
+		&.logged-out {
+			float: left;
+		}
+		&#social-links {
+			float: right;
+			padding-bottom: 0;
+		}
 	}
-}
-
-#social-links {
-	float: right;
 }
 
 
