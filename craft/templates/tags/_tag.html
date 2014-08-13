@@ -8,19 +8,45 @@
 	{% endif %}
 
 
-	<h2>Songs tagged “{{ tag.name }}”</h2>
+	<h3>Songs tagged “{{ tag.name }}”</h3>
 	
 	{% for entry in craft.entries.section('songs').relatedTo(tag).order('title') %}
 
 		{% if entry | length %}
-	        
-			<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
-	        
+			<article class="taggedList">
+				<h1>
+					<a href="{{ entry.url }}">{{ entry.title }}</a>
+					<small>
+						{% if entry.coWriters | length %}
+						<span class="writer-credit">(
+							{% for writer in entry.coWriters %}
+								{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+							{% endfor %}
+						)</span>
+						{% endif %}
+						{{ entry.songDate | date('M Y') }}
+					</small>
+				</h1>
+			</article>
 		{% else %}
 		
 		    <p>No entries could be found with that tag.</p>
 		
 		{% endif %}
+		
+		<div class="gray-box">
+	
+			<section id="tags">
+				<h3>Tags</h3>
+				{% set entries = craft.entries.section('songs').limit(null) %}
+				<ul class="list-inline">
+				    {% for tag in craft.tags.relatedTo(entries) %}
+				        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+				    {% endfor %}
+				</ul>
+			</section>
+			
+		</div>
 		
 	{% endfor %}
 

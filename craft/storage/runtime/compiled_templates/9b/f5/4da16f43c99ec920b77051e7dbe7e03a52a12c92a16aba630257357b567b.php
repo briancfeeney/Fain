@@ -35,7 +35,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
         echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
         echo "\" />
 \t<link rel=\"stylesheet\" type=\"text/css\" href=\"/public/css/fain.css\" />
-\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/public/css/fain-font.css\" />
 
 \t<script src=\"//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js\"></script>
 \t
@@ -46,16 +45,16 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 <body>
 \t<nav>
 \t";
-        // line 29
+        // line 28
         if ((isset($context["currentUser"]) ? $context["currentUser"] : null)) {
-            // line 30
+            // line 29
             echo "\t\t<ul class=\"list-inline main-nav\">
 \t\t\t<li><a href=\"";
-            // line 31
+            // line 30
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "\">Home</a></li>
 \t\t\t<li><a href=\"";
-            // line 32
+            // line 31
             echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl("dashboard"), "html", null, true);
             echo "\" ";
             if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "dashboard")) {
@@ -63,24 +62,30 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
             }
             echo ">Dashboard</a></li>
 \t\t\t<li><a href=\"";
-            // line 33
+            // line 32
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "admin\">Admin</a></li>
 \t\t</ul>
 \t";
         } else {
-            // line 36
+            // line 35
             echo "\t\t<ul class=\"list-inline logged-out\">
 \t\t\t<li>Clay Fain is a musician and songwriter living in Brooklyn, NY.</li>
 \t\t</ul>
 \t";
         }
-        // line 40
+        // line 39
         echo "\t\t<ul id=\"social-links\" class=\"list-inline\">
 \t\t\t<li>
-\t\t\t\t<a class=\"icon icon-social-twitter\"></a>
-\t\t\t\t<a class=\"icon icon-social-instagram\"></a>
-\t\t\t\t<a class=\"icon icon-mail\"></a>
+\t\t\t\t<a href=\"";
+        // line 41
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["globals"]) ? $context["globals"] : null), "twitter"), "html", null, true);
+        echo "\" class=\"icon icon-social-twitter\"></a>
+\t\t\t\t<a href=\"";
+        // line 42
+        echo twig_escape_filter($this->env, (isset($context["instagram"]) ? $context["instagram"] : null), "html", null, true);
+        echo "\" class=\"icon icon-social-instagram\"></a>
+\t\t\t\t<a href=\"mailto:cdfain@gmail.com\" class=\"icon icon-mail\"></a>
 \t        </li>
 \t\t</ul>
 \t</nav>
@@ -89,29 +94,35 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
 \t\t<main id=\"content\" role=\"main\">
 \t\t\t";
-        // line 52
+        // line 51
         $this->displayBlock('content', $context, $blocks);
-        // line 56
+        // line 55
         echo "\t\t</main>
 \t\t
 \t</div>
 \t
 \t<footer id=\"footer\">
 \t\tCopyright Clay Fain ";
-        // line 61
+        // line 60
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["now"]) ? $context["now"] : null), "year"), "html", null, true);
         echo ". All rights reserved 
 \t</footer>
+\t
+\t<script src=\"/public/js/mediaelement-and-player.min.js\"></script>
+\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/public/css/mediaelementplayer.css\" />
+\t<script>
+\t\t\$('video,audio').mediaelementplayer(/* Options */);
+\t</script>
 \t
 </body>
 </html>
 ";
     }
 
-    // line 52
+    // line 51
     public function block_content($context, array $blocks = array())
     {
-        // line 53
+        // line 52
         echo "\t\t\t\t<p>If you see me, you haven’t set your <code>";
         echo "{% block content %}…{% endblock %}";
         echo "</code> yet.</p>
@@ -131,6 +142,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
     public function getDebugInfo()
     {
-        return array (  115 => 53,  112 => 52,  102 => 61,  95 => 56,  93 => 52,  79 => 40,  73 => 36,  67 => 33,  59 => 32,  55 => 31,  52 => 30,  50 => 29,  35 => 17,  27 => 16,  20 => 11,);
+        return array (  126 => 52,  123 => 51,  107 => 60,  100 => 55,  98 => 51,  86 => 42,  82 => 41,  78 => 39,  72 => 35,  66 => 32,  58 => 31,  54 => 30,  51 => 29,  49 => 28,  35 => 17,  27 => 16,  20 => 11,);
     }
 }

@@ -16,7 +16,6 @@
 	<title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
 	<link rel="home" href="{{ siteUrl }}" />
 	<link rel="stylesheet" type="text/css" href="/public/css/fain.css" />
-	<link rel="stylesheet" type="text/css" href="/public/css/fain-font.css" />
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	
@@ -39,9 +38,9 @@
 	{% endif %}
 		<ul id="social-links" class="list-inline">
 			<li>
-				<a class="icon icon-social-twitter"></a>
-				<a class="icon icon-social-instagram"></a>
-				<a class="icon icon-mail"></a>
+				<a href="{{ globals.twitter }}" class="icon icon-social-twitter"></a>
+				<a href="{{ instagram }}" class="icon icon-social-instagram"></a>
+				<a href="mailto:cdfain@gmail.com" class="icon icon-mail"></a>
 	        </li>
 		</ul>
 	</nav>
@@ -60,6 +59,12 @@
 	<footer id="footer">
 		Copyright Clay Fain {{ now.year }}. All rights reserved 
 	</footer>
+	
+	<script src="/public/js/mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/public/css/mediaelementplayer.css" />
+	<script>
+		$('video,audio').mediaelementplayer(/* Options */);
+	</script>
 	
 </body>
 </html>

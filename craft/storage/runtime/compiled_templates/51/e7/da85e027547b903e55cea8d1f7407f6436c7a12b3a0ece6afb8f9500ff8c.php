@@ -177,111 +177,177 @@ class __TwigTemplate_51e7da85e027547b903e55cea8d1f7407f6436c7a12b3a0ece6afb8f950
 \t\t
 \t\t<div class=\"gray-box\">
 \t\t\t<div class=\"row\">
-\t\t\t
-\t\t\t\t";
-        // line 54
-        if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "coWriters"))) {
-            // line 55
-            echo "\t\t\t\t<div class=\"col-sm-6\">
-\t\t\t\t\t<h3>Lyrics</h3>
-\t\t\t\t\t<p>";
-            // line 57
+\t\t\t\t<div class=\"col-sm-5\">
+\t\t\t\t\t
+\t\t\t\t\t";
+        // line 55
+        if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "lyrics"))) {
+            // line 56
+            echo "\t\t\t\t\t\t<section>
+\t\t\t\t\t\t\t<h3>Lyrics</h3>
+\t\t\t\t\t\t\t<p>";
+            // line 58
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "lyrics"), "html", null, true);
             echo "</p>
-\t\t\t\t</div>
-\t\t\t\t";
-        }
-        // line 60
-        echo "\t\t\t
-\t\t\t\t<div class=\"col-sm-6\">
-\t\t\t\t
+\t\t\t\t\t\t</section>
 \t\t\t\t\t";
-        // line 63
-        if (twig_length_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "tags"), "relatedTo", array(0 => $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "id")), "method"))) {
-            // line 64
-            echo "\t\t\t\t\t\t<h3>Tags</h3>
-\t\t\t\t\t\t<ul class=\"list-inline\">
-\t\t\t\t\t\t    ";
+        }
+        // line 61
+        echo "\t\t\t\t\t
+\t\t\t\t\t";
+        // line 62
+        if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "coWriters"))) {
+            // line 63
+            echo "\t\t\t\t\t\t<section>
+\t\t\t\t\t\t\t<h3>Writers</h3>
+\t\t\t\t\t\t\t<p>
+\t\t\t\t\t\t\t";
             // line 66
             $context['_parent'] = (array) $context;
-            $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "tags"), "relatedTo", array(0 => $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "id")), "method"));
-            foreach ($context['_seq'] as $context["_key"] => $context["tag"]) {
+            $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "coWriters"));
+            $context['loop'] = array(
+              'parent' => $context['_parent'],
+              'index0' => 0,
+              'index'  => 1,
+              'first'  => true,
+            );
+            if (is_array($context['_seq']) || (is_object($context['_seq']) && $context['_seq'] instanceof Countable)) {
+                $length = count($context['_seq']);
+                $context['loop']['revindex0'] = $length - 1;
+                $context['loop']['revindex'] = $length;
+                $context['loop']['length'] = $length;
+                $context['loop']['last'] = 1 === $length;
+            }
+            foreach ($context['_seq'] as $context["_key"] => $context["writer"]) {
                 // line 67
-                echo "\t\t\t\t\t\t        <li><a href=\"/tags/";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["tag"]) ? $context["tag"] : null), "name"), "html", null, true);
-                echo "\" class=\"btn tag\">";
-                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["tag"]) ? $context["tag"] : null), "name"), "html", null, true);
-                echo "</a></li>
-\t\t\t\t\t\t    ";
+                echo "\t\t\t\t\t\t\t\t";
+                if (twig_length_filter($this->env, $this->getAttribute((isset($context["writer"]) ? $context["writer"] : null), "writerWebsite"))) {
+                    // line 68
+                    echo "\t\t\t\t\t\t\t\t\t<a href=\"";
+                    echo twig_escape_filter($this->env, $this->getAttribute((isset($context["writer"]) ? $context["writer"] : null), "writerWebsite"), "html", null, true);
+                    echo "\">";
+                    echo twig_escape_filter($this->env, $this->getAttribute((isset($context["writer"]) ? $context["writer"] : null), "title"), "html", null, true);
+                    echo "</a>
+\t\t\t\t\t\t\t\t";
+                } else {
+                    // line 70
+                    echo "\t\t\t\t\t\t\t\t\t";
+                    echo twig_escape_filter($this->env, $this->getAttribute((isset($context["writer"]) ? $context["writer"] : null), "title"), "html", null, true);
+                    echo "
+\t\t\t\t\t\t\t\t";
+                }
+                // line 72
+                echo "\t\t\t\t\t\t\t\t";
+                if ((!$this->getAttribute((isset($context["loop"]) ? $context["loop"] : null), "last"))) {
+                    echo "/";
+                }
+                // line 73
+                echo "\t\t\t\t\t\t\t";
+                ++$context['loop']['index0'];
+                ++$context['loop']['index'];
+                $context['loop']['first'] = false;
+                if (isset($context['loop']['length'])) {
+                    --$context['loop']['revindex0'];
+                    --$context['loop']['revindex'];
+                    $context['loop']['last'] = 0 === $context['loop']['revindex0'];
+                }
             }
             $_parent = $context['_parent'];
-            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['tag'], $context['_parent'], $context['loop']);
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['writer'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 69
-            echo "\t\t\t\t\t\t</ul>
+            // line 74
+            echo "\t\t\t\t\t\t\t</p>
+\t\t\t\t\t\t</section>
 \t\t\t\t\t";
         }
-        // line 71
+        // line 77
         echo "\t\t\t\t
-\t\t\t\t\t<div class=\"row\">
-\t\t\t\t\t
-
-
-\t\t\t\t\t\t<div class=\"col-sm-6\">
-\t\t\t\t\t\t\t<h3>Date</h3>
-\t\t\t\t\t\t\t<p>";
-        // line 78
+\t\t\t\t\t<section>
+\t\t\t\t\t\t<h3>Date</h3>
+\t\t\t\t\t\t<p>";
+        // line 80
         echo twig_escape_filter($this->env, $this->env->getExtension('craft')->dateFilter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "songDate"), "F Y"), "html", null, true);
         echo "</p>
-\t\t\t\t\t\t</div>
+\t\t\t\t\t</section>
 \t\t\t\t\t
-\t\t\t\t\t</div>
-\t\t\t\t
 \t\t\t\t\t";
         // line 83
-        if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "songNotes"))) {
-            // line 84
-            echo "\t\t\t\t\t<section>
-\t\t\t\t\t\t<h3>Notes</h3>
-\t\t\t\t\t\t<p>";
-            // line 86
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "songNotes"), "html", null, true);
-            echo "</p>
-\t\t\t\t\t</section>
-\t\t\t\t\t";
-        }
-        // line 89
-        echo "\t\t\t\t
-\t\t\t\t\t";
-        // line 90
         if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "releaseList"))) {
-            // line 91
+            // line 84
             echo "\t\t\t\t\t<section id=\"releaseList\">
 \t\t\t\t\t\t<h3>Appears on These Releases</h3>
 \t\t\t\t\t\t";
-            // line 93
+            // line 86
             $context['_parent'] = (array) $context;
             $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "releaseList"));
             foreach ($context['_seq'] as $context["_key"] => $context["album"]) {
-                // line 94
-                echo "\t\t\t\t\t\t\t<iframe style=\"border: 0; width: 350px; height: 786px;\" src=\"http://bandcamp.com/EmbeddedPlayer/album=";
+                // line 87
+                echo "\t\t\t\t\t\t\t<iframe style=\"border: 0; width: 100%; height: 42px;\" src=\"http://bandcamp.com/EmbeddedPlayer/album=";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["album"]) ? $context["album"] : null), "albumRelease"), "html", null, true);
-                echo "/size=large/bgcol=ffffff/linkcol=333333/transparent=true/\" seamless>
-\t\t\t\t\t\t\t</iframe>
+                echo "/size=small/bgcol=ffffff/linkcol=0687f5/transparent=true/\" seamless><a href=\"http://clayfain.bandcamp.com/album/sad-eyes\"></a></iframe>
 \t\t\t\t\t\t";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['album'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 97
+            // line 89
             echo "\t\t\t\t\t</section>
 \t\t\t\t\t";
         }
-        // line 99
+        // line 91
         echo "\t\t\t\t
 \t\t\t\t</div>
-\t\t\t</div> <!-- gray box -->
-\t\t</div>
+\t\t\t
+\t\t\t\t<div class=\"col-sm-7\">
+\t\t\t\t
+\t\t\t\t\t";
+        // line 96
+        if (twig_length_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "tags"), "relatedTo", array(0 => $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "id")), "method"))) {
+            // line 97
+            echo "\t\t\t\t\t\t<section>
+\t\t\t\t\t\t\t<h3>Tags</h3>
+\t\t\t\t\t\t\t<ul class=\"list-inline\">
+\t\t\t\t\t\t\t    ";
+            // line 100
+            $context['_parent'] = (array) $context;
+            $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "tags"), "relatedTo", array(0 => $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "id")), "method"));
+            foreach ($context['_seq'] as $context["_key"] => $context["tag"]) {
+                // line 101
+                echo "\t\t\t\t\t\t\t        <li><a href=\"/tags/";
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["tag"]) ? $context["tag"] : null), "name"), "html", null, true);
+                echo "\" class=\"btn tag\">";
+                echo twig_escape_filter($this->env, $this->getAttribute((isset($context["tag"]) ? $context["tag"] : null), "name"), "html", null, true);
+                echo "</a></li>
+\t\t\t\t\t\t\t    ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['tag'], $context['_parent'], $context['loop']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 103
+            echo "\t\t\t\t\t\t\t</ul>
+\t\t\t\t\t\t</section>
+\t\t\t\t\t";
+        }
+        // line 106
+        echo "\t\t\t\t\t
+\t\t\t\t\t";
+        // line 107
+        if (twig_length_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "songNotes"))) {
+            // line 108
+            echo "\t\t\t\t\t<section>
+\t\t\t\t\t\t<h3>Notes</h3>
+\t\t\t\t\t\t<p>";
+            // line 110
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "songNotes"), "html", null, true);
+            echo "</p>
+\t\t\t\t\t</section>
+\t\t\t\t\t";
+        }
+        // line 113
+        echo "\t\t\t\t
+\t\t\t\t</div>
+\t\t\t</div>
+\t\t</div> <!-- gray box -->
 \t</article>
 ";
     }
@@ -298,6 +364,6 @@ class __TwigTemplate_51e7da85e027547b903e55cea8d1f7407f6436c7a12b3a0ece6afb8f950
 
     public function getDebugInfo()
     {
-        return array (  281 => 99,  277 => 97,  267 => 94,  263 => 93,  259 => 91,  257 => 90,  254 => 89,  248 => 86,  244 => 84,  242 => 83,  234 => 78,  225 => 71,  221 => 69,  210 => 67,  206 => 66,  202 => 64,  200 => 63,  195 => 60,  189 => 57,  185 => 55,  183 => 54,  175 => 48,  172 => 47,  163 => 45,  158 => 44,  156 => 43,  150 => 39,  147 => 38,  138 => 36,  133 => 35,  130 => 34,  127 => 33,  118 => 31,  113 => 30,  111 => 29,  105 => 26,  101 => 24,  97 => 22,  83 => 21,  76 => 20,  59 => 19,  56 => 18,  54 => 17,  49 => 15,  42 => 10,  39 => 9,  36 => 8,  34 => 7,  31 => 6,  28 => 5,);
+        return array (  347 => 113,  341 => 110,  337 => 108,  335 => 107,  332 => 106,  327 => 103,  316 => 101,  312 => 100,  307 => 97,  305 => 96,  298 => 91,  294 => 89,  285 => 87,  281 => 86,  277 => 84,  275 => 83,  269 => 80,  264 => 77,  259 => 74,  245 => 73,  240 => 72,  234 => 70,  226 => 68,  223 => 67,  206 => 66,  201 => 63,  199 => 62,  196 => 61,  190 => 58,  186 => 56,  184 => 55,  175 => 48,  172 => 47,  163 => 45,  158 => 44,  156 => 43,  150 => 39,  147 => 38,  138 => 36,  133 => 35,  130 => 34,  127 => 33,  118 => 31,  113 => 30,  111 => 29,  105 => 26,  101 => 24,  97 => 22,  83 => 21,  76 => 20,  59 => 19,  56 => 18,  54 => 17,  49 => 15,  42 => 10,  39 => 9,  36 => 8,  34 => 7,  31 => 6,  28 => 5,);
     }
 }

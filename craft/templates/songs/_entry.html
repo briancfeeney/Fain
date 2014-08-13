@@ -50,36 +50,60 @@
 		
 		<div class="gray-box">
 			<div class="row">
-			
-				{% if entry.coWriters | length %}
-				<div class="col-sm-6">
-					<h3>Lyrics</h3>
-					<p>{{ entry.lyrics }}</p>
-				</div>
-				{% endif %}
-			
-				<div class="col-sm-6">
-				
-					{% if craft.tags.relatedTo(entry.id) | length %}
-						<h3>Tags</h3>
-						<ul class="list-inline">
-						    {% for tag in craft.tags.relatedTo(entry.id) %}
-						        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
-						    {% endfor %}
-						</ul>
+				<div class="col-sm-5">
+					
+					{% if entry.lyrics | length %}
+						<section>
+							<h3>Lyrics</h3>
+							<p>{{ entry.lyrics }}</p>
+						</section>
+					{% endif %}
+					
+					{% if entry.coWriters | length %}
+						<section>
+							<h3>Writers</h3>
+							<p>
+							{% for writer in entry.coWriters %}
+								{% if writer.writerWebsite | length %}
+									<a href="{{ writer.writerWebsite }}">{{ writer.title }}</a>
+								{% else %}
+									{{ writer.title }}
+								{% endif %}
+								{% if not loop.last %}/{% endif %}
+							{% endfor %}
+							</p>
+						</section>
 					{% endif %}
 				
-					<div class="row">
+					<section>
+						<h3>Date</h3>
+						<p>{{ entry.songDate | date('F Y') }}</p>
+					</section>
 					
-
-
-						<div class="col-sm-6">
-							<h3>Date</h3>
-							<p>{{ entry.songDate | date('F Y') }}</p>
-						</div>
-					
-					</div>
+					{% if entry.releaseList | length %}
+					<section id="releaseList">
+						<h3>Appears on These Releases</h3>
+						{% for album in entry.releaseList %}
+							<iframe style="border: 0; width: 100%; height: 42px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=small/bgcol=ffffff/linkcol=0687f5/transparent=true/" seamless><a href="http://clayfain.bandcamp.com/album/sad-eyes"></a></iframe>
+						{% endfor %}
+					</section>
+					{% endif %}
 				
+				</div>
+			
+				<div class="col-sm-7">
+				
+					{% if craft.tags.relatedTo(entry.id) | length %}
+						<section>
+							<h3>Tags</h3>
+							<ul class="list-inline">
+							    {% for tag in craft.tags.relatedTo(entry.id) %}
+							        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+							    {% endfor %}
+							</ul>
+						</section>
+					{% endif %}
+					
 					{% if entry.songNotes | length %}
 					<section>
 						<h3>Notes</h3>
@@ -87,18 +111,8 @@
 					</section>
 					{% endif %}
 				
-					{% if entry.releaseList | length %}
-					<section id="releaseList">
-						<h3>Appears on These Releases</h3>
-						{% for album in entry.releaseList %}
-							<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
-							</iframe>
-						{% endfor %}
-					</section>
-					{% endif %}
-				
 				</div>
-			</div> <!-- gray box -->
-		</div>
+			</div>
+		</div> <!-- gray box -->
 	</article>
 {% endblock %}

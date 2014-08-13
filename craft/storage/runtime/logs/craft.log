@@ -796,3 +796,495 @@ HTTP_REFERER=http://clayfain.dev/
 ---
 
 ******************************************************************************************************
+2014/08/12 12:53:40 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/12 12:53:40 [info] [application] [Forced] Finished task 1 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/12 12:54:46 [warning] [application] 404 - 
+2014/08/12 12:54:46 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:54:52 [warning] [application] 404 - 
+2014/08/12 12:54:52 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:55:14 [warning] [application] 404 - 
+2014/08/12 12:55:14 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:55:27 [warning] [application] 404 - 
+2014/08/12 12:55:27 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:57:54 [warning] [application] 404 - 
+2014/08/12 12:57:54 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:58:04 [warning] [application] 404 - 
+2014/08/12 12:58:04 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:59:01 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/12 12:59:01 [info] [application] [Forced] Finished task 2 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/12 12:59:21 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/12 12:59:21 [info] [application] [Forced] Finished task 3 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/12 12:59:49 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/12 12:59:49 [info] [application] [Forced] Finished task 4 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/12 12:59:52 [warning] [application] 404 - 
+2014/08/12 12:59:52 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 12:59:59 [warning] [application] 404 - 
+2014/08/12 12:59:59 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 13:00:08 [warning] [application] 404 - 
+2014/08/12 13:00:08 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 13:00:24 [warning] [application] 404 - 
+2014/08/12 13:00:24 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/
+---
+
+******************************************************************************************************
+2014/08/12 13:09:57 [warning] [application] 404 - 
+2014/08/12 13:09:57 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/dashboard
+---
+
+******************************************************************************************************
+2014/08/12 13:09:59 [warning] [application] 404 - 
+2014/08/12 13:09:59 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:10:48 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/12 13:10:48 [info] [application] [Forced] Finished task 5 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/12 13:10:50 [warning] [application] 404 - 
+2014/08/12 13:10:50 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:13:42 [warning] [application] 404 - 
+2014/08/12 13:13:42 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/fain...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/fain-font.css
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:16:10 [warning] [application] 404 - 
+2014/08/12 13:16:10 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:18:30 [warning] [application] 404 - 
+2014/08/12 13:18:30 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:19:06 [warning] [application] 404 - 
+2014/08/12 13:19:06 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/12 13:19:08 [warning] [application] 404 - 
+2014/08/12 13:19:08 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/come-home-with-me
+---
+
+******************************************************************************************************
+2014/08/13 13:17:34 [warning] [application] 404 - 
+2014/08/13 13:17:34 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/your-heart-and-mine
+---
+
+******************************************************************************************************
+2014/08/13 13:18:06 [warning] [application] 404 - 
+2014/08/13 13:18:06 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/your-heart-and-mine
+---
+
+******************************************************************************************************
+2014/08/13 13:18:19 [warning] [application] 404 - 
+2014/08/13 13:18:19 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/your-heart-and-mine
+---
+
+******************************************************************************************************
+2014/08/13 13:19:05 [warning] [application] 404 - 
+2014/08/13 13:19:05 [error] [exception.Craft\HttpException.404] exception 'Craft\HttpException' in /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php:36
+Stack trace:
+#0 [internal function]: Craft\TemplatesController->actionRender('public/css/cont...', Array)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#2 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#6 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#8 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): CWebApplication->processRequest()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#10 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): CApplication->run()
+#11 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#12 {main}
+REQUEST_URI=/public/css/controls.svg
+HTTP_REFERER=http://clayfain.dev/songs/your-heart-and-mine
+---
+
+******************************************************************************************************
