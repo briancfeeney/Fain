@@ -28,13 +28,13 @@
 	{% endif %}
 
 	<div class="row">
-		<div class="col-sm-6">
+		<div class="col-sm-7">
 
 			<section id="songList">
 				<h3>Songs</h3>
 				
 				{% for entry in craft.entries.section('songs').order('songDate').songDate() %}
-					<article>
+					<article class="song">
 						<h1>
 							<a href="{{ entry.url }}">{{ entry.title }}</a>
 							<small>
@@ -48,12 +48,25 @@
 								{{ entry.songDate | date('M Y') }}
 							</small>
 						</h1>
+						<audio controls>
+							{% if entry.mp3Download | length %}
+							{% for asset in entry.mp3Download %}
+								<source src="{{ asset.url }}" type="audio/mpeg">
+							{% endfor %}
+							{% endif %}
+							{% if entry.songOgg | length %}
+							{% for asset in entry.songOgg %}
+								<source src="{{ asset.url }}" type="audio/ogg">
+							{% endfor %}
+							{% endif %}
+								Your browser does not support the audio element.
+						</audio>
 					</article>
 				{% endfor %}
 			</section>
 		
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-5">
 			
 			<section id="search">
 				<form class="navbar-form navbar-left" role="search" action="{{ url('search') }}">
@@ -80,14 +93,9 @@
 					<h3>Playlists</h3>
 					{% set allEntries = craft.entries.section('playlists').limit(null) %}
 					{% for date, entries in allEntries | group("postDate|date('Y')") %}
-						<h5>{{ date }}</h5>
 						{% for entry in entries %}
 						<article>
-							<div class="row">
-								<div class="col-sm-8">
-									<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.postDate.format('F d, Y') }}</small></h4>
-								</div>
-							</div>
+							<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.postDate.format('F d, Y') }}</small></h4>
 						</article>
 						{% endfor %}
 					{% endfor %}

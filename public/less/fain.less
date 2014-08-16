@@ -16,6 +16,7 @@ a {
 
 p {
 	.freightTextBook();
+	font-size: 1.2em;
 	a {
 		color: @darkblue;
 		text-decoration: underline;
@@ -39,9 +40,13 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 	font-size: 2.5em;
+	color: @darkblue;
 	small {
 		font-size: 60%;
 		margin-left: .5em;
+	}
+	@media (max-width: @screen-md) {
+		font-size: 2em;
 	}
 }
 
@@ -49,8 +54,27 @@ h3 {
 	font-size: 1.6em;
 }
 
+h4 {
+	.freightTextBold();
+	text-transform: none;
+	font-size: 1.5em;
+	small {
+		.alternateGothic();
+	}
+}
+
+h5 {
+	color: @graydark;
+	.alternateGothic();
+	margin-top: 0;
+}
+
 section {
 	margin-bottom: 3em;
+}
+
+article {
+	position: relative;
 }
 
 
@@ -61,30 +85,30 @@ section {
 	word-spacing: -.2em;
 }
 
-.soundcloudplayer {
-	.g-background-default {
-		background-color: #fff !important;
-	}
-	.sc-media-right { 
-		display: none !important; 
-	}
-}
-
 .arrowDown:after {
 	content:"";
 	position: relative;
-	right: -10px;
-	top: 14px;
+	right: -7px;
+	top: 9px;
 	width: 0; 
 	height: 0; 
 	border-left: 5px solid transparent;
 	border-right: 5px solid transparent;
-	border-top: 5px solid #000;
+	border-top: 5px solid @graydark;
+}
+.arrowDown:hover {
+	color: @darkblue;
+	&:after {
+		border-top-color: @darkblue;
+	}
 }
 
 .gray-box {
 	background: @gray;
-	padding: 1em;
+	padding: 1em 2em;
+	@media (max-width: @screen-sm) {
+		padding: .5em 1em;
+	}
 }
 
 .btn {
@@ -126,6 +150,7 @@ section {
 	margin: 0;
 }
 
+
 /* -------------------------------------------------------------------------------- */
 // INPUT FIELDS
 
@@ -134,6 +159,7 @@ section {
 	.form-group {
 		width: 80%;
 		float: left;
+		margin-bottom: 0;
 		.form-control {
 			width: 100%;
 			border: none;
@@ -145,6 +171,14 @@ section {
 		float: right;
 		width: 20%;
 		border: none;
+	}
+	@media (max-width: @screen-md) {
+		.form-group {
+			width: 75%;
+		}
+		button {
+			width: 25%;
+		}
 	}
 }
 
@@ -184,11 +218,15 @@ nav {
 		&.main-nav,
 		&.logged-out {
 			float: left;
+			padding-left: .5em;
 		}
 		&#social-links {
 			float: right;
 			padding-bottom: 0;
 		}
+	}
+	@media (max-width: @screen-sm) {
+		margin-bottom: 2em;
 	}
 }
 
@@ -203,12 +241,12 @@ section {
 
 #search {
 	overflow: hidden;
+	margin-bottom: 0;
 	.navbar-form {
 		margin: 0;
 		padding: 0;
 	}
 }
-
 
 /* ----------------------------------------------------------------------------- */
 // SONGS 
@@ -218,15 +256,112 @@ section {
 		font-size: 3.5em;
 		margin: 0;
 		color: @darkblue;
-		padding-left: 1em;
+		margin-left: 1em;
 		@media (max-width: @screen-md) {
 			font-size: 2.75em;
+		}
+		@media (max-width: @screen-sm) {
+			font-size: 2.25em;
+			small {
+				display: none;
+			}
 		}
 	}
 	.mp3download {
 		float: right;
 		color: @darkblue;
+		@media (max-width: @screen-sm) {
+			display: none;
+		}
 	}
+	@media (max-width: @screen-md) and (min-width: @screen-sm) {
+		.mejs-controls div.mejs-time-rail {
+			width: auto !important
+		}
+	}
+	@media (max-width: @screen-md) {										/* NEEDS FIDDLING */
+		.mejs-controls .mejs-play button, {
+			top: -49px;
+			width: 30px;
+			height: 30px;
+		}
+		.mejs-controls .mejs-pause button {
+			background-position: 0 -32px;
+			top: -45px;
+			width: 30px;
+			height: 30px;
+		}
+	}
+	@media (max-width: @screen-sm) {										/* NEEDS FIDDLING */
+		.mejs-controls .mejs-play button, {
+			top: -45px;
+		}
+		.mejs-controls .mejs-pause button {
+			background-position: 0 -36px;
+			top: -45px;
+		}
+	}
+}
+
+.song {
+	h1 {
+		margin-left: 1em;
+		@media (max-width: @screen-sm) {
+			small {
+				display: none;
+			}
+		}
+	}
+	.mejs-container {
+		position: absolute;
+	}
+	.mejs-controls div.mejs-time-rail {
+		display: none;
+	}
+	.mejs-controls .mejs-play button, {
+		top: -59px;
+		background-size: 850%;
+	}
+	.mejs-controls .mejs-pause button {
+		top: -52px;
+		background-size: 850%;
+	}
+	@media (max-width: @screen-md) {
+		.mejs-controls .mejs-play button, {
+			top: -50px;
+			width: 30px;
+			height: 30px;
+		}
+		.mejs-controls .mejs-pause button {
+			background-position: 0 -25px;
+			width: 30px;
+			height: 30px;
+		}
+	}
+	@media (max-width: @screen-sm) {
+		.mejs-container {
+			width: 95% !important;
+		}
+	}
+
+	@media (max-width: @screen-md) {
+		.mejs-controls div.mejs-time-rail {
+			width: auto !important
+		}
+	}
+	@media (max-width: @screen-sm) {
+		.mejs-controls .mejs-play button {
+			top: -50px;
+			height: 30px;
+			width: 30px;
+		}
+		.mejs-controls .mejs-pause button {
+			background-position: 0 -32px;
+			top: -45px;
+			height: 30px;
+			width: 30px;
+		}
+	}	
 }
 
 
@@ -235,6 +370,7 @@ section {
 
 .lyricsLabel {
 	cursor: pointer;
+	margin-top: 3em;
 }
 
 .lyrics {
@@ -249,6 +385,24 @@ section {
 	}
 }
 
+.playlistHeader {
+	text-align: center;
+	font-size: 5.5em;
+	letter-spacing: .1em;
+	margin: 0 0 .65em;
+}
+
+#playlists {
+	.song {
+		margin-bottom: 3em;
+	}
+	.mejs-controls div.mejs-time-rail {
+		display: block;
+	}
+	section {
+		margin-bottom: 6em;
+	}
+}
 
 /* ----------------------------------------------------------------------------- */
 // HOME
@@ -262,6 +416,11 @@ section {
 	margin-bottom: 5em;
 }
 
+.tagName,
+.searchName {
+	color: @darkblue;
+	font-size: 1em;
+}
 
 /* ----------------------------------------------------------------------------- */
 // FOOTER

@@ -7,48 +7,58 @@
 
 {% block content %}
 
-	<article>
-		<h2>Clay Fain</h2>
-		
-		<div class="row">
-			<div class="col-sm-8">
-				{% if entry.playlistSongs | length %}
-					{% for songs in entry.playlistSongs %}
+	<h1 class="playlistHeader">Clay Fain</h1>
+
+	<div class="row">
+		<div class="col-sm-7">
+			<section>
+			{% if entry.playlistSongs | length %}
+				{% for songs in entry.playlistSongs %}
 					
-						<h3>{{ songs.title }}</h3>
-						
-						{% if songs.coWriters | length %}
-						<h3>Co-Writers: <small>{{ songs.coWriters }}</small></h3>
-						{% endif %}
-						
+					<article class="song">
+						<h1>{{ songs.title }}
+							<small>
+								{% if entry.coWriters | length %}
+								<span class="writer-credit">(
+									{% for writer in entry.coWriters %}
+										{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+									{% endfor %}
+								)</span>
+								{% endif %}
+							</small>
+						</h1>
+					
 						<audio controls>
-							{% if entry.mp3Download | length %}
-							{% for asset in entry.mp3Download %}
+							{% if songs.mp3Download | length %}
+							{% for asset in songs.mp3Download %}
 								<source src="{{ asset.url }}" type="audio/mpeg">
 							{% endfor %}
 							{% endif %}
-							{% if entry.songOgg | length %}
-							{% for asset in entry.songOgg %}
+							{% if songs.songOgg | length %}
+							{% for asset in songs.songOgg %}
 								<source src="{{ asset.url }}" type="audio/ogg">
 							{% endfor %}
 							{% endif %}
 								Your browser does not support the audio element.
 						</audio>
-						
+					
 						{% if songs.lyrics | length %}
-							<h4 class="lyricsLabel arrowDown">Lyrics</h4>
+							<h5 class="lyricsLabel arrowDown">Lyrics</h5>
 							<div class="lyrics">{{ songs.lyrics }}</div>
 						{% endif %}
-						
-					{% endfor %}
-				{% endif %}
-				
-			</div>
-			<div class="col-sm-4">
+					</article>
+					
+				{% endfor %}
+			{% endif %}
+			</section>
+		</div>
+		<div class="col-sm-5">
+			<div class="gray-box">
 				<p>{{ entry.body }}</p>
 			</div>
 		</div>
-	</article>
+	</div>
+
 	
 	<script>
 		$('.lyricsLabel').click( function() {

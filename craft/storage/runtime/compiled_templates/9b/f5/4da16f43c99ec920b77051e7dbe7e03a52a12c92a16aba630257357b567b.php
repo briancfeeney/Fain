@@ -42,7 +42,10 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 \t<script type=\"text/javascript\">try{Typekit.load();}catch(e){}</script>
 </head>
 
-<body>
+<body id=\"";
+        // line 26
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment"), "html", null, true);
+        echo "\">
 \t<nav>
 \t";
         // line 28
@@ -142,6 +145,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
     public function getDebugInfo()
     {
-        return array (  126 => 52,  123 => 51,  107 => 60,  100 => 55,  98 => 51,  86 => 42,  82 => 41,  78 => 39,  72 => 35,  66 => 32,  58 => 31,  54 => 30,  51 => 29,  49 => 28,  35 => 17,  27 => 16,  20 => 11,);
+        return array (  129 => 52,  126 => 51,  110 => 60,  103 => 55,  101 => 51,  89 => 42,  85 => 41,  81 => 39,  75 => 35,  69 => 32,  61 => 31,  57 => 30,  54 => 29,  52 => 28,  47 => 26,  35 => 17,  27 => 16,  20 => 11,);
     }
 }

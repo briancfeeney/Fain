@@ -1288,3 +1288,36 @@ HTTP_REFERER=http://clayfain.dev/songs/your-heart-and-mine
 ---
 
 ******************************************************************************************************
+2014/08/15 13:16:12 [info] [application] [Forced] Starting task DeleteStaleTemplateCaches that has a total of 0 steps.
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (178)
+2014/08/15 13:16:12 [info] [application] [Forced] Finished task 6 (DeleteStaleTemplateCaches).
+in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (223)
+
+******************************************************************************************************
+2014/08/15 13:16:14 [error] [php] Object of class Craft\ElementCriteriaModel could not be converted to string (/Users/bcfeeney/Sites/Fain/craft/storage/runtime/compiled_templates/be/51/29ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419.php:58)
+Stack trace:
+#0 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Template.php(278): __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357b567b->doDisplay()
+#1 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Template.php(252): __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357b567b->displayWithErrorHandling()
+#2 /Users/bcfeeney/Sites/Fain/craft/storage/runtime/compiled_templates/be/51/29ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419.php(24): __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357b567b->display()
+#3 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Template.php(278): __TwigTemplate_be5129ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419->doDisplay()
+#4 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Template.php(252): __TwigTemplate_be5129ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419->displayWithErrorHandling()
+#5 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Template.php(263): __TwigTemplate_be5129ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419->display()
+#6 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(292): __TwigTemplate_be5129ad004c17192a066ba684c506ed1e592b774ea43b9cd68a0283f6897419->render()
+#7 /Users/bcfeeney/Sites/Fain/craft/app/services/TemplatesService.php(143): Twig_Environment->render()
+#8 /Users/bcfeeney/Sites/Fain/craft/app/controllers/BaseController.php(77): Craft\TemplatesService->render()
+#9 /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php(32): Craft\TemplatesController->renderTemplate()
+#10 unknown(0): Craft\TemplatesController->actionRender()
+#11 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs()
+#12 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#13 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams()
+#14 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): Craft\TemplatesController->runAction()
+#15 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): Craft\TemplatesController->runActionWithFilters()
+#16 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): Craft\TemplatesController->run()
+#17 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): Craft\WebApp->runController()
+#18 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(257): Craft\WebApp->processRequest()
+#19 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#20 /Users/bcfeeney/Sites/Fain/craft/app/index.php(196): Craft\WebApp->run()
+#21 /Users/bcfeeney/Sites/Fain/index.php(14): require_once()
+REQUEST_URI=/playlists/brian-feeney
+
+******************************************************************************************************

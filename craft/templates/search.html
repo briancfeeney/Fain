@@ -10,26 +10,46 @@
 
 
 <div class="row">
-	<div class="col-sm-9">
+	<div class="col-sm-7">
 		
-		<section id="search">
+		<section class="taggedList" id="songList">
 
 			{% set searchTerm = craft.request.getParam('search') %}
 			{% set songs = craft.entries.search(searchTerm).section('songs').find() %}
 			
-			<h1>You Searched for “{{ searchTerm }}” <small>({{ songs | length }} results)</small></h1>
+			<h3>You Searched for <span class="searchName">“{{ searchTerm }}”</span></h3>
 
 			{% if songs %}
 
-			    <section id="songList">
-					<h3>Songs</h3>
+			    <section>
 			        {% for entry in songs %}
-						<article>
-							<div class="row">
-								<div class="col-sm-8">
-									<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.songDate | date('F Y') }}</small></h4>
-								</div>
-							</div>
+						<article class="song">
+							<h1>
+								<a href="{{ entry.url }}">{{ entry.title }}</a>
+								<small>
+									{% if entry.coWriters | length %}
+									<span class="writer-credit">(
+										{% for writer in entry.coWriters %}
+											{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+										{% endfor %}
+									)</span>
+									{% endif %}
+									{{ entry.songDate | date('M Y') }}
+								</small>
+							</h1>
+							<audio controls>
+								{% if entry.mp3Download | length %}
+								{% for asset in entry.mp3Download %}
+									<source src="{{ asset.url }}" type="audio/mpeg">
+								{% endfor %}
+								{% endif %}
+								{% if entry.songOgg | length %}
+								{% for asset in entry.songOgg %}
+									<source src="{{ asset.url }}" type="audio/ogg">
+								{% endfor %}
+								{% endif %}
+									Your browser does not support the audio element.
+							</audio>
 						</article>
 			        {% endfor %}
 				</section>
@@ -40,6 +60,32 @@
 			{% endif %}
 		
 		</section>
+	</div>
+	<div class="col-sm-5">
+		
+		<section id="search">
+			<form class="navbar-form navbar-left" role="search" action="{{ url('search') }}">
+				<div class="form-group">
+	 				<input type="search" name="search" class="form-control">
+				</div>
+				<button type="submit" class="btn btn-default" value="go">Search</button>
+			</form>
+		</section>
+		
+		<div class="gray-box">
+	
+			<section id="tags">
+				<h3>Tags</h3>
+				{% set entries = craft.entries.section('songs').limit(null) %}
+				<ul class="list-inline">
+				    {% for tag in craft.tags.relatedTo(entries) %}
+				        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+				    {% endfor %}
+				</ul>
+			</section>
+			
+		</div> <!-- gray box -->
+	
 	</div>
 
 </div>

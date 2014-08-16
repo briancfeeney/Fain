@@ -177,7 +177,7 @@ class __TwigTemplate_51e7da85e027547b903e55cea8d1f7407f6436c7a12b3a0ece6afb8f950
 \t\t
 \t\t<div class=\"gray-box\">
 \t\t\t<div class=\"row\">
-\t\t\t\t<div class=\"col-sm-5\">
+\t\t\t\t<div class=\"col-sm-6\">
 \t\t\t\t\t
 \t\t\t\t\t";
         // line 55
@@ -298,7 +298,7 @@ class __TwigTemplate_51e7da85e027547b903e55cea8d1f7407f6436c7a12b3a0ece6afb8f950
         echo "\t\t\t\t
 \t\t\t\t</div>
 \t\t\t
-\t\t\t\t<div class=\"col-sm-7\">
+\t\t\t\t<div class=\"col-sm-6\">
 \t\t\t\t
 \t\t\t\t\t";
         // line 96

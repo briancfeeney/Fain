@@ -186,7 +186,7 @@
 
 /* :focus for accessibility */
 .mejs-controls .mejs-button button:focus {
-	outline: dotted 1px #999;
+	outline: none;
 }
 
 /* End: CONTROL BAR */
@@ -241,6 +241,12 @@
 	background-size: 1000%;
 }
 
+/* .mejs-controls .mejs-play button:hover,
+.mejs-controls .mejs-pause button:hover {
+	opacity: .7;
+} */
+
+
 .mejs-controls .mejs-stop button {
 	background-position: -112px 0;
 }
@@ -257,7 +263,7 @@
 	display: block;
 	position: absolute;
 	width: 180px;
-	height: 10px;
+	height: 6px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
@@ -328,7 +334,7 @@
 	width: 36px;
 	height: 17px;
 	border: solid 1px #333;
-	top: -26px;
+	top: -20px;
 	margin-left: -18px;
 	text-align: center;
 	color: #111;
@@ -344,7 +350,7 @@
 
 .mejs-controls .mejs-time-rail .mejs-time-float-corner {
 	position: absolute;
-	display: block;
+	display: none;
 	width: 0;
 	height: 0;
 	line-height: 0;

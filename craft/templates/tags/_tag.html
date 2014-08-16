@@ -6,48 +6,69 @@
 	{% if not tag %}
 	    {% exit 404 %}
 	{% endif %}
-
-
-	<h3>Songs tagged “{{ tag.name }}”</h3>
 	
-	{% for entry in craft.entries.section('songs').relatedTo(tag).order('title') %}
-
-		{% if entry | length %}
-			<article class="taggedList">
-				<h1>
-					<a href="{{ entry.url }}">{{ entry.title }}</a>
-					<small>
-						{% if entry.coWriters | length %}
-						<span class="writer-credit">(
-							{% for writer in entry.coWriters %}
-								{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
-							{% endfor %}
-						)</span>
-						{% endif %}
-						{{ entry.songDate | date('M Y') }}
-					</small>
-				</h1>
-			</article>
-		{% else %}
-		
-		    <p>No entries could be found with that tag.</p>
-		
-		{% endif %}
-		
-		<div class="gray-box">
+	<div class="row">
+		<div class="col-sm-7">
+			<h3>Songs tagged <span class="tagName">“{{ tag.name }}”</span></h3>
+			<section class="taggedList" id="songList">
 	
-			<section id="tags">
-				<h3>Tags</h3>
-				{% set entries = craft.entries.section('songs').limit(null) %}
-				<ul class="list-inline">
-				    {% for tag in craft.tags.relatedTo(entries) %}
-				        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
-				    {% endfor %}
-				</ul>
+				{% for entry in craft.entries.section('songs').relatedTo(tag).order('title') %}
+
+					{% if entry | length %}
+						<article class="song">
+							<h1>
+								<a href="{{ entry.url }}">{{ entry.title }}</a>
+								<small>
+									{% if entry.coWriters | length %}
+									<span class="writer-credit">(
+										{% for writer in entry.coWriters %}
+											{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+										{% endfor %}
+									)</span>
+									{% endif %}
+									{{ entry.songDate | date('M Y') }}
+								</small>
+							</h1>
+							<audio controls>
+								{% if entry.mp3Download | length %}
+								{% for asset in entry.mp3Download %}
+									<source src="{{ asset.url }}" type="audio/mpeg">
+								{% endfor %}
+								{% endif %}
+								{% if entry.songOgg | length %}
+								{% for asset in entry.songOgg %}
+									<source src="{{ asset.url }}" type="audio/ogg">
+								{% endfor %}
+								{% endif %}
+									Your browser does not support the audio element.
+							</audio>
+						</article>
+					{% else %}
+		
+					    <p>No entries could be found with that tag.</p>
+		
+					{% endif %}
+		
+				{% endfor %}
+	
 			</section>
+		</div>
+			
+		<div class="col-sm-5">
+		
+			<div class="gray-box">
+				<section id="tags">
+					<h3>Tags</h3>
+					{% set entries = craft.entries.section('songs').limit(null) %}
+					<ul class="list-inline">
+					    {% for tag in craft.tags.relatedTo(entries) %}
+					        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
+					    {% endfor %}
+					</ul>
+				</section>
+			</div>
 			
 		</div>
-		
-	{% endfor %}
+	</div>
 
 {% endblock %}
