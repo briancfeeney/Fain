@@ -48,7 +48,7 @@
 								{{ entry.songDate | date('M Y') }}
 							</small>
 						</h1>
-						<audio controls>
+						<audio controls preload="none">
 							{% if entry.mp3Download | length %}
 							{% for asset in entry.mp3Download %}
 								<source src="{{ asset.url }}" type="audio/mpeg">

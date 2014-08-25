@@ -425,13 +425,13 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
 \t\t\t";
         // line 207
         $this->displayBlock('main', $context, $blocks);
-        // line 238
+        // line 240
         echo "\t\t</main>
 
 \t\t<div id=\"footer\">
 \t\t\t<ul>
 \t\t\t\t<li>Craft ";
-        // line 242
+        // line 244
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getEditionName", array(), "method"), "html", null, true);
         echo " ";
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getVersion", array(), "method"), "html", null, true);
@@ -439,15 +439,15 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getBuild", array(), "method"), "html", null, true);
         echo "</li>
 \t\t\t\t<li>";
-        // line 243
+        // line 245
         echo twig_escape_filter($this->env, \Craft\Craft::t("Released on"), "html", null, true);
         echo " ";
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "releaseDate"), "localeDate"), "html", null, true);
         echo "</li>
 \t\t\t\t";
-        // line 244
+        // line 246
         if ($this->getAttribute((isset($context["currentUser"]) ? $context["currentUser"] : null), "can", array(0 => "performUpdates"), "method")) {
-            // line 245
+            // line 247
             echo "\t\t\t\t\t<li><a id=\"footer-updates\" href=\"";
             echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl("updates"), "html", null, true);
             echo "\">";
@@ -455,7 +455,7 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
             echo "</a></li>
 \t\t\t\t";
         }
-        // line 247
+        // line 249
         echo "\t\t\t\t<li>";
         echo twig_escape_filter($this->env, \Craft\Craft::t("Copyright"), "html", null, true);
         echo " ";
@@ -466,9 +466,9 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
 \t\t\t</ul>
 
 \t\t\t";
-        // line 250
+        // line 252
         if (((((isset($context["CraftEdition"]) ? $context["CraftEdition"] : null) == (isset($context["CraftPersonal"]) ? $context["CraftPersonal"] : null)) || ($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "getPath") == "settings")) && $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "canUpgradeEdition", array(), "method"))) {
-            // line 251
+            // line 253
             echo "\t\t\t\t<p id=\"upgradepromo\"><a>";
             echo twig_escape_filter($this->env, \Craft\Craft::t("Upgrade Craft to take your site to the next level."), "html", null, true);
             echo " <span class=\"go\">";
@@ -476,40 +476,40 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
             echo "</span></a></p>
 \t\t\t";
         }
-        // line 253
+        // line 255
         echo "\t\t</div>
 \t</div>
 
 \t";
-        // line 256
+        // line 258
         if ($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "hasWrongEdition", array(), "method")) {
-            // line 257
+            // line 259
             echo "\t\t<div id=\"wrongedition-modal\" class=\"modal fitted hidden\">
 \t\t\t<div class=\"body\">
 \t\t\t\t<p>";
-            // line 259
+            // line 261
             echo twig_escape_filter($this->env, \Craft\Craft::t("You’re running Craft {edition} with a Craft {licensedEdition} license.", array("edition" => $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getEditionName", array(), "method"), "licensedEdition" => $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getLicensedEditionName", array(), "method"))), "html", null, true);
             echo "</p>
 \t\t\t\t<p>";
-            // line 260
+            // line 262
             echo twig_escape_filter($this->env, \Craft\Craft::t("What would you like to do?"), "html", null, true);
             echo "</p>
 \t\t\t\t<div class=\"buttons\">
 \t\t\t\t\t<div class=\"btngroup\">
 \t\t\t\t\t\t<div id=\"wrongedition-switchbtn\" class=\"btn\">";
-            // line 263
+            // line 265
             echo twig_escape_filter($this->env, \Craft\Craft::t("Switch to Craft {edition}", array("edition" => $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getLicensedEditionName", array(), "method"))), "html", null, true);
             echo "</div>
 \t\t\t\t\t\t";
-            // line 264
+            // line 266
             if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getEdition", array(), "method") > $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "app"), "getLicensedEdition", array(), "method"))) {
-                // line 265
+                // line 267
                 echo "\t\t\t\t\t\t\t<div id=\"wrongedition-upgradebtn\" class=\"btn\">";
                 echo twig_escape_filter($this->env, \Craft\Craft::t("Upgrade your license"), "html", null, true);
                 echo "</div>
 \t\t\t\t\t\t";
             }
-            // line 267
+            // line 269
             echo "\t\t\t\t\t</div>
 \t\t\t\t</div>
 \t\t\t</div>
@@ -630,15 +630,17 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
         }
         // line 225
         echo "
-\t\t\t\t\t\t\t\t";
-        // line 226
+\t\t\t\t\t\t\t\t<div class=\"body\">
+\t\t\t\t\t\t\t\t\t";
+        // line 227
         $this->displayBlock('content', $context, $blocks);
-        // line 229
-        echo "
-\t\t\t\t\t\t\t\t";
         // line 230
+        echo "\t\t\t\t\t\t\t\t</div>
+
+\t\t\t\t\t\t\t\t";
+        // line 232
         if ((isset($context["hasHelp"]) ? $context["hasHelp"] : null)) {
-            // line 231
+            // line 233
             echo "\t\t\t\t\t\t\t\t\t<a id=\"help\" class=\"help\" title=\"";
             echo twig_escape_filter($this->env, \Craft\Craft::t("Help"), "html", null, true);
             echo "\" href=\"";
@@ -646,7 +648,7 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
             echo "\" target=\"_blank\"></a>
 \t\t\t\t\t\t\t\t";
         }
-        // line 233
+        // line 235
         echo "\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t</div>
 \t\t\t\t\t</div>
@@ -654,14 +656,14 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
 \t\t\t";
     }
 
-    // line 226
+    // line 227
     public function block_content($context, array $blocks = array())
     {
-        // line 227
-        echo "\t\t\t\t\t\t\t\t\t";
+        // line 228
+        echo "\t\t\t\t\t\t\t\t\t\t";
         echo twig_escape_filter($this->env, ((array_key_exists("content", $context)) ? ((isset($context["content"]) ? $context["content"] : null)) : ("")), "html", null, true);
         echo "
-\t\t\t\t\t\t\t\t";
+\t\t\t\t\t\t\t\t\t";
     }
 
     public function getTemplateName()
@@ -676,6 +678,6 @@ class __TwigTemplate_ffb05523140404beb236d14bb41766647aad8e4ec61c2faec4a2fc1d588
 
     public function getDebugInfo()
     {
-        return array (  661 => 227,  658 => 226,  650 => 233,  642 => 231,  640 => 230,  637 => 229,  635 => 226,  632 => 225,  626 => 222,  623 => 221,  621 => 220,  612 => 219,  609 => 218,  606 => 217,  603 => 216,  601 => 215,  595 => 211,  592 => 210,  589 => 209,  586 => 208,  583 => 207,  577 => 201,  571 => 198,  568 => 197,  566 => 196,  563 => 195,  557 => 193,  555 => 192,  552 => 191,  547 => 188,  536 => 186,  532 => 185,  528 => 183,  525 => 182,  522 => 181,  513 => 267,  507 => 265,  505 => 264,  501 => 263,  495 => 260,  491 => 259,  487 => 257,  485 => 256,  480 => 253,  472 => 251,  470 => 250,  459 => 247,  451 => 245,  449 => 244,  443 => 243,  435 => 242,  429 => 238,  427 => 207,  422 => 204,  420 => 181,  414 => 177,  408 => 176,  400 => 174,  397 => 173,  394 => 172,  390 => 171,  380 => 163,  372 => 160,  367 => 158,  365 => 157,  363 => 156,  356 => 155,  351 => 154,  347 => 153,  336 => 149,  324 => 143,  316 => 141,  314 => 140,  308 => 139,  302 => 136,  298 => 134,  293 => 131,  286 => 129,  273 => 127,  269 => 126,  263 => 124,  259 => 123,  254 => 121,  246 => 118,  243 => 117,  241 => 116,  238 => 115,  235 => 114,  232 => 113,  229 => 112,  226 => 111,  219 => 107,  213 => 106,  206 => 105,  203 => 104,  200 => 103,  197 => 102,  194 => 101,  191 => 100,  188 => 99,  185 => 98,  182 => 97,  180 => 96,  177 => 95,  174 => 94,  171 => 93,  168 => 92,  165 => 91,  162 => 90,  159 => 89,  156 => 88,  153 => 87,  151 => 86,  145 => 82,  142 => 81,  139 => 80,  136 => 79,  132 => 77,  123 => 75,  119 => 74,  116 => 73,  113 => 72,  110 => 71,  108 => 70,  105 => 69,  99 => 67,  96 => 66,  93 => 65,  30 => 4,  28 => 3,  63 => 30,  60 => 29,  57 => 28,  35 => 8,  33 => 7,  31 => 6,  29 => 5,  27 => 4,  25 => 1,);
+        return array (  663 => 228,  660 => 227,  652 => 235,  644 => 233,  642 => 232,  638 => 230,  636 => 227,  632 => 225,  626 => 222,  623 => 221,  621 => 220,  612 => 219,  609 => 218,  606 => 217,  603 => 216,  601 => 215,  595 => 211,  592 => 210,  589 => 209,  586 => 208,  583 => 207,  577 => 201,  571 => 198,  568 => 197,  566 => 196,  563 => 195,  557 => 193,  555 => 192,  552 => 191,  547 => 188,  536 => 186,  532 => 185,  528 => 183,  525 => 182,  522 => 181,  513 => 269,  507 => 267,  505 => 266,  501 => 265,  495 => 262,  491 => 261,  487 => 259,  485 => 258,  480 => 255,  472 => 253,  470 => 252,  459 => 249,  451 => 247,  449 => 246,  443 => 245,  435 => 244,  429 => 240,  427 => 207,  422 => 204,  420 => 181,  414 => 177,  408 => 176,  400 => 174,  397 => 173,  394 => 172,  390 => 171,  380 => 163,  372 => 160,  367 => 158,  365 => 157,  363 => 156,  356 => 155,  351 => 154,  347 => 153,  336 => 149,  324 => 143,  316 => 141,  314 => 140,  308 => 139,  302 => 136,  298 => 134,  293 => 131,  286 => 129,  273 => 127,  269 => 126,  263 => 124,  259 => 123,  254 => 121,  246 => 118,  243 => 117,  241 => 116,  238 => 115,  235 => 114,  232 => 113,  229 => 112,  226 => 111,  219 => 107,  213 => 106,  206 => 105,  203 => 104,  200 => 103,  197 => 102,  194 => 101,  191 => 100,  188 => 99,  185 => 98,  182 => 97,  180 => 96,  177 => 95,  174 => 94,  171 => 93,  168 => 92,  165 => 91,  162 => 90,  159 => 89,  156 => 88,  153 => 87,  151 => 86,  145 => 82,  142 => 81,  139 => 80,  136 => 79,  132 => 77,  123 => 75,  119 => 74,  116 => 73,  113 => 72,  110 => 71,  108 => 70,  105 => 69,  99 => 67,  96 => 66,  93 => 65,  30 => 4,  28 => 3,  63 => 30,  60 => 29,  57 => 28,  35 => 8,  33 => 7,  31 => 6,  29 => 5,  27 => 4,  25 => 1,);
     }
 }

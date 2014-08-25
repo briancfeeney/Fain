@@ -69,6 +69,11 @@ h5 {
 	margin-top: 0;
 }
 
+img {
+	width: 100%;
+	height: auto;
+}
+
 section {
 	margin-bottom: 3em;
 }
@@ -214,6 +219,12 @@ nav {
 		&.logged-out {
 			text-transform: none;
 			color: @white;
+			li p {
+				.alternateGothic();
+				margin: 0;
+				text-transform: none;
+				font-size: 1em;
+			}
 		}
 		&.main-nav,
 		&.logged-out {
@@ -223,10 +234,24 @@ nav {
 		&#social-links {
 			float: right;
 			padding-bottom: 0;
+			li a:first-child {
+				margin-left: 0;
+			}
 		}
 	}
-	@media (max-width: @screen-sm) {
+	@media (max-width: 650px) {
 		margin-bottom: 2em;
+		font-size: .8em;
+		ul.logged-out {
+			padding-top: 1em;
+			float: none;
+			text-align: center;
+		}
+		ul#social-links {
+			float: none;
+			text-align: center;
+			padding-bottom: 1em;
+		}
 	}
 }
 
@@ -407,10 +432,202 @@ section {
 /* ----------------------------------------------------------------------------- */
 // HOME
 
+#home {
+	background: @darkblue;
+	color: @white;
+	nav {
+		margin-bottom: 0;
+	}
+	h2 {
+		color: @white;
+		font-size: 3em;
+		@media (max-width: @screen-md) {
+			font-size: 2.5em;
+		}
+	}
+	.song {
+		h1 {
+			.freightTextBook();
+			text-transform: none;
+			color: @white;
+			margin-left: 1em;
+			@media (max-width: @screen-md) {
+				font-size: 1.75em;
+				margin-left: 1.25em;
+			}
+		}
+		.mejs-controls .mejs-play button, {
+			top: -49px;
+			width: 30px;
+			height: 30px;
+			@media (max-width: @screen-md) {
+				top: -45px;
+			}
+		}
+		.mejs-controls .mejs-pause button {
+			background-position: 0 -32px;
+			top: -45px;
+			width: 30px;
+			height: 30px;
+			@media (max-width: @screen-md) {
+				top: -41px;
+			}
+		}
+	}
+}
 
+#homepage-top {
+	background-image: url('/public/images/clay.jpg');
+	background-size: cover;
+	background-position: top right;
+	height: 800px;
+	border-bottom: 1px solid @white;
+	h1 {
+		position: absolute;
+		margin: 0;
+		color: @white;
+		margin-top: 22%;
+		font-size: 5em;
+		letter-spacing: 8px;
+		margin-left: 50%;
+		left: -150px;
+		@media (max-width: @screen-sm) {
+			margin-top: 31%;
+		}
+		@media (max-width: @screen-xs) {
+			margin-top: 40px;
+		}
+	}
+	@media (max-width: @screen-md) {
+		height: 650px;
+	}
+	@media (max-width: @screen-sm) {
+		height: 500px;
+	}
+	@media (min-width: 1500px) {
+		height: 1175px;
+	}
+	@media (min-width: 2000px) {
+		height: 1325px;
+	}
+}
+
+#aboutText {
+	border: 1px solid @white;
+	padding: 2em;
+	margin-top: -4.75em;
+	background: @darkblue;
+	margin-bottom: 7em;
+	font-size: 1.25em;
+	@media (max-width: @screen-md) {
+		font-size: 1em;
+		padding: 1.5em;
+		margin-top: -5em;
+	}
+	@media (max-width: @screen-sm) {
+		font-size: 1em;
+		margin-top: -7em;
+	}
+}
+
+#home {
+	#songList {
+		margin-top: 5em;
+		@media (max-width: @screen-md) and (min-width: @screen-sm) {
+			padding-left: 1em;
+		}
+	}
+}
+
+#homeShows {
+	margin-bottom: 7em;
+	article {
+		h4 {
+			.alternateGothic();
+			display: inline-block;
+			margin-right: .5em;
+		}
+		p {
+			display: inline-block;
+			font-size: 1.5em;
+		}
+		@media (max-width: @screen-md) {
+			margin-bottom: 2em;
+			h4, p {
+				display: block;
+			}
+		}
+		@media (max-width: @screen-sm) {
+			h4, p {
+				font-size: 1.25em;
+			}
+		}
+	}
+}
+
+#releaseList {
+	margin-top: 7em;
+	text-align: center;
+	h2 {
+		margin-bottom: 1em;
+	}
+	.bandcamp {
+		margin-bottom: 3.5em;
+	}
+	@media (max-width: @screen-sm) {
+		text-align: left;
+	}
+}
+
+#emailButton {
+	margin: 10em 0 7em;
+	text-align: center;
+	.btn {
+		color: @darkblue;
+		padding: .25em .75em;
+		span {
+			color: @white;
+			.freightTextBook();
+			margin-left: 1em;
+			text-transform: none;
+		}
+	}
+}
+
+#mailingList {
+	margin: 7em 0;
+	text-align: center;
+	h3 {
+		display: inline-block;
+		margin: .75em 1em;
+		vertical-align: top;
+	}
+	.navbar-form {
+		width: 300px;
+		display: inline-block;
+		.form-group {
+			width: 70%;
+		}
+		button {
+			width: 30%;
+		}
+	}
+	@media (max-width: @screen-md) {
+		h3, .navbar-form {
+			display: block;
+		}
+		.navbar-form {
+			margin: 1em auto;
+		}
+	}
+}
 
 /* ----------------------------------------------------------------------------- */
 // SEARCH and TAGS
+
+#search {
+	overflow: auto;
+}
 
 .taggedList {
 	margin-bottom: 5em;
@@ -429,6 +646,3 @@ section {
 	text-align: center;
 	margin: 5em 0 2.5em;
 }
-
-/* ----------------------------------------------------------------------------- */
-// RESPONSIVE

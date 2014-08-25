@@ -21,30 +21,98 @@
 
 {% block content %}
 
-<header id="header">
-	<h1>{{ entry.heading }}</h1>
-</header>
-
 	<section id="homepage-top">
-		{{ entry.homepage_intro }}
+		<h1>Clay Fain</h1>
 	</section>
 	
-	<section id="currentStuff">
-	</section>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5 col-sm-5">
+			
+				<section id="aboutText">
+					{{ entry.body }}
+				</section>
+				<section id="homeShows">
+					<h2>Shows</h2>
+					<article>
+						<h4>May 5</h4>
+						<p>Rock Shop - Brooklyn, NY</p>
+					</article>
+					<article>
+						<h4>June 17</h4>
+						<p>Sidewalk Cafe - New York, NY</p>
+					</article>
+					
+					<a href="http://www.songkick.com/artists/5443168" class="songkick-widget" data-theme="dark" data-track-button="on" data-background-color="transparent">Shows</a>
+					<script src="//widget.songkick.com/widget.js"></script>
+					<script>
+						$(document).ready(function() {
+						    $('#home .songkick-widget').contents().find('body').css('background-color: #fff;');
+						});
+					</script>
+					
+				</section>
+				
+			</div>
+			<div class="col-md-5 col-md-offset-2 col-sm-7">
 	
-	<section id="about">
-		{{ entry.body }}
-	</section>
+				<section id="songList">
+					<h2>Songs</h2>
+					{% if entry.playlistSongs | length %}
+						{% for songs in entry.playlistSongs %}
 
+							<article class="song">
+								<h1>{{ songs.title }}</h1>
+
+								<audio controls preload="none">
+									{% if songs.mp3Download | length %}
+									{% for asset in songs.mp3Download %}
+										<source src="{{ asset.url }}" type="audio/mpeg">
+									{% endfor %}
+									{% endif %}
+									{% if songs.songOgg | length %}
+									{% for asset in songs.songOgg %}
+										<source src="{{ asset.url }}" type="audio/ogg">
+									{% endfor %}
+									{% endif %}
+										Your browser does not support the audio element.
+								</audio>
+							</article>
+
+						{% endfor %}
+					{% endif %}
+				</section>
+			
+			</div>
+		</div>
 	
-	<section id="releaseList">
-		{% for album in entry.releaseList %}
-			<iframe style="border: 0; width: 350px; height: 786px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
-			</iframe>
-		{% endfor %}
-	</section>
+		<section id="releaseList">
+			<h2>Releases</h2>
+			<div class="row">
+			{% for album in entry.releaseList %}
+				<div class="col-sm-4 col-md-3">
+					<div class="bandcamp">
+						<iframe style="border: 0; width: 190px; height: 332px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
+						</iframe>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+		</section>
 	
-	<section id="mailingList">
-	</section>
+		<section id="emailButton">
+			<a href="mailto:{{ social.email }}" class="btn">Email clay <span>{{ social.email }}</span></a>
+		</section>
+		
+		<section id="mailingList">
+			<h3>Join the Mailing List</h3>
+			<form class="navbar-form" action="//theashesmusic.us1.list-manage.com/subscribe/post?u=9c3c548eb42ad7f01814a9692&amp;id=140e1c8070" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+				<div class="form-group">
+	 				<input type="email" value="" name="EMAIL" class="form-control">
+				</div>
+				<button type="submit" value="Subscribe" name="subscribe" class="btn">Submit</button>
+			</form>
+		</section>
+	</div>
 	
 {% endblock %}

@@ -22,8 +22,9 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en-US\">
 <head>
 \t<meta charset=\"utf-8\" />
+\t<meta name=\"viewport\" content=\"width=device-width\">
 \t<title>";
-        // line 16
+        // line 17
         if (array_key_exists("title", $context)) {
             echo twig_escape_filter($this->env, (isset($context["title"]) ? $context["title"] : null), "html", null, true);
             echo " - ";
@@ -31,7 +32,7 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
         echo twig_escape_filter($this->env, (isset($context["siteName"]) ? $context["siteName"] : null), "html", null, true);
         echo "</title>
 \t<link rel=\"home\" href=\"";
-        // line 17
+        // line 18
         echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
         echo "\" />
 \t<link rel=\"stylesheet\" type=\"text/css\" href=\"/public/css/fain.css\" />
@@ -43,21 +44,24 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 </head>
 
 <body id=\"";
-        // line 26
+        // line 27
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment"), "html", null, true);
+        if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "")) {
+            echo "home";
+        }
         echo "\">
 \t<nav>
 \t";
-        // line 28
+        // line 29
         if ((isset($context["currentUser"]) ? $context["currentUser"] : null)) {
-            // line 29
+            // line 30
             echo "\t\t<ul class=\"list-inline main-nav\">
 \t\t\t<li><a href=\"";
-            // line 30
+            // line 31
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "\">Home</a></li>
 \t\t\t<li><a href=\"";
-            // line 31
+            // line 32
             echo twig_escape_filter($this->env, \Craft\UrlHelper::getUrl("dashboard"), "html", null, true);
             echo "\" ";
             if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "dashboard")) {
@@ -65,48 +69,74 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
             }
             echo ">Dashboard</a></li>
 \t\t\t<li><a href=\"";
-            // line 32
+            // line 33
             echo twig_escape_filter($this->env, (isset($context["siteUrl"]) ? $context["siteUrl"] : null), "html", null, true);
             echo "admin\">Admin</a></li>
 \t\t</ul>
 \t";
         } else {
-            // line 35
+            // line 36
             echo "\t\t<ul class=\"list-inline logged-out\">
-\t\t\t<li>Clay Fain is a musician and songwriter living in Brooklyn, NY.</li>
+\t\t\t<li>";
+            // line 37
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "homepage_intro"), "html", null, true);
+            echo "</li>
 \t\t</ul>
 \t";
         }
-        // line 39
+        // line 40
         echo "\t\t<ul id=\"social-links\" class=\"list-inline\">
 \t\t\t<li>
 \t\t\t\t<a href=\"";
-        // line 41
-        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["globals"]) ? $context["globals"] : null), "twitter"), "html", null, true);
+        // line 42
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["social"]) ? $context["social"] : null), "twitter"), "html", null, true);
         echo "\" class=\"icon icon-social-twitter\"></a>
 \t\t\t\t<a href=\"";
-        // line 42
-        echo twig_escape_filter($this->env, (isset($context["instagram"]) ? $context["instagram"] : null), "html", null, true);
+        // line 43
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["social"]) ? $context["social"] : null), "instagram"), "html", null, true);
         echo "\" class=\"icon icon-social-instagram\"></a>
-\t\t\t\t<a href=\"mailto:cdfain@gmail.com\" class=\"icon icon-mail\"></a>
+\t\t\t\t<a href=\"mailto:";
+        // line 44
+        echo twig_escape_filter($this->env, $this->getAttribute((isset($context["social"]) ? $context["social"] : null), "email"), "html", null, true);
+        echo "\" class=\"icon icon-mail\"></a>
 \t        </li>
 \t\t</ul>
 \t</nav>
 \t
-\t<div class=\"container\">
-
+\t";
+        // line 49
+        if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "")) {
+            // line 50
+            echo "\t";
+        } else {
+            // line 51
+            echo "\t<div class=\"container\">
+\t";
+        }
+        // line 53
+        echo "
 \t\t<main id=\"content\" role=\"main\">
 \t\t\t";
-        // line 51
-        $this->displayBlock('content', $context, $blocks);
         // line 55
+        $this->displayBlock('content', $context, $blocks);
+        // line 58
         echo "\t\t</main>
-\t\t
-\t</div>
 \t
+\t";
+        // line 60
+        if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "")) {
+            // line 61
+            echo "\t";
+        } else {
+            // line 62
+            echo "\t</div>
+\t";
+        }
+        // line 64
+        echo "\t
 \t<footer id=\"footer\">
 \t\tCopyright Clay Fain ";
-        // line 60
+        // line 66
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["now"]) ? $context["now"] : null), "year"), "html", null, true);
         echo ". All rights reserved 
 \t</footer>
@@ -122,14 +152,11 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 ";
     }
 
-    // line 51
+    // line 55
     public function block_content($context, array $blocks = array())
     {
-        // line 52
-        echo "\t\t\t\t<p>If you see me, you haven’t set your <code>";
-        echo "{% block content %}…{% endblock %}";
-        echo "</code> yet.</p>
-\t\t\t\t<p>See Twig’s <a href=\"http://twig.sensiolabs.org/doc/templates.html#template-inheritance\">Template Inheritance</a> documentation for an explanation.</p>
+        // line 56
+        echo "\t\t\t\t
 \t\t\t";
     }
 
@@ -145,6 +172,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
     public function getDebugInfo()
     {
-        return array (  129 => 52,  126 => 51,  110 => 60,  103 => 55,  101 => 51,  89 => 42,  85 => 41,  81 => 39,  75 => 35,  69 => 32,  61 => 31,  57 => 30,  54 => 29,  52 => 28,  47 => 26,  35 => 17,  27 => 16,  20 => 11,);
+        return array (  159 => 56,  156 => 55,  140 => 66,  136 => 64,  132 => 62,  129 => 61,  127 => 60,  123 => 58,  121 => 55,  117 => 53,  113 => 51,  110 => 50,  108 => 49,  100 => 44,  96 => 43,  92 => 42,  88 => 40,  82 => 37,  79 => 36,  73 => 33,  65 => 32,  61 => 31,  58 => 30,  56 => 29,  48 => 27,  36 => 18,  28 => 17,  20 => 11,);
     }
 }

@@ -13,6 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width">
 	<title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
 	<link rel="home" href="{{ siteUrl }}" />
 	<link rel="stylesheet" type="text/css" href="/public/css/fain.css" />
@@ -23,7 +24,7 @@
 	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 
-<body id="{{ craft.request.firstSegment }}">
+<body id="{{ craft.request.firstSegment }}{% if craft.request.firstSegment == '' %}home{% endif %}">
 	<nav>
 	{% if currentUser %}
 		<ul class="list-inline main-nav">
@@ -33,28 +34,33 @@
 		</ul>
 	{% else %}
 		<ul class="list-inline logged-out">
-			<li>Clay Fain is a musician and songwriter living in Brooklyn, NY.</li>
+			<li>{{ entry.homepage_intro }}</li>
 		</ul>
 	{% endif %}
 		<ul id="social-links" class="list-inline">
 			<li>
-				<a href="{{ globals.twitter }}" class="icon icon-social-twitter"></a>
-				<a href="{{ instagram }}" class="icon icon-social-instagram"></a>
-				<a href="mailto:cdfain@gmail.com" class="icon icon-mail"></a>
+				<a href="{{ social.twitter }}" class="icon icon-social-twitter"></a>
+				<a href="{{ social.instagram }}" class="icon icon-social-instagram"></a>
+				<a href="mailto:{{ social.email }}" class="icon icon-mail"></a>
 	        </li>
 		</ul>
 	</nav>
 	
+	{% if craft.request.firstSegment == '' %}
+	{% else %}
 	<div class="container">
+	{% endif %}
 
 		<main id="content" role="main">
 			{% block content %}
-				<p>If you see me, you haven’t set your <code>{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
-				<p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
+				
 			{% endblock %}
 		</main>
-		
+	
+	{% if craft.request.firstSegment == '' %}
+	{% else %}
 	</div>
+	{% endif %}
 	
 	<footer id="footer">
 		Copyright Clay Fain {{ now.year }}. All rights reserved 
