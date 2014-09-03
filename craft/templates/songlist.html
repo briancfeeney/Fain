@@ -22,13 +22,11 @@
 
 
 {% block content %}
-
-	{% if not currentUser %}
-		{% redirect '/' %}
-	{% endif %}
+	
+	<h1 class="playlistHeader"><a href="/">Clay Fain</a></h1>
 
 	<div class="row">
-		<div class="col-sm-7">
+		<div class="col-sm-8 col-sm-offset-2">
 
 			<section id="songList">
 				<h3>Songs</h3>
@@ -66,49 +64,7 @@
 			</section>
 		
 		</div>
-		<div class="col-sm-5">
-			
-			<section id="search">
-				<form class="navbar-form navbar-left" role="search" action="{{ url('search') }}">
-					<div class="form-group">
-		 				<input type="search" name="search" class="form-control">
-					</div>
-					<button type="submit" class="btn btn-default" value="go">Search</button>
-				</form>
-			</section>
-			
-			<div class="gray-box">
 		
-				<section id="tags">
-					<h3>Tags</h3>
-					{% set entries = craft.entries.section('songs').limit(null) %}
-					<ul class="list-inline">
-					    {% for tag in craft.tags.relatedTo(entries) %}
-					        <li><a href="/tags/{{ tag.name }}" class="btn tag">{{ tag.name }}</a></li>
-					    {% endfor %}
-					</ul>
-				</section>
-		
-				<section id="playlists">
-					<h3>Playlists</h3>
-					{% set allEntries = craft.entries.section('playlists').limit(null) %}
-					{% for date, entries in allEntries | group("postDate|date('Y')") %}
-						{% for entry in entries %}
-						<article>
-							<h4><a href="{{ entry.url }}">{{ entry.title }}</a> <small>{{ entry.postDate.format('F d, Y') }}</small></h4>
-						</article>
-						{% endfor %}
-					{% endfor %}
-				</section>
-				
-				<section>
-					<h3>Other Pages</h3>
-					<h3><a href="/songlist">Song List</a></h3>
-				</section>
-				
-			</div> <!-- gray box -->
-		
-		</div>
 	</div>
 
 	

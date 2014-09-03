@@ -14,14 +14,68 @@
 {% set title = "News" %}
 
 {% block content %}
-	<h1>News</h1>
+	<h1 class="playlistHeader">News</h1>
+	
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2">
 
-	{% for entry in craft.entries.section('news').find() %}
-		<article>
-			<h3><a href="{{ entry.url }}">{{ entry.title }}</a></h3>
-			<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-			{{ entry.body.page(1) }}
-			<p><a href="{{ entry.url }}">Continue reading</a></p>
-		</article>
-	{% endfor %}
+			{% paginate craft.entries.section('news').limit(10) as entries %}
+			{% for entry in entries %}
+				<article class="news">
+					<h1 class="newsTitle"><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+					<h5>{{ entry.postDate.format('F d, Y') }}</h5>
+			
+						{% if entry.playlistSongs | length %}
+							{% for songs in entry.playlistSongs %}
+
+								<article class="song">
+									<h1>{{ songs.title }}
+										<small>
+											{% if entry.coWriters | length %}
+											<span class="writer-credit">(
+												{% for writer in entry.coWriters %}
+													{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+												{% endfor %}
+											)</span>
+											{% endif %}
+										</small>
+									</h1>
+
+									<audio controls>
+										{% if songs.mp3Download | length %}
+										{% for asset in songs.mp3Download %}
+											<source src="{{ asset.url }}" type="audio/mpeg">
+										{% endfor %}
+										{% endif %}
+										{% if songs.songOgg | length %}
+										{% for asset in songs.songOgg %}
+											<source src="{{ asset.url }}" type="audio/ogg">
+										{% endfor %}
+										{% endif %}
+											Your browser does not support the audio element.
+									</audio>
+
+								</article>
+
+							{% endfor %}
+						{% endif %}
+			
+					{{ entry.body }}
+				</article>
+			{% endfor %}
+			
+			<div class="pagination">
+			    {% if paginate.nextUrl %}
+			        <a href="{{ paginate.nextUrl }}" class="paging prev">Older</a>
+			    {% endif %}
+				{% if paginate.prevUrl %}
+			        <a href="{{ paginate.prevUrl }}" class="paging next">Newer</a>
+			    {% endif %}
+
+				{% endpaginate %}
+			</div>
+			
+		</div>
+	</div>
+			
 {% endblock %}

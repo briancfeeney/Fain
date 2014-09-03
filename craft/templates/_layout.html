@@ -34,7 +34,7 @@
 		</ul>
 	{% else %}
 		<ul class="list-inline logged-out">
-			<li>{{ entry.homepage_intro }}</li>
+			<li><a href="/">{{ homepage.homepage_intro }}</a></li>
 		</ul>
 	{% endif %}
 		<ul id="social-links" class="list-inline">
@@ -70,6 +70,12 @@
 	<link rel="stylesheet" type="text/css" href="/public/css/mediaelementplayer.css" />
 	<script>
 		$('video,audio').mediaelementplayer(/* Options */);
+	</script>
+	
+	<script>
+		$('.lyricsLabel').click( function() {
+			$(this).next('.lyrics').toggleClass('open');
+		});
 	</script>
 	
 </body>

@@ -1,24 +1,56 @@
-{#
- # News entry template
- # -------------------
- #
- # This template gets loaded whenever a News entry’s URL is
- # requested. That’s because the News section’s Template setting is
- # set to “news/_entry”, the path to this template.
- #
- # When this template is loaded, it will already have an ‘entry’
- # variable, set to the requested News entry.
- #
- # See this page for more details on how Craft routes requests:
- # http://buildwithcraft.com/docs/routing
- #}
 
 {% extends "_layout" %}
 
 {% block content %}
-	<article>
-		<h1>{{ entry.title }}</h1>
-		<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-		{{ entry.body }}
-	</article>
+
+<h1 class="playlistHeader"><a href="/news">News</a></h1>
+
+<div class="row">
+	<div class="col-sm-8 col-sm-offset-2">
+
+		<article class="news">
+			<h1 class="newsTitle">{{ entry.title }}</h1>
+			<h5>{{ entry.postDate.format('F d, Y') }}</h5>
+
+				{% if entry.playlistSongs | length %}
+					{% for songs in entry.playlistSongs %}
+
+						<article class="song">
+							<h1>{{ songs.title }}
+								<small>
+									{% if entry.coWriters | length %}
+									<span class="writer-credit">(
+										{% for writer in entry.coWriters %}
+											{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+										{% endfor %}
+									)</span>
+									{% endif %}
+								</small>
+							</h1>
+
+							<audio controls>
+								{% if songs.mp3Download | length %}
+								{% for asset in songs.mp3Download %}
+									<source src="{{ asset.url }}" type="audio/mpeg">
+								{% endfor %}
+								{% endif %}
+								{% if songs.songOgg | length %}
+								{% for asset in songs.songOgg %}
+									<source src="{{ asset.url }}" type="audio/ogg">
+								{% endfor %}
+								{% endif %}
+									Your browser does not support the audio element.
+							</audio>
+
+						</article>
+
+					{% endfor %}
+				{% endif %}
+
+			{{ entry.body }}
+		</article>
+		
+	</div>
+</div>
+		
 {% endblock %}

@@ -77,10 +77,10 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
         } else {
             // line 36
             echo "\t\t<ul class=\"list-inline logged-out\">
-\t\t\t<li>";
+\t\t\t<li><a href=\"/\">";
             // line 37
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entry"]) ? $context["entry"] : null), "homepage_intro"), "html", null, true);
-            echo "</li>
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["homepage"]) ? $context["homepage"] : null), "homepage_intro"), "html", null, true);
+            echo "</a></li>
 \t\t</ul>
 \t";
         }
@@ -147,6 +147,12 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 \t\t\$('video,audio').mediaelementplayer(/* Options */);
 \t</script>
 \t
+\t<script>
+\t\t\$('.lyricsLabel').click( function() {
+\t\t\t\$(this).next('.lyrics').toggleClass('open');
+\t\t});
+\t</script>
+\t
 </body>
 </html>
 ";
@@ -172,6 +178,6 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 
     public function getDebugInfo()
     {
-        return array (  159 => 56,  156 => 55,  140 => 66,  136 => 64,  132 => 62,  129 => 61,  127 => 60,  123 => 58,  121 => 55,  117 => 53,  113 => 51,  110 => 50,  108 => 49,  100 => 44,  96 => 43,  92 => 42,  88 => 40,  82 => 37,  79 => 36,  73 => 33,  65 => 32,  61 => 31,  58 => 30,  56 => 29,  48 => 27,  36 => 18,  28 => 17,  20 => 11,);
+        return array (  165 => 56,  162 => 55,  140 => 66,  136 => 64,  132 => 62,  129 => 61,  127 => 60,  123 => 58,  121 => 55,  117 => 53,  113 => 51,  110 => 50,  108 => 49,  100 => 44,  96 => 43,  92 => 42,  88 => 40,  82 => 37,  79 => 36,  73 => 33,  65 => 32,  61 => 31,  58 => 30,  56 => 29,  48 => 27,  36 => 18,  28 => 17,  20 => 11,);
     }
 }

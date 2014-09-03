@@ -6461,6 +6461,12 @@ section {
 .song h1 {
   margin-left: 1em;
 }
+.song h1 .writer-credit a {
+  color: #9a999f;
+}
+.song h1 .writer-credit a:hover {
+  color: #f1aa63;
+}
 @media (max-width: 768px) {
   .song h1 small {
     display: none;
@@ -6774,6 +6780,57 @@ section {
 .searchName {
   color: #01000f;
   font-size: 1em;
+}
+/* -------------------------------------------------------------------------------- */
+#news .newsTitle {
+  font-size: 3em;
+  border-bottom: 2px solid #d9d9db;
+  font-family: "freight-text-pro", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: none;
+}
+#news h5 {
+  margin-bottom: 1.5em;
+}
+#news .news {
+  margin-bottom: 12em;
+}
+#news .news:after {
+  content: "———";
+  color: #f1aa63;
+  text-align: center;
+  font-size: 2em;
+  position: absolute;
+  left: 42%;
+  bottom: -3em;
+}
+@media (max-width: 768px) {
+  #news .news:after {
+    left: 38%;
+  }
+}
+.pagination {
+  width: 100%;
+}
+.paging {
+  position: relative;
+  font-family: "alternate-gothic-no-3-d", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 2em;
+  text-decoration: none;
+}
+.paging.prev {
+  float: left;
+}
+.paging.next {
+  float: right;
+}
+.paging:hover {
+  color: #9a999f;
+  text-decoration: none;
 }
 /* ----------------------------------------------------------------------------- */
 #footer {

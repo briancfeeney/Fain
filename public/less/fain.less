@@ -331,6 +331,12 @@ section {
 .song {
 	h1 {
 		margin-left: 1em;
+		.writer-credit a {
+				color: @graydark;
+				&:hover {
+					color: @yellow;
+				}
+		}
 		@media (max-width: @screen-sm) {
 			small {
 				display: none;
@@ -637,6 +643,56 @@ section {
 .searchName {
 	color: @darkblue;
 	font-size: 1em;
+}
+
+/* -------------------------------------------------------------------------------- */
+// NEWS
+
+#news {
+	.newsTitle {
+		font-size: 3em;
+		border-bottom: 2px solid @gray;
+		.freightTextBold();
+		text-transform: none;
+	}
+	h5 {
+		margin-bottom: 1.5em;
+	}
+	.news {
+		margin-bottom: 12em;
+		&:after {
+			content: "———";
+			color: @yellow;
+			text-align: center;
+			font-size: 2em;
+			position: absolute;
+			left: 42%;
+			bottom: -3em;
+			@media (max-width: @screen-sm) {
+				left: 38%;
+			}
+		}
+	}
+}
+
+.pagination {
+	width: 100%;
+}
+.paging {
+	position: relative;
+	.alternateGothic();
+	font-size: 2em;
+	text-decoration: none;
+	&.prev {
+		float: left;
+	}
+	&.next {
+		float: right;
+	}
+	&:hover {
+		color: @graydark;
+		text-decoration: none;
+	}
 }
 
 /* ----------------------------------------------------------------------------- */

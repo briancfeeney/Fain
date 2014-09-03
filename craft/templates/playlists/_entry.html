@@ -7,7 +7,7 @@
 
 {% block content %}
 
-	<h1 class="playlistHeader">Clay Fain</h1>
+	<h1 class="playlistHeader"><a href="/">Clay Fain</a></h1>
 
 	<div class="row">
 		<div class="col-sm-7">
@@ -18,10 +18,15 @@
 					<article class="song">
 						<h1>{{ songs.title }}
 							<small>
-								{% if entry.coWriters | length %}
+								{% if songs.coWriters | length %}
 								<span class="writer-credit">(
-									{% for writer in entry.coWriters %}
-										{{ writer.writerLastName }} {% if not loop.last %}/{% endif %}
+									{% for writer in songs.coWriters %}
+										{% if writer.writerWebsite | length %}
+											<a href="{{ writer.writerWebsite }}">{{ writer.writerLastName }}</a>
+										{% else %}
+											{{ writer.title }}
+										{% endif %}
+										{% if not loop.last %}/{% endif %}
 									{% endfor %}
 								)</span>
 								{% endif %}
@@ -58,12 +63,15 @@
 			</div>
 		</div>
 	</div>
-
 	
-	<script>
-		$('.lyricsLabel').click( function() {
-			$('.lyrics').toggleClass('open');
-		});
-	</script>
+	<section id="mailingList">
+		<h3>Join the Mailing List</h3>
+		<form class="navbar-form" action="//theashesmusic.us1.list-manage.com/subscribe/post?u=9c3c548eb42ad7f01814a9692&amp;id=140e1c8070" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+			<div class="form-group">
+ 				<input type="email" value="" name="EMAIL" class="form-control">
+			</div>
+			<button type="submit" value="Subscribe" name="subscribe" class="btn">Submit</button>
+		</form>
+	</section>
 	
 {% endblock %}
