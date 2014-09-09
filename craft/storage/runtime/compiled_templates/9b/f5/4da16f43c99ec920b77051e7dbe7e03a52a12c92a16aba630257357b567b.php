@@ -105,7 +105,7 @@ class __TwigTemplate_9bf54da16f43c99ec920b77051e7dbe7e03a52a12c92a16aba630257357
 \t
 \t";
         // line 49
-        if (($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "")) {
+        if ((($this->getAttribute($this->getAttribute((isset($context["craft"]) ? $context["craft"] : null), "request"), "firstSegment") == "") || "newhome")) {
             // line 50
             echo "\t";
         } else {

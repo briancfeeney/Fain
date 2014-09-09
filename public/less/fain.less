@@ -343,6 +343,18 @@ section {
 			}
 		}
 	}
+	.download {
+		margin-left: 1em;
+		float: right;
+		a {
+			font-size: 1.2em;
+			padding: .1em .3em 0;
+			background-color: @graydark;
+			&:hover {
+				background-color: @yellow;
+			}
+		}
+	}
 	.mejs-container {
 		position: absolute;
 	}
@@ -438,7 +450,8 @@ section {
 /* ----------------------------------------------------------------------------- */
 // HOME
 
-#home {
+#home,
+#newhome {
 	background: @darkblue;
 	color: @white;
 	nav {

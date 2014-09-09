@@ -5124,3 +5124,67 @@ in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (197)
 in /Users/bcfeeney/Sites/Fain/craft/app/services/TasksService.php (242)
 
 ******************************************************************************************************
+2014/09/04 13:05:54 [error] [exception.Twig_Error_Syntax] exception 'Twig_Error_Syntax' with message 'Unexpected token "punctuation" of value "," ("end of statement block" expected) in "_layout" at line 49' in /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/TokenStream.php:88
+Stack trace:
+#0 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/TokenParser/If.php(40): Twig_TokenStream->expect(3)
+#1 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Parser.php(187): Twig_TokenParser_If->parse(Object(Twig_Token))
+#2 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Parser.php(95): Twig_Parser->subparse(NULL, false)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(507): Twig_Parser->parse(Object(Twig_TokenStream))
+#4 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(559): Twig_Environment->parse(Object(Twig_TokenStream))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(334): Twig_Environment->compileSource('{#? # Layout te...', '_layout')
+#6 /Users/bcfeeney/Sites/Fain/craft/storage/runtime/compiled_templates/08/aa/95b8bda09a0607f2f3d3e95f9e76ccf3f310a1337c2230b4c97f23d2c498.php(10): Twig_Environment->loadTemplate('_layout')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(345): __TwigTemplate_08aa95b8bda09a0607f2f3d3e95f9e76ccf3f310a1337c2230b4c97f23d2c498->__construct(Object(Twig_Environment))
+#8 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(292): Twig_Environment->loadTemplate('index')
+#9 /Users/bcfeeney/Sites/Fain/craft/app/services/TemplatesService.php(216): Twig_Environment->render('index', Array)
+#10 /Users/bcfeeney/Sites/Fain/craft/app/controllers/BaseController.php(87): Craft\TemplatesService->render('index', Array)
+#11 /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php(55): Craft\BaseController->renderTemplate('index', Array)
+#12 [internal function]: Craft\TemplatesController->actionRender('index', Array)
+#13 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#14 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#15 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#16 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#17 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#18 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#19 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#20 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(284): CWebApplication->processRequest()
+#21 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#22 /Users/bcfeeney/Sites/Fain/craft/app/index.php(193): CApplication->run()
+#23 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#24 {main}
+REQUEST_URI=/
+HTTP_REFERER=http://clayfain.dev/newhome
+---
+
+******************************************************************************************************
+2014/09/04 13:06:29 [error] [exception.Twig_Error_Syntax] exception 'Twig_Error_Syntax' with message 'Unexpected end of template in "_layout" at line 67' in /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/TokenStream.php:60
+Stack trace:
+#0 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/TokenParser/If.php(47): Twig_TokenStream->next()
+#1 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Parser.php(187): Twig_TokenParser_If->parse(Object(Twig_Token))
+#2 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Parser.php(95): Twig_Parser->subparse(NULL, false)
+#3 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(507): Twig_Parser->parse(Object(Twig_TokenStream))
+#4 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(559): Twig_Environment->parse(Object(Twig_TokenStream))
+#5 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(334): Twig_Environment->compileSource('{#? # Layout te...', '_layout')
+#6 /Users/bcfeeney/Sites/Fain/craft/storage/runtime/compiled_templates/08/aa/95b8bda09a0607f2f3d3e95f9e76ccf3f310a1337c2230b4c97f23d2c498.php(10): Twig_Environment->loadTemplate('_layout')
+#7 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(345): __TwigTemplate_08aa95b8bda09a0607f2f3d3e95f9e76ccf3f310a1337c2230b4c97f23d2c498->__construct(Object(Twig_Environment))
+#8 /Users/bcfeeney/Sites/Fain/craft/app/vendor/twig/twig/lib/Twig/Environment.php(292): Twig_Environment->loadTemplate('index')
+#9 /Users/bcfeeney/Sites/Fain/craft/app/services/TemplatesService.php(216): Twig_Environment->render('index', Array)
+#10 /Users/bcfeeney/Sites/Fain/craft/app/controllers/BaseController.php(87): Craft\TemplatesService->render('index', Array)
+#11 /Users/bcfeeney/Sites/Fain/craft/app/controllers/TemplatesController.php(55): Craft\BaseController->renderTemplate('index', Array)
+#12 [internal function]: Craft\TemplatesController->actionRender('index', Array)
+#13 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CAction.php(108): ReflectionMethod->invokeArgs(Object(Craft\TemplatesController), Array)
+#14 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/actions/CInlineAction.php(47): CAction->runWithParamsInternal(Object(Craft\TemplatesController), Object(ReflectionMethod), Array)
+#15 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#16 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#17 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), NULL)
+#18 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(282): CController->run('render')
+#19 /Users/bcfeeney/Sites/Fain/craft/app/framework/web/CWebApplication.php(141): CWebApplication->runController('templates/rende...')
+#20 /Users/bcfeeney/Sites/Fain/craft/app/etc/web/WebApp.php(284): CWebApplication->processRequest()
+#21 /Users/bcfeeney/Sites/Fain/craft/app/framework/base/CApplication.php(180): Craft\WebApp->processRequest()
+#22 /Users/bcfeeney/Sites/Fain/craft/app/index.php(193): CApplication->run()
+#23 /Users/bcfeeney/Sites/Fain/index.php(14): require_once('/Users/bcfeeney...')
+#24 {main}
+REQUEST_URI=/
+HTTP_REFERER=http://clayfain.dev/newhome
+---
+
+******************************************************************************************************

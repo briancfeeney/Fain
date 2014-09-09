@@ -1,0 +1,127 @@
+{#
+ # Homepage template
+ # ---------------
+ #
+ # When this template gets loaded, it will be because someone has accessed
+ # http://yoursite.com/ (without any URI). Craft checks to see if you have
+ # a Single section set to be the Homepage (as you do, by default), and
+ # loads the section’s Template (this file). A special ‘entry’ variable
+ # will already be set for you, assigned to the Homepage entry.
+ #
+ # It's worth noting that even if you didn't have a Homepage Single section,
+ # as long as this template remains at craft/templates/index.html, it
+ # would still be the one to get loaded when accessing http://yoursite.com/,
+ # albeit without an ‘entry’ variable already set for you.
+ #
+ # See this page for more details on how Craft routes requests:
+ # http://buildwithcraft.com/docs/routing
+ #}
+
+{% extends "_layout" %}
+
+{% block content %}
+
+	<section id="homepage-top">
+		<h1>Clay Fain</h1>
+	</section>
+	
+	{% for entry in craft.entries.section('homepage').limit(1) %}
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5 col-sm-5">
+			
+				<section id="aboutText">
+					{{ entry.body }}
+				</section>
+				
+				<!--
+				<section id="homeShows">
+					<h2>Shows</h2>
+					<article>
+						<h4>May 5</h4>
+						<p>Rock Shop - Brooklyn, NY</p>
+					</article>
+					<article>
+						<h4>June 17</h4>
+						<p>Sidewalk Cafe - New York, NY</p>
+					</article>
+					
+					<a href="http://www.songkick.com/artists/5443168" class="songkick-widget" data-theme="dark" data-track-button="on" data-background-color="transparent">Shows</a>
+					<script src="//widget.songkick.com/widget.js"></script>
+					<script>
+						$(document).ready(function() {
+						    $('#home .songkick-widget').contents().find('body').css('background-color: #fff;');
+						});
+					</script>
+					
+				</section>
+				-->
+				
+			</div>
+			<div class="col-md-5 col-md-offset-2 col-sm-7">
+	
+				<section id="songList">
+					<h2>Songs</h2>
+					{% if entry.playlistSongs | length %}
+						{% for songs in entry.playlistSongs %}
+
+							<article class="song">
+								<h1>{{ songs.title }}</h1>
+
+								<audio controls preload="none">
+									{% if songs.mp3Download | length %}
+									{% for asset in songs.mp3Download %}
+										<source src="{{ asset.url }}" type="audio/mpeg">
+									{% endfor %}
+									{% endif %}
+									{% if songs.songOgg | length %}
+									{% for asset in songs.songOgg %}
+										<source src="{{ asset.url }}" type="audio/ogg">
+									{% endfor %}
+									{% endif %}
+										Your browser does not support the audio element.
+								</audio>
+							</article>
+
+						{% endfor %}
+					{% endif %}
+				</section>
+			
+			</div>
+		</div>
+	
+		<section id="releaseList">
+			<h2>Releases</h2>
+			<div class="row">
+			{% for album in entry.releaseList %}
+				<div class="col-sm-4 col-md-3">
+					<div class="bandcamp">
+						<iframe style="border: 0; width: 190px; height: 332px;" src="http://bandcamp.com/EmbeddedPlayer/album={{ album.albumRelease }}/size=large/bgcol=ffffff/linkcol=333333/transparent=true/" seamless>
+						</iframe>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+		</section>
+	
+		<!--
+		<section id="emailButton">
+			<a href="mailto:{{ social.email }}" class="btn">Email clay <span>{{ social.email }}</span></a>
+		</section>
+		-->
+		
+		<section id="mailingList">
+			<h3>Join the Mailing List</h3>
+			<form class="navbar-form" action="//theashesmusic.us1.list-manage.com/subscribe/post?u=9c3c548eb42ad7f01814a9692&amp;id=140e1c8070" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
+				<div class="form-group">
+	 				<input type="email" value="" name="EMAIL" class="form-control">
+				</div>
+				<button type="submit" value="Subscribe" name="subscribe" class="btn">Submit</button>
+			</form>
+		</section>
+	</div>
+	
+	{% endfor %}
+	
+{% endblock %}

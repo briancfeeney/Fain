@@ -16,6 +16,13 @@
 				{% for songs in entry.playlistSongs %}
 					
 					<article class="song">
+						<span class="download">
+							{% if songs.mp3Download | length %}
+							    {% for asset in songs.mp3Download %}
+							        <a href="{{ asset.url }}" class="btn mp3download" target="_blank">MP3</a>
+							    {% endfor %}
+							{% endif %}
+						</span>
 						<h1>{{ songs.title }}
 							<small>
 								{% if songs.coWriters | length %}
@@ -33,7 +40,7 @@
 							</small>
 						</h1>
 					
-						<audio controls>
+						<audio controls preload="none">
 							{% if songs.mp3Download | length %}
 							{% for asset in songs.mp3Download %}
 								<source src="{{ asset.url }}" type="audio/mpeg">
@@ -51,6 +58,7 @@
 							<h5 class="lyricsLabel arrowDown">Lyrics</h5>
 							<div class="lyrics">{{ songs.lyrics }}</div>
 						{% endif %}
+						
 					</article>
 					
 				{% endfor %}
